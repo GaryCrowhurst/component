@@ -56,9 +56,7 @@ body {
   overflow-x: hidden;
 }
 
-/* ============================
-   NOISE TEXTURE OVERLAY
-   ============================ */
+/* Noise overlay */
 body::before {
   content: '';
   position: fixed; inset: 0;
@@ -88,6 +86,7 @@ body::before {
 .hdr-brand {
   display: flex; align-items: center; gap: 0.5rem;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .hdr-logo {
@@ -108,12 +107,9 @@ body::before {
   border-radius: 4px;
   display: none;
 }
-
 @media (min-width: 400px) { .hdr-tag { display: block; } }
 
-.hdr-actions {
-  display: flex; align-items: center; gap: 0.35rem;
-}
+.hdr-actions { display: flex; align-items: center; gap: 0.35rem; }
 
 /* ============================
    BUTTONS
@@ -131,7 +127,6 @@ body::before {
   -webkit-tap-highlight-color: transparent;
 }
 .btn:active { transform: scale(0.97); }
-
 .btn-lime { background: var(--lime); color: #0b0b0f; border-color: var(--lime); font-weight: 700; }
 .btn-lime:hover { box-shadow: 0 0 20px rgba(200,255,0,0.25); }
 .btn-ghost { background: transparent; color: var(--text-mid); border-color: var(--border); }
@@ -146,7 +141,7 @@ body::before {
 .btn-sm { font-size: 0.72rem; padding: 0.35rem 0.65rem; }
 
 /* ============================
-   LANDING PAGE
+   LANDING
    ============================ */
 .land {
   max-width: 720px; margin: 0 auto;
@@ -177,10 +172,8 @@ body::before {
   max-width: 400px;
   margin: 0 auto;
 }
-
 .land-sub strong { color: var(--text); font-weight: 600; }
 
-/* Section labels */
 .sec-label {
   font-family: var(--font-mono);
   font-size: 0.65rem; font-weight: 700;
@@ -189,7 +182,6 @@ body::before {
   margin-bottom: 0.75rem;
   display: flex; align-items: center; gap: 0.6rem;
 }
-
 .sec-label::after {
   content: ''; flex: 1; height: 1px;
   background: linear-gradient(90deg, var(--border), transparent);
@@ -202,7 +194,6 @@ body::before {
   gap: 0.6rem;
   margin-bottom: 2rem;
 }
-
 @media (min-width: 520px) {
   .preset-list { grid-template-columns: repeat(2, 1fr); }
 }
@@ -214,67 +205,37 @@ body::before {
   padding: 1rem 1rem 0.85rem;
   cursor: pointer;
   transition: all 0.2s ease;
-  position: relative;
-  overflow: hidden;
+  position: relative; overflow: hidden;
   -webkit-tap-highlight-color: transparent;
 }
-
 .preset::after {
-  content: ''; position: absolute;
-  inset: 0; border-radius: var(--r-lg);
+  content: ''; position: absolute; inset: 0;
+  border-radius: var(--r-lg);
   background: linear-gradient(135deg, rgba(200,255,0,0.04) 0%, transparent 50%);
-  opacity: 0; transition: opacity 0.2s;
-  pointer-events: none;
+  opacity: 0; transition: opacity 0.2s; pointer-events: none;
 }
-
 .preset:hover { border-color: var(--lime); transform: translateY(-2px); }
 .preset:hover::after { opacity: 1; }
 .preset:active { transform: translateY(0) scale(0.99); }
 
-.preset-icon {
-  font-size: 1.6rem;
-  margin-bottom: 0.4rem;
-  display: block;
-}
-
-.preset-name {
-  font-family: var(--font-display);
-  font-size: 1.25rem;
-  letter-spacing: 0.04em;
-  line-height: 1.15;
-  margin-bottom: 0.25rem;
-}
-
+.preset-icon { font-size: 1.6rem; margin-bottom: 0.4rem; display: block; }
+.preset-name { font-family: var(--font-display); font-size: 1.25rem; letter-spacing: 0.04em; line-height: 1.15; margin-bottom: 0.25rem; }
 .preset-desc {
-  font-size: 0.75rem;
-  color: var(--text-dim);
-  line-height: 1.4;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  margin-bottom: 0.5rem;
+  font-size: 0.75rem; color: var(--text-dim); line-height: 1.4;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden; margin-bottom: 0.5rem;
 }
-
-.preset-chips {
-  display: flex; gap: 0.4rem; flex-wrap: wrap;
-}
-
+.preset-chips { display: flex; gap: 0.4rem; flex-wrap: wrap; }
 .chip {
   font-family: var(--font-mono);
   font-size: 0.58rem; font-weight: 600;
-  padding: 0.18rem 0.45rem;
-  border-radius: 4px;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  padding: 0.18rem 0.45rem; border-radius: 4px;
+  text-transform: uppercase; letter-spacing: 0.06em;
 }
 .chip-lime { background: var(--lime-soft); color: var(--lime); }
 .chip-cyan { background: var(--cyan-soft); color: var(--cyan); }
 
-.preset.coming {
-  opacity: 0.35; pointer-events: none;
-  filter: grayscale(0.5);
-}
+.preset.coming { opacity: 0.35; pointer-events: none; filter: grayscale(0.5); }
 
 /* Upload bar */
 .upload-bar {
@@ -284,20 +245,9 @@ body::before {
   padding: 0.75rem 1rem;
   display: flex; align-items: center; gap: 0.75rem;
 }
-
-.upload-bar-text {
-  flex: 1; min-width: 0;
-}
-
-.upload-bar-text strong {
-  font-size: 0.8rem; display: block;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-
-.upload-bar-text span {
-  font-size: 0.68rem; color: var(--text-dim);
-}
-
+.upload-bar-text { flex: 1; min-width: 0; }
+.upload-bar-text strong { font-size: 0.8rem; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.upload-bar-text span { font-size: 0.68rem; color: var(--text-dim); }
 .upload-btn {
   flex-shrink: 0;
   background: var(--bg-card); border: 1.5px dashed var(--border);
@@ -312,31 +262,27 @@ body::before {
 /* ============================
    MAIN APP
    ============================ */
-.app { max-width: 960px; margin: 0 auto; padding: 1rem 0.75rem 6rem; position: relative; z-index: 1; }
-
+.app {
+  max-width: 960px; margin: 0 auto;
+  padding: 1rem 0.75rem 6rem;
+  position: relative; z-index: 1;
+}
 @media (min-width: 520px) { .app { padding: 1.25rem 1rem 6rem; } }
 
-/* System header */
 .sys-head { margin-bottom: 1.25rem; }
-
 .sys-title {
   font-family: var(--font-display);
   font-size: clamp(1.6rem, 5vw, 2.2rem);
-  letter-spacing: 0.04em;
-  line-height: 1;
+  letter-spacing: 0.04em; line-height: 1;
   margin-bottom: 0.3rem;
 }
-
 .sys-desc {
-  font-size: 0.82rem;
-  color: var(--text-mid);
-  line-height: 1.5;
-  max-width: 600px;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
+  font-size: 0.82rem; color: var(--text-mid);
+  line-height: 1.5; max-width: 600px;
+  word-wrap: break-word; overflow-wrap: break-word;
 }
 
-/* XP Bar */
+/* XP bar */
 .xp-bar {
   display: flex; align-items: center; gap: 0.6rem;
   padding: 0.6rem 0.75rem;
@@ -345,22 +291,13 @@ body::before {
   border-radius: var(--r);
   margin-bottom: 1rem;
 }
-
 .xp-label {
   font-family: var(--font-mono);
   font-size: 0.65rem; font-weight: 700;
-  color: var(--lime);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  white-space: nowrap;
+  color: var(--lime); text-transform: uppercase;
+  letter-spacing: 0.08em; white-space: nowrap;
 }
-
-.xp-track {
-  flex: 1; height: 6px;
-  background: var(--bg-input);
-  border-radius: 3px; overflow: hidden;
-}
-
+.xp-track { flex: 1; height: 6px; background: var(--bg-input); border-radius: 3px; overflow: hidden; }
 .xp-fill {
   height: 100%;
   background: linear-gradient(90deg, var(--lime), #e0ff66);
@@ -368,12 +305,10 @@ body::before {
   transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   box-shadow: 0 0 8px rgba(200,255,0,0.3);
 }
-
 .xp-pct {
   font-family: var(--font-mono);
   font-size: 0.7rem; font-weight: 700;
-  color: var(--lime);
-  white-space: nowrap;
+  color: var(--lime); white-space: nowrap;
   min-width: 32px; text-align: right;
 }
 
@@ -383,15 +318,13 @@ body::before {
   margin-bottom: 1.25rem;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  padding-bottom: 2px;
+  scrollbar-width: none; padding-bottom: 2px;
 }
 .lvl-strip::-webkit-scrollbar { display: none; }
 
 .lvl-pill {
   flex-shrink: 0;
-  padding: 0.5rem 1rem;
-  border-radius: 50px;
+  padding: 0.5rem 1rem; border-radius: 50px;
   border: 1.5px solid var(--border);
   background: var(--bg-card);
   cursor: pointer; transition: all 0.15s;
@@ -402,27 +335,16 @@ body::before {
   -webkit-tap-highlight-color: transparent;
 }
 .lvl-pill:hover { border-color: var(--text-mid); }
-.lvl-pill.active {
-  background: var(--lime);
-  border-color: var(--lime);
-  color: #0b0b0f;
-  font-weight: 700;
-}
-
-.lvl-num {
-  font-family: var(--font-display);
-  font-size: 1rem; line-height: 1;
-}
+.lvl-pill.active { background: var(--lime); border-color: var(--lime); color: #0b0b0f; font-weight: 700; }
+.lvl-num { font-family: var(--font-display); font-size: 1rem; line-height: 1; }
 
 .lvl-info {
   padding: 0.6rem 0.75rem;
   background: var(--lime-soft);
   border-radius: var(--r);
   border-left: 3px solid var(--lime);
-  font-size: 0.78rem;
-  color: var(--lime);
-  margin-bottom: 1.25rem;
-  line-height: 1.5;
+  font-size: 0.78rem; color: var(--lime);
+  margin-bottom: 1.25rem; line-height: 1.5;
   word-wrap: break-word;
 }
 
@@ -430,11 +352,8 @@ body::before {
    COMPONENT CARDS
    ============================ */
 .cards {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.75rem;
+  display: grid; grid-template-columns: 1fr; gap: 0.75rem;
 }
-
 @media (min-width: 640px) {
   .cards { grid-template-columns: repeat(2, 1fr); }
 }
@@ -455,36 +374,25 @@ body::before {
   background: var(--bg-raise);
   border-bottom: 1px solid var(--border);
 }
-
-.card-num {
-  font-family: var(--font-mono);
-  font-size: 0.65rem; font-weight: 700;
-  color: var(--lime);
-}
-
+.card-num { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; color: var(--lime); }
 .card-badge {
   font-family: var(--font-mono);
   font-size: 0.55rem; font-weight: 700;
   text-transform: uppercase; letter-spacing: 0.08em;
-  padding: 0.15rem 0.45rem;
-  border-radius: 4px;
+  padding: 0.15rem 0.45rem; border-radius: 4px;
 }
 .badge-todo { color: var(--text-dim); background: rgba(92,92,110,0.15); }
 .badge-wip { color: var(--orange); background: var(--orange-soft); }
 .badge-done { color: var(--green); background: var(--green-soft); }
 
-.card-body {
-  padding: 0.75rem;
-}
+.card-body { padding: 0.75rem; }
 
-/* Image area */
+/* Image zone */
 .img-zone {
   margin-bottom: 0.75rem;
-  border-radius: var(--r);
-  overflow: hidden;
+  border-radius: var(--r); overflow: hidden;
   border: 1.5px dashed var(--border);
-  position: relative;
-  min-height: 120px;
+  position: relative; min-height: 120px;
   display: flex; align-items: center; justify-content: center;
   background: var(--bg-input);
   cursor: pointer; transition: all 0.15s;
@@ -492,16 +400,9 @@ body::before {
 }
 .img-zone:hover { border-color: var(--lime); }
 .img-zone.has-img { border-style: solid; border-color: var(--border); min-height: auto; }
+.img-zone img { width: 100%; height: auto; display: block; max-height: 220px; object-fit: cover; }
 
-.img-zone img {
-  width: 100%; height: auto; display: block;
-  max-height: 220px; object-fit: cover;
-}
-
-.img-empty {
-  text-align: center; padding: 1.2rem 0.5rem;
-  color: var(--text-dim);
-}
+.img-empty { text-align: center; padding: 1.2rem 0.5rem; color: var(--text-dim); }
 .img-empty-ico { font-size: 1.5rem; margin-bottom: 0.3rem; }
 .img-empty-txt { font-size: 0.72rem; font-weight: 500; }
 
@@ -512,7 +413,6 @@ body::before {
   padding: 0.12rem 0.4rem; border-radius: 4px;
   text-transform: uppercase; letter-spacing: 0.04em;
 }
-
 .img-rm {
   position: absolute; bottom: 0.4rem; right: 0.4rem;
   background: rgba(11,11,15,0.85); border: 1px solid var(--border);
@@ -524,7 +424,9 @@ body::before {
 }
 .img-rm:hover { color: var(--red); border-color: var(--red); }
 
-/* Fields */
+/* ============================
+   FIELD INPUTS — AUTO-HEIGHT
+   ============================ */
 .fld { margin-bottom: 0.65rem; }
 .fld:last-child { margin-bottom: 0; }
 
@@ -532,15 +434,9 @@ body::before {
   display: flex; align-items: center; gap: 0.35rem;
   font-size: 0.65rem; font-weight: 700;
   text-transform: uppercase; letter-spacing: 0.08em;
-  color: var(--text-dim);
-  margin-bottom: 0.3rem;
+  color: var(--text-dim); margin-bottom: 0.3rem;
 }
-
-.fld-dot {
-  width: 5px; height: 5px; border-radius: 50%;
-  background: var(--red); flex-shrink: 0;
-}
-
+.fld-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--red); flex-shrink: 0; }
 .fld-badge {
   font-size: 0.5rem; font-weight: 800;
   padding: 0.08rem 0.35rem; border-radius: 3px;
@@ -548,6 +444,7 @@ body::before {
   text-transform: uppercase; letter-spacing: 0.04em;
 }
 
+/* Shared input base */
 .fld-input {
   width: 100%;
   background: var(--bg-input);
@@ -557,8 +454,7 @@ body::before {
   font-family: var(--font-body);
   font-size: 0.82rem;
   padding: 0.55rem 0.65rem;
-  transition: all 0.15s;
-  resize: vertical;
+  transition: border-color 0.15s, box-shadow 0.15s;
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
@@ -567,15 +463,25 @@ body::before {
   border-color: var(--lime);
   box-shadow: 0 0 0 3px var(--lime-soft);
 }
+.fld-input::placeholder { color: var(--text-dim); }
+
+/* Textarea — auto-height */
+textarea.fld-input {
+  display: block;
+  resize: none;
+  overflow: hidden;
+  min-height: 2.6rem; /* ~1 line + padding */
+  line-height: 1.55;
+}
+
+/* Provided (read-only) */
 .fld-input.prov {
   background: var(--cyan-soft);
   border-color: rgba(0,212,255,0.2);
   color: var(--text);
   font-size: 0.78rem;
-  line-height: 1.5;
+  line-height: 1.55;
 }
-.fld-input::placeholder { color: var(--text-dim); }
-textarea.fld-input { min-height: 60px; }
 
 .hint-btn {
   font-size: 0.7rem; font-weight: 600;
@@ -592,14 +498,13 @@ textarea.fld-input { min-height: 60px; }
   background: var(--lime-soft); border-radius: var(--r);
   border-left: 2px solid var(--lime);
   font-size: 0.75rem; color: var(--lime);
-  line-height: 1.45;
-  display: none;
+  line-height: 1.45; display: none;
   word-wrap: break-word;
 }
 .hint-box.on { display: block; }
 
 /* ============================
-   BOTTOM ACTION BAR
+   BOTTOM BAR
    ============================ */
 .bar {
   position: fixed; bottom: 0; left: 0; right: 0;
@@ -608,28 +513,20 @@ textarea.fld-input { min-height: 60px; }
   -webkit-backdrop-filter: blur(16px);
   border-top: 1px solid var(--border);
   padding: 0.6rem 0.75rem calc(0.6rem + var(--safe-bottom));
-  z-index: 100;
-  display: none;
+  z-index: 100; display: none;
 }
 .bar.on { display: block; }
-
 .bar-inner {
   max-width: 960px; margin: 0 auto;
   display: flex; align-items: center;
   justify-content: space-between; gap: 0.5rem;
 }
-
-.bar-stat {
-  font-family: var(--font-mono);
-  font-size: 0.68rem; font-weight: 600;
-  color: var(--text-dim);
-}
+.bar-stat { font-family: var(--font-mono); font-size: 0.68rem; font-weight: 600; color: var(--text-dim); }
 .bar-stat b { color: var(--lime); }
-
 .bar-btns { display: flex; gap: 0.35rem; }
 
 /* ============================
-   REVIEW PANEL
+   REVIEW
    ============================ */
 .review {
   background: var(--bg-card);
@@ -640,40 +537,11 @@ textarea.fld-input { min-height: 60px; }
   display: none;
 }
 .review.on { display: block; }
-
-.review-hd {
-  font-family: var(--font-display);
-  font-size: 1.4rem; letter-spacing: 0.04em;
-  color: var(--green); margin-bottom: 0.75rem;
-}
-
-.review-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.5rem;
-  margin-bottom: 0.75rem;
-}
-
-.review-stat {
-  background: var(--bg-input);
-  border-radius: var(--r);
-  padding: 0.6rem 0.5rem;
-  text-align: center;
-}
-
-.review-val {
-  font-family: var(--font-display);
-  font-size: 1.6rem; line-height: 1;
-  color: var(--lime);
-}
-
-.review-lbl {
-  font-size: 0.6rem; font-weight: 600;
-  color: var(--text-dim);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin-top: 0.2rem;
-}
+.review-hd { font-family: var(--font-display); font-size: 1.4rem; letter-spacing: 0.04em; color: var(--green); margin-bottom: 0.75rem; }
+.review-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-bottom: 0.75rem; }
+.review-stat { background: var(--bg-input); border-radius: var(--r); padding: 0.6rem 0.5rem; text-align: center; }
+.review-val { font-family: var(--font-display); font-size: 1.6rem; line-height: 1; color: var(--lime); }
+.review-lbl { font-size: 0.6rem; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 0.2rem; }
 
 /* ============================
    TOAST
@@ -701,62 +569,149 @@ textarea.fld-input { min-height: 60px; }
   z-index: 300;
   display: flex; align-items: flex-end; justify-content: center;
   padding: 0;
-  opacity: 0; pointer-events: none;
-  transition: opacity 0.2s;
+  opacity: 0; pointer-events: none; transition: opacity 0.2s;
 }
 .modal-bg.on { opacity: 1; pointer-events: all; }
-
-@media (min-width: 520px) {
-  .modal-bg { align-items: center; padding: 1rem; }
-}
+@media (min-width: 520px) { .modal-bg { align-items: center; padding: 1rem; } }
 
 .modal-box {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--r-lg) var(--r-lg) 0 0;
-  width: 100%;
-  max-height: 85dvh; overflow-y: auto;
+  width: 100%; max-height: 85dvh; overflow-y: auto;
   padding: 1.25rem;
   transform: translateY(20px);
   transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .modal-bg.on .modal-box { transform: translateY(0); }
-
-@media (min-width: 520px) {
-  .modal-box {
-    max-width: 440px;
-    border-radius: var(--r-lg);
-  }
-}
-
-.modal-box h3 {
-  font-family: var(--font-display);
-  font-size: 1.3rem; letter-spacing: 0.04em;
-  margin-bottom: 0.75rem;
-}
+@media (min-width: 520px) { .modal-box { max-width: 440px; border-radius: var(--r-lg); } }
+.modal-box h3 { font-family: var(--font-display); font-size: 1.3rem; letter-spacing: 0.04em; margin-bottom: 0.75rem; }
 
 /* ============================
-   PRINT
+   PRINT STYLES
    ============================ */
 .print-only { display: none; }
-.no-print {}
 
 @media print {
-  * { color: #000 !important; background: #fff !important; border-color: #bbb !important; box-shadow: none !important; }
-  body::before { display: none; }
-  .hdr, .bar, .hint-btn, .img-rm, .no-print { display: none !important; }
-  .print-only { display: block !important; }
-  .app { padding: 0 !important; max-width: none; }
-  .cards { grid-template-columns: 1fr !important; gap: 0.5rem !important; }
-  .card { break-inside: avoid; page-break-inside: avoid; border: 1.5pt solid #000 !important; }
-  .fld-input { border: 1px solid #999 !important; min-height: 40px !important; background: #f8f8f8 !important; }
-  .fld-input.prov { background: #e6f3ff !important; }
-  textarea.fld-input { min-height: 65px !important; }
-  .img-zone { min-height: 100px !important; border: 1.5pt solid #999 !important; }
-  .print-hd { text-align: center; border-bottom: 2pt solid #000; padding-bottom: 0.5rem; margin-bottom: 0.75rem; }
-  .print-hd h1 { font-size: 1.4rem; }
-  .print-meta { display: flex; justify-content: space-between; font-size: 0.85rem; margin-top: 0.5rem; }
+  /* Reset everything to clean black-on-white */
+  *, *::before, *::after {
+    color: #000 !important;
+    background: #fff !important;
+    border-color: #bbb !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    -webkit-text-fill-color: #000 !important;
+  }
+
   body { font-size: 10pt; }
+  body::before { display: none !important; }
+
+  .hdr, .bar, .hint-btn, .img-rm, .no-print,
+  .xp-bar, .lvl-strip, .lvl-info, .review { display: none !important; }
+
+  .print-only { display: block !important; }
+
+  .app { padding: 0 !important; max-width: none !important; }
+
+  /* Single column for print */
+  .cards {
+    display: block !important;
+  }
+
+  .card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    border: 1.5pt solid #000 !important;
+    border-radius: 6px !important;
+    margin-bottom: 0.6rem !important;
+    overflow: visible !important;
+  }
+
+  .card-top {
+    background: #eee !important;
+    border-bottom: 1px solid #999 !important;
+    padding: 0.35rem 0.6rem !important;
+  }
+
+  .card-body { padding: 0.6rem !important; }
+
+  /* Image zone in print */
+  .img-zone {
+    min-height: 80px !important;
+    border: 1.5pt solid #999 !important;
+    border-style: dashed !important;
+    background: #f8f8f8 !important;
+  }
+  .img-zone.has-img {
+    border-style: solid !important;
+    min-height: auto !important;
+  }
+  .img-zone img {
+    max-height: 150px !important;
+  }
+  .img-tag { background: #ddd !important; }
+
+  /* Text inputs in print — show as boxes to write in */
+  .fld-input {
+    border: 1px solid #999 !important;
+    border-radius: 4px !important;
+    background: #fafafa !important;
+    padding: 0.4rem 0.5rem !important;
+    font-size: 9pt !important;
+    min-height: 1.8rem !important;
+  }
+
+  /* Provided fields get blue tint */
+  .fld-input.prov {
+    background: #e8f4ff !important;
+    border-color: #7ec8e3 !important;
+  }
+
+  /* Blank textareas get more height for handwriting */
+  textarea.fld-input:not(.prov) {
+    min-height: 3rem !important;
+    height: auto !important;
+  }
+
+  /* Ensure provided textareas show full content */
+  textarea.fld-input.prov {
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  /* Badges in print */
+  .card-badge { border: 1px solid #999 !important; }
+  .fld-badge { background: #e0f0ff !important; border: 1px solid #7ec8e3 !important; }
+  .fld-dot { background: #666 !important; }
+
+  /* Print header */
+  .print-hd {
+    text-align: center;
+    border-bottom: 2pt solid #000;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .print-hd h1 { font-size: 1.4rem; }
+  .print-hd .print-brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 0.06em;
+  }
+  .print-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    margin-top: 0.4rem;
+    gap: 0.5rem;
+  }
+  .print-meta span {
+    border-bottom: 1px solid #999;
+    flex: 1;
+    padding-bottom: 2px;
+  }
+
+  .sys-head { margin-bottom: 0.75rem !important; }
+  .sys-desc { max-width: none !important; }
 }
 
 /* ============================
@@ -776,8 +731,6 @@ textarea.fld-input { min-height: 60px; }
 .card:nth-child(7) { animation-delay: 0.21s; }
 .card:nth-child(8) { animation-delay: 0.24s; }
 .card:nth-child(n+9) { animation-delay: 0.27s; }
-
-@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
 </style>
 </head>
 <body>
@@ -803,10 +756,8 @@ textarea.fld-input { min-height: 60px; }
     <div class="land-title">DECODE</div>
     <p class="land-sub"><strong>Crack the system.</strong> Identify components, snap photos, describe how things work.</p>
   </div>
-
   <div class="sec-label">Select a system</div>
   <div class="preset-list" id="presetList"></div>
-
   <div class="upload-bar" id="uploadBar">
     <span style="font-size:1.2rem;">📁</span>
     <div class="upload-bar-text">
@@ -821,16 +772,15 @@ textarea.fld-input { min-height: 60px; }
 <!-- MAIN APP -->
 <div id="mainApp" style="display:none;">
   <div class="app">
-    <!-- Print header -->
     <div class="print-only print-hd">
+      <div class="print-brand">DECODE</div>
       <h1 id="printTitle">Component Worksheet</h1>
       <div class="print-meta">
-        <span>Name: ___________________________</span>
-        <span>Date: ______________</span>
+        <span>Name: </span>
+        <span>Date: </span>
         <span>Level: <span id="printLvl">1</span></span>
       </div>
     </div>
-
     <div class="sys-head" id="sysHead"></div>
     <div class="xp-bar no-print" id="xpBar"></div>
     <div class="lvl-strip no-print" id="lvlStrip"></div>
@@ -855,7 +805,6 @@ textarea.fld-input { min-height: 60px; }
   </div>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <!-- LEVEL MODAL -->
@@ -865,7 +814,7 @@ textarea.fld-input { min-height: 60px; }
 
 <script>
 /* ============================================
-   PRESET CONFIG — ADD NEW SYSTEMS HERE
+   PRESETS — files in same root as index.html
    ============================================ */
 const PRESETS = [
   {
@@ -882,13 +831,6 @@ const PRESETS = [
   //   desc: 'Disc brakes, drum brakes, master cylinder, ABS and hydraulic circuits',
   //   count: 14
   // },
-  // {
-  //   file: 'engine-systems.json',
-  //   icon: '🏎',
-  //   title: 'Engine Systems',
-  //   desc: 'Cylinder block, pistons, crankshaft, camshaft, valvetrain and lubrication',
-  //   count: 16
-  // },
 ];
 
 const PLACEHOLDERS = [
@@ -897,10 +839,19 @@ const PLACEHOLDERS = [
   { icon: '⚡', title: 'Electrical System' },
 ];
 
-/* ============================================
-   STATE
-   ============================================ */
 const S = { data: null, level: 1, inputs: {} };
+
+/* ============================================
+   TEXTAREA AUTO-RESIZE
+   ============================================ */
+function autoSize(el) {
+  el.style.height = 'auto';
+  el.style.height = el.scrollHeight + 'px';
+}
+
+function autoSizeAll() {
+  document.querySelectorAll('textarea.fld-input').forEach(autoSize);
+}
 
 /* ============================================
    RENDER PRESETS
@@ -928,7 +879,6 @@ function renderPresets() {
       <div class="preset-chips"><span class="chip chip-lime">soon</span></div>
     </div>
   `).join('');
-
   el.innerHTML = h;
 }
 renderPresets();
@@ -965,7 +915,7 @@ async function loadPreset(path) {
 }
 
 /* ============================================
-   INIT SYSTEM
+   INIT
    ============================================ */
 function init(raw) {
   S.data = raw.system || raw;
@@ -982,10 +932,7 @@ function init(raw) {
   document.getElementById('hdrActions').style.display = 'flex';
   document.getElementById('bar').classList.add('on');
 
-  renderHead();
-  renderXP();
-  renderLevels();
-  renderCards();
+  renderHead(); renderXP(); renderLevels(); renderCards();
 }
 
 function backToMenu() {
@@ -1016,8 +963,7 @@ function renderXP() {
   document.getElementById('xpBar').innerHTML = `
     <span class="xp-label">XP</span>
     <div class="xp-track"><div class="xp-fill" style="width:${pct}%"></div></div>
-    <span class="xp-pct">${pct}%</span>
-  `;
+    <span class="xp-pct">${pct}%</span>`;
   document.getElementById('barStat').innerHTML = `<b>${filled}</b> / ${total}`;
 }
 
@@ -1036,7 +982,6 @@ function renderLevels() {
   const desc = descs[String(S.level)];
   if (desc) { info.textContent = desc; info.style.display = 'block'; }
   else { info.style.display = 'none'; }
-
   document.getElementById('printLvl').textContent = S.level;
 }
 
@@ -1049,6 +994,7 @@ function setLevel(n) {
 function renderCards() {
   const comps = S.data.components || [];
   const lv = String(S.level);
+
   document.getElementById('cards').innerHTML = comps.map((c, i) => {
     const vis = c.level_visibility?.[lv] || {};
     const inp = S.inputs[c.id] || {};
@@ -1084,18 +1030,21 @@ function renderCards() {
             ? `<img src="${inp.image}" alt="Photo"><div class="img-rm" onclick="event.stopPropagation();rmImg('${c.id}')">✕</div>`
             : ip
               ? `<img src="${c.image}" alt="${c.name||''}"><span class="img-tag">Given</span>`
-              : `<div class="img-empty"><div class="img-empty-ico">📷</div><div class="img-empty-txt">Tap to snap a photo</div></div>`
-          }
+              : `<div class="img-empty"><div class="img-empty-ico">📷</div><div class="img-empty-txt">Tap to snap a photo</div></div>`}
         </div>
         ${field(c, 'name', 'Name', np, inp.name)}
-        ${field(c, 'function', 'Function', fp, inp.function, true)}
-        ${field(c, 'operation', 'Operation', op, inp.operation, true)}
+        ${field(c, 'function', 'Function', fp, inp.function)}
+        ${field(c, 'operation', 'Operation', op, inp.operation)}
       </div>
     </div>`;
   }).join('');
+
+  // Auto-size all textareas after render
+  requestAnimationFrame(autoSizeAll);
 }
 
-function field(c, key, label, provided, userVal, isTA) {
+function field(c, key, label, provided, userVal) {
+  // Always use textarea for fluid height
   let h = `<div class="fld"><div class="fld-label">`;
   h += provided
     ? `<span class="fld-badge">Given</span>`
@@ -1103,15 +1052,11 @@ function field(c, key, label, provided, userVal, isTA) {
   h += ` ${label}</div>`;
 
   if (provided) {
-    h += isTA
-      ? `<textarea class="fld-input prov" readonly>${c[key]||''}</textarea>`
-      : `<input class="fld-input prov" readonly value="${esc(c[key]||'')}">`;
+    h += `<textarea class="fld-input prov" readonly>${c[key] || ''}</textarea>`;
   } else {
     const v = userVal || '';
     const ph = `Describe the ${label.toLowerCase()}…`;
-    h += isTA
-      ? `<textarea class="fld-input" placeholder="${ph}" onchange="inp('${c.id}','${key}',this.value)" oninput="inp('${c.id}','${key}',this.value)">${v}</textarea>`
-      : `<input class="fld-input" placeholder="${ph}" value="${esc(v)}" onchange="inp('${c.id}','${key}',this.value)" oninput="inp('${c.id}','${key}',this.value)">`;
+    h += `<textarea class="fld-input" placeholder="${ph}" oninput="onInput(this,'${c.id}','${key}')" onfocus="autoSize(this)">${v}</textarea>`;
 
     if (c.hints?.[key]) {
       const hid = `h-${c.id}-${key}`;
@@ -1124,11 +1069,12 @@ function field(c, key, label, provided, userVal, isTA) {
 }
 
 /* ============================================
-   INPUT & STATUS
+   INPUT HANDLING
    ============================================ */
-function inp(id, key, val) {
+function onInput(el, id, key) {
+  autoSize(el);
   if (!S.inputs[id]) S.inputs[id] = {};
-  S.inputs[id][key] = val;
+  S.inputs[id][key] = el.value;
   renderXP();
   updateBadge(id);
 }
@@ -1145,10 +1091,10 @@ function updateBadge(id) {
   const el = document.getElementById('c-' + id);
   if (!el) return;
   const b = el.querySelector('.card-badge');
-  if (t === 0) { b.className = 'card-badge badge-done'; b.textContent = 'PROVIDED'; el.classList.add('done'); }
-  else if (f >= t) { b.className = 'card-badge badge-done'; b.textContent = 'DONE'; el.classList.add('done'); }
-  else if (f > 0) { b.className = 'card-badge badge-wip'; b.textContent = 'WIP'; el.classList.remove('done'); }
-  else { b.className = 'card-badge badge-todo'; b.textContent = 'TO DO'; el.classList.remove('done'); }
+  if (t === 0)      { b.className = 'card-badge badge-done'; b.textContent = 'PROVIDED'; el.classList.add('done'); }
+  else if (f >= t)   { b.className = 'card-badge badge-done'; b.textContent = 'DONE'; el.classList.add('done'); }
+  else if (f > 0)    { b.className = 'card-badge badge-wip'; b.textContent = 'WIP'; el.classList.remove('done'); }
+  else               { b.className = 'card-badge badge-todo'; b.textContent = 'TO DO'; el.classList.remove('done'); }
 }
 
 function countProgress() {
@@ -1176,8 +1122,7 @@ function capture(id) {
   const input = document.createElement('input');
   input.type = 'file'; input.accept = 'image/*'; input.capture = 'environment';
   input.onchange = e => {
-    const file = e.target.files[0];
-    if (!file) return;
+    const file = e.target.files[0]; if (!file) return;
     const reader = new FileReader();
     reader.onload = ev => {
       const img = new Image();
@@ -1185,13 +1130,12 @@ function capture(id) {
         const cv = document.createElement('canvas');
         const mx = 800;
         let w = img.width, h = img.height;
-        if (w > mx || h > mx) {
-          if (w > h) { h = h/w*mx; w = mx; } else { w = w/h*mx; h = mx; }
-        }
+        if (w > mx || h > mx) { if (w > h) { h = h/w*mx; w = mx; } else { w = w/h*mx; h = mx; } }
         cv.width = w; cv.height = h;
         cv.getContext('2d').drawImage(img, 0, 0, w, h);
-        inp(id, 'image', cv.toDataURL('image/jpeg', 0.7));
-        renderCards();
+        if (!S.inputs[id]) S.inputs[id] = {};
+        S.inputs[id].image = cv.toDataURL('image/jpeg', 0.7);
+        renderXP(); renderCards();
       };
       img.src = ev.target.result;
     };
@@ -1208,10 +1152,7 @@ function rmImg(id) {
 /* ============================================
    HINTS
    ============================================ */
-function toggleHint(id) {
-  const el = document.getElementById(id);
-  if (el) el.classList.toggle('on');
-}
+function toggleHint(id) { document.getElementById(id)?.classList.toggle('on'); }
 
 /* ============================================
    CHECK / REVIEW
@@ -1219,12 +1160,10 @@ function toggleHint(id) {
 function checkAnswers() {
   const { filled, total } = countProgress();
   const pct = total > 0 ? Math.round(filled / total * 100) : 100;
-
   document.getElementById('reviewGrid').innerHTML = `
     <div class="review-stat"><div class="review-val">${filled}/${total}</div><div class="review-lbl">Completed</div></div>
     <div class="review-stat"><div class="review-val">${pct}%</div><div class="review-lbl">Progress</div></div>
-    <div class="review-stat"><div class="review-val">Lv${S.level}</div><div class="review-lbl">Difficulty</div></div>
-  `;
+    <div class="review-stat"><div class="review-val">Lv${S.level}</div><div class="review-lbl">Difficulty</div></div>`;
   const rv = document.getElementById('review');
   rv.classList.add('on');
   rv.scrollIntoView({ behavior: 'smooth' });
@@ -1237,9 +1176,7 @@ function checkAnswers() {
 function saveProgress() {
   if (!S.data) return;
   try {
-    localStorage.setItem('decode-' + S.data.title, JSON.stringify({
-      inputs: S.inputs, level: S.level, ts: Date.now()
-    }));
+    localStorage.setItem('decode-' + S.data.title, JSON.stringify({ inputs: S.inputs, level: S.level, ts: Date.now() }));
     toast('Saved ✓');
   } catch { toast('Storage full'); }
 }
@@ -1257,7 +1194,6 @@ function exportResults() {
   const comps = S.data.components || [];
   const lv = String(S.level);
   let t = `${S.data.title} — Learner Responses\nLevel: ${S.level}\nDate: ${new Date().toLocaleDateString('en-GB')}\n${'═'.repeat(50)}\n\n`;
-
   comps.forEach((c, i) => {
     const vis = c.level_visibility?.[lv] || {};
     const inp = S.inputs[c.id] || {};
@@ -1270,7 +1206,6 @@ function exportResults() {
     });
     t += `Photo: ${inp.image ? 'Yes' : 'No'}\n\n`;
   });
-
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([t], { type: 'text/plain' }));
   a.download = S.data.title.replace(/\s+/g, '-').toLowerCase() + '-responses.txt';
@@ -1315,7 +1250,7 @@ function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').re
 
 document.getElementById('lvlModal').addEventListener('click', function(e) { if (e.target === this) closeLvlModal(); });
 
-// URL auto-load
+// URL param auto-load
 (function() {
   const p = new URLSearchParams(location.search).get('system');
   if (p) loadPreset(p);
