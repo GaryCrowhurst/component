@@ -839,7 +839,7 @@ const PLACEHOLDERS = [
   { icon: '⚡', title: 'Electrical System' },
 ];
 
-const S = { data: null, level: 1, inputs: {} };
+const S = { data: null, level: 3, inputs: {} };
 
 /* ============================================
    TEXTAREA AUTO-RESIZE
@@ -970,7 +970,7 @@ function renderXP() {
 function renderLevels() {
   const descs = S.data.level_descriptions || {};
   const keys = Object.keys(descs).length ? Object.keys(descs) : ['1','2','3'];
-  const labels = ['Guided', 'Developing', 'Independent'];
+  const labels = ['Easy', 'Medium', 'Hard'];
 
   document.getElementById('lvlStrip').innerHTML = keys.map((k, i) =>
     `<div class="lvl-pill ${parseInt(k)===S.level?'active':''}" onclick="setLevel(${k})">
@@ -1218,7 +1218,7 @@ function exportResults() {
    ============================================ */
 function showLevelModal() {
   const descs = S.data.level_descriptions || {};
-  const labels = ['Guided', 'Developing', 'Independent'];
+  const labels = ['Easy', 'Medium', 'Hard'];
   let h = '<h3>DIFFICULTY</h3><div style="display:flex;gap:0.4rem;margin-bottom:1rem;">';
   [1,2,3].forEach((n, i) => {
     h += `<div class="lvl-pill ${n===S.level?'active':''}" style="flex:1;justify-content:center;" onclick="setLevel(${n});closeLvlModal();">
