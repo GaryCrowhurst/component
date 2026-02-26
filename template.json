@@ -1,0 +1,49 @@
+{
+  "_TEMPLATE_INSTRUCTIONS": "Copy this file and rename it to your-system-name.json. Fill in the components array below. Delete this _TEMPLATE_INSTRUCTIONS field when done. Place the finished file in the systems/ folder and add a preset button in index.html.",
+
+  "system": {
+    "title": "Your System Name Here",
+    "description": "Brief description of the system and its role in the vehicle. This is shown to learners on the main screen.",
+    "level_descriptions": {
+      "1": "Guided Learning — Most information is provided. Fill in the gaps to complete your knowledge.",
+      "2": "Developing Skills — Some information is provided. Use your knowledge to complete the missing details.",
+      "3": "Independent Learning — Minimal information given. Demonstrate your understanding by completing all fields."
+    },
+    "components": [
+      {
+        "id": "example-component-one",
+        "name": "Example Component One",
+        "image": "",
+        "function": "What the component does — its purpose within the system. Write this as you would explain it to a Level 1 learner.",
+        "operation": "How the component works — the mechanical or electrical process. Describe the working principle step by step.",
+        "hints": {
+          "name": "A clue to help the learner identify the component by name",
+          "function": "A clue about what the component does — not the full answer",
+          "operation": "A clue about how the component works — point them in the right direction"
+        },
+        "level_visibility": {
+          "1": { "name": true, "image": true, "function": true, "operation": false },
+          "2": { "name": true, "image": false, "function": false, "operation": false },
+          "3": { "name": false, "image": false, "function": false, "operation": false }
+        }
+      },
+      {
+        "id": "example-component-two",
+        "name": "Example Component Two",
+        "image": "",
+        "function": "Purpose of this component in the system.",
+        "operation": "How this component works step by step.",
+        "hints": {
+          "name": "Identification hint",
+          "function": "Function hint",
+          "operation": "Operation hint"
+        },
+        "level_visibility": {
+          "1": { "name": true, "image": true, "function": false, "operation": false },
+          "2": { "name": false, "image": true, "function": false, "operation": false },
+          "3": { "name": false, "image": false, "function": false, "operation": false }
+        }
+      }
+    ]
+  }
+}
