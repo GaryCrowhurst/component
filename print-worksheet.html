@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Component Worksheet — Print Version</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  color: #1a1a2e;
+  background: #f5f5f0;
+  line-height: 1.5;
+  padding: 1rem;
+}
+
+.no-print-controls {
+  max-width: 800px;
+  margin: 0 auto 1.5rem;
+  padding: 1rem;
+  background: #fff;
+  border: 2px solid #e0e0d8;
+  border-radius: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.no-print-controls label { font-weight: 600; font-size: 0.85rem; }
+
+.no-print-controls select, .no-print-controls input[type="file"] {
+  font-family: inherit;
+  font-size: 0.85rem;
+  padding: 0.4rem 0.75rem;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.print-btn {
+  background: #f59e0b;
+  color: #000;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 0.5rem 1.25rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-left: auto;
+}
+.print-btn:hover { background: #fbbf24; }
+
+.worksheet {
+  max-width: 800px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 2rem;
+  border: 1px solid #ddd;
+}
+
+.ws-header {
+  text-align: center;
+  border-bottom: 3px solid #1a1a2e;
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.ws-title {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 1.6rem;
+  margin-bottom: 0.25rem;
+}
+
+.ws-subtitle {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.ws-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.ws-meta-field {
+  border-bottom: 1px solid #999;
+  flex: 1;
+  min-width: 150px;
+  padding-bottom: 2px;
+}
+
+.ws-level-info {
+  background: #f0f0ea;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 0.75rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.85rem;
+}
+
+.ws-level-info strong { color: #f59e0b; }
+
+.component-block {
+  border: 2px solid #1a1a2e;
+  border-radius: 8px;
+  margin-bottom: 1.25rem;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.cb-header {
+  background: #1a1a2e;
+  color: #fff;
+  padding: 0.5rem 0.75rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 6px 6px 0 0;
+}
+
+.cb-body { padding: 0.75rem; }
+
+.cb-row {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 0.6rem;
+  align-items: flex-start;
+}
+
+.cb-image-box {
+  width: 140px;
+  min-height: 100px;
+  border: 2px dashed #bbb;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  color: #999;
+  text-align: center;
+  flex-shrink: 0;
+  padding: 0.5rem;
+}
+
+.cb-image-box.provided {
+  border-style: solid;
+  border-color: #3b82f6;
+  background: #eff6ff;
+  color: #3b82f6;
+  font-weight: 600;
+}
+
+.cb-fields { flex: 1; }
+
+.cb-field {
+  margin-bottom: 0.5rem;
+}
+
+.cb-field-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #666;
+  margin-bottom: 0.15rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.cb-field-label .dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: #ef4444;
+  display: inline-block;
+}
+
+.cb-field-label .badge-prov {
+  font-size: 0.6rem;
+  background: #dbeafe;
+  color: #3b82f6;
+  padding: 0 0.3rem;
+  border-radius: 3px;
+}
+
+.cb-field-value {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0.4rem 0.5rem;
+  min-height: 1.8rem;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.cb-field-value.provided {
+  background: #eff6ff;
+  border-color: #93c5fd;
+  color: #1e40af;
+}
+
+.cb-field-value.blank {
+  min-height: 2.5rem;
+  background: #fafaf8;
+}
+
+.cb-field-value.blank-lg { min-height: 4rem; }
+
+.ws-footer {
+  margin-top: 1.5rem;
+  padding-top: 0.75rem;
+  border-top: 2px solid #1a1a2e;
+  text-align: center;
+  font-size: 0.75rem;
+  color: #999;
+}
+
+@media print {
+  body { background: #fff; padding: 0; }
+  .no-print-controls { display: none; }
+  .worksheet { border: none; padding: 0; max-width: none; }
+  .component-block { border-width: 1.5pt; }
+}
+</style>
+</head>
+<body>
+
+<div class="no-print-controls" id="controls">
+  <label>System JSON:</label>
+  <input type="file" id="jsonFile" accept=".json">
+  <label>Level:</label>
+  <select id="levelSelect">
+    <option value="1">Level 1 — Guided</option>
+    <option value="2">Level 2 — Developing</option>
+    <option value="3">Level 3 — Independent</option>
+  </select>
+  <button class="print-btn" onclick="window.print()">🖨 Print Worksheet</button>
+</div>
+
+<div class="worksheet" id="worksheet">
+  <div class="ws-header">
+    <div class="ws-title" id="wsTitle">Motor Vehicle Component Worksheet</div>
+    <div class="ws-subtitle" id="wsSubtitle">Load a system JSON to generate the worksheet</div>
+    <div class="ws-meta">
+      <div class="ws-meta-field">Name: </div>
+      <div class="ws-meta-field">Date: </div>
+      <div class="ws-meta-field">Level: <span id="wsLevel">1</span></div>
+    </div>
+  </div>
+
+  <div class="ws-level-info" id="wsLevelInfo"></div>
+
+  <div id="wsComponents"></div>
+
+  <div class="ws-footer">Motor Vehicle Level 1 · Component Identification Worksheet · CodeEdAI</div>
+</div>
+
+<script>
+let systemData = null;
+
+document.getElementById('jsonFile').addEventListener('change', function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      systemData = data.system || data;
+      renderWorksheet();
+    } catch(err) { alert('Invalid JSON file'); }
+  };
+  reader.readAsText(file);
+});
+
+document.getElementById('levelSelect').addEventListener('change', () => {
+  if (systemData) renderWorksheet();
+});
+
+// Try loading default
+fetch('systems/transmission-system.json')
+  .then(r => r.json())
+  .then(data => { systemData = data.system || data; renderWorksheet(); })
+  .catch(() => {});
+
+function renderWorksheet() {
+  if (!systemData) return;
+  const level = document.getElementById('levelSelect').value;
+
+  document.getElementById('wsTitle').textContent = systemData.title + ' — Component Worksheet';
+  document.getElementById('wsSubtitle').textContent = systemData.description || '';
+  document.getElementById('wsLevel').textContent = level;
+
+  const descs = systemData.level_descriptions || {};
+  const info = document.getElementById('wsLevelInfo');
+  if (descs[level]) {
+    info.innerHTML = `<strong>Level ${level}:</strong> ${descs[level]}`;
+    info.style.display = 'block';
+  } else {
+    info.style.display = 'none';
+  }
+
+  const container = document.getElementById('wsComponents');
+  let html = '';
+
+  (systemData.components || []).forEach((comp, idx) => {
+    const vis = (comp.level_visibility && comp.level_visibility[level]) || {};
+    const num = String(idx + 1).padStart(2, '0');
+
+    const nameProvided = vis.name !== false && comp.name;
+    const funcProvided = vis.function !== false && comp.function;
+    const opProvided = vis.operation !== false && comp.operation;
+    const imageProvided = vis.image !== false && comp.image;
+
+    const headerName = nameProvided ? comp.name : 'Component #' + num;
+
+    html += `<div class="component-block">
+      <div class="cb-header">
+        <span>#${num} ${headerName}</span>
+        <span>${nameProvided && funcProvided && opProvided ? 'Reference' : 'Complete the fields'}</span>
+      </div>
+      <div class="cb-body">
+        <div class="cb-row">
+          <div class="cb-image-box ${imageProvided ? 'provided' : ''}">
+            ${imageProvided ? '📷 Image Provided<br>(see digital version)' : 'Take / attach<br>photo here'}
+          </div>
+          <div class="cb-fields">`;
+
+    // Name
+    html += `<div class="cb-field">
+      <div class="cb-field-label">${nameProvided ? '<span class="badge-prov">Provided</span>' : '<span class="dot"></span>'} Component Name</div>
+      <div class="cb-field-value ${nameProvided ? 'provided' : 'blank'}">${nameProvided ? comp.name : '&nbsp;'}</div>
+    </div>`;
+
+    // Function
+    html += `<div class="cb-field">
+      <div class="cb-field-label">${funcProvided ? '<span class="badge-prov">Provided</span>' : '<span class="dot"></span>'} Function</div>
+      <div class="cb-field-value ${funcProvided ? 'provided' : 'blank blank-lg'}">${funcProvided ? comp.function : '&nbsp;'}</div>
+    </div>`;
+
+    // Operation
+    html += `<div class="cb-field">
+      <div class="cb-field-label">${opProvided ? '<span class="badge-prov">Provided</span>' : '<span class="dot"></span>'} Operation</div>
+      <div class="cb-field-value ${opProvided ? 'provided' : 'blank blank-lg'}">${opProvided ? comp.operation : '&nbsp;'}</div>
+    </div>`;
+
+    html += `</div></div></div></div>`;
+  });
+
+  container.innerHTML = html;
+}
+</script>
+</body>
+</html>
