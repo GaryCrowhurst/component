@@ -3,36 +3,44 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>MV Component Explorer</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0b0b0f">
+<title>DECODE — Crack the System</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
+/* ============================
+   RESET & VARIABLES
+   ============================ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg-primary: #0a0f1a;
-  --bg-card: #111827;
-  --bg-card-alt: #1a2235;
-  --bg-input: #0d1424;
-  --border: #1e2d4a;
-  --border-focus: #f59e0b;
-  --text-primary: #e8ecf4;
-  --text-secondary: #8896b0;
-  --text-muted: #5a6a85;
-  --accent: #f59e0b;
-  --accent-hover: #fbbf24;
-  --accent-dim: rgba(245, 158, 11, 0.15);
-  --success: #10b981;
-  --success-dim: rgba(16, 185, 129, 0.15);
-  --info: #3b82f6;
-  --info-dim: rgba(59, 130, 246, 0.15);
-  --warning: #ef4444;
-  --warning-dim: rgba(239, 68, 68, 0.15);
-  --radius: 12px;
-  --radius-sm: 8px;
-  --shadow: 0 4px 24px rgba(0,0,0,0.3);
-  --font-display: 'Archivo Black', sans-serif;
-  --font-body: 'DM Sans', sans-serif;
+  --bg: #0b0b0f;
+  --bg-raise: #131318;
+  --bg-card: #18181f;
+  --bg-card-hover: #1e1e27;
+  --bg-input: #111116;
+  --border: #2a2a35;
+  --border-lit: #3a3a48;
+  --text: #eaeaf0;
+  --text-mid: #9898a8;
+  --text-dim: #5c5c6e;
+  --lime: #c8ff00;
+  --lime-soft: rgba(200, 255, 0, 0.12);
+  --lime-mid: rgba(200, 255, 0, 0.25);
+  --cyan: #00d4ff;
+  --cyan-soft: rgba(0, 212, 255, 0.12);
+  --red: #ff3b5c;
+  --red-soft: rgba(255, 59, 92, 0.12);
+  --green: #00e676;
+  --green-soft: rgba(0, 230, 118, 0.12);
+  --orange: #ff9100;
+  --orange-soft: rgba(255, 145, 0, 0.12);
+  --r: 10px;
+  --r-lg: 14px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body: 'Outfit', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 }
 
@@ -40,1132 +48,1150 @@ html { scroll-behavior: smooth; }
 
 body {
   font-family: var(--font-body);
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  line-height: 1.6;
-  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.55;
+  min-height: 100dvh;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
-/* ===== HEADER ===== */
-.app-header {
-  background: linear-gradient(135deg, #111827 0%, #1a2235 100%);
-  border-bottom: 2px solid var(--border);
-  padding: 1.25rem 1rem;
-  position: sticky;
-  top: 0;
-  z-index: 100;
+/* ============================
+   NOISE TEXTURE OVERLAY
+   ============================ */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0;
 }
 
-.header-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
+/* ============================
+   HEADER
+   ============================ */
+.hdr {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(11,11,15,0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 1rem;
+  height: 56px;
+  display: flex; align-items: center;
 }
 
-.app-logo {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+.hdr-inner {
+  width: 100%; max-width: 960px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
 }
 
-.logo-icon {
-  width: 42px; height: 42px;
-  background: var(--accent);
-  border-radius: var(--radius-sm);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.4rem; flex-shrink: 0;
+.hdr-brand {
+  display: flex; align-items: center; gap: 0.5rem;
+  cursor: pointer;
 }
 
-.app-title {
+.hdr-logo {
   font-family: var(--font-display);
-  font-size: 1.1rem;
-  letter-spacing: 0.02em;
-  line-height: 1.2;
+  font-size: 1.7rem;
+  letter-spacing: 0.08em;
+  color: var(--lime);
+  line-height: 1;
 }
 
-.app-subtitle {
-  font-size: 0.75rem;
-  color: var(--text-secondary);
-  font-weight: 500;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+.hdr-tag {
+  font-size: 0.6rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--text-dim);
+  background: var(--bg-raise);
+  border: 1px solid var(--border);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  display: none;
 }
 
-.header-controls {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
+@media (min-width: 400px) { .hdr-tag { display: block; } }
+
+.hdr-actions {
+  display: flex; align-items: center; gap: 0.35rem;
 }
 
-/* ===== BUTTONS ===== */
+/* ============================
+   BUTTONS
+   ============================ */
 .btn {
   font-family: var(--font-body);
-  font-weight: 600;
-  font-size: 0.8rem;
-  padding: 0.5rem 1rem;
-  border-radius: var(--radius-sm);
-  border: 2px solid transparent;
+  font-weight: 600; font-size: 0.78rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--r);
+  border: 1.5px solid transparent;
   cursor: pointer;
-  transition: all 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  text-decoration: none;
-  white-space: nowrap;
+  transition: all 0.15s ease;
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  text-decoration: none; white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
 }
-.btn-primary { background: var(--accent); color: #000; border-color: var(--accent); }
-.btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); transform: translateY(-1px); }
-.btn-outline { background: transparent; color: var(--text-primary); border-color: var(--border); }
-.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
-.btn-ghost { background: transparent; color: var(--text-secondary); border: none; padding: 0.4rem 0.6rem; }
-.btn-ghost:hover { color: var(--accent); }
-.btn-success { background: var(--success); color: #fff; border-color: var(--success); }
-.btn-sm { font-size: 0.75rem; padding: 0.35rem 0.75rem; }
+.btn:active { transform: scale(0.97); }
 
-/* ===== LANDING ===== */
-.landing-screen {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
+.btn-lime { background: var(--lime); color: #0b0b0f; border-color: var(--lime); font-weight: 700; }
+.btn-lime:hover { box-shadow: 0 0 20px rgba(200,255,0,0.25); }
+.btn-ghost { background: transparent; color: var(--text-mid); border-color: var(--border); }
+.btn-ghost:hover { border-color: var(--lime); color: var(--lime); }
+.btn-icon {
+  background: transparent; border: none; color: var(--text-dim);
+  padding: 0.4rem; border-radius: var(--r); cursor: pointer;
+  font-size: 1.1rem; transition: all 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-icon:hover { color: var(--lime); background: var(--lime-soft); }
+.btn-sm { font-size: 0.72rem; padding: 0.35rem 0.65rem; }
+
+/* ============================
+   LANDING PAGE
+   ============================ */
+.land {
+  max-width: 720px; margin: 0 auto;
+  padding: 2rem 1rem 3rem;
+  position: relative; z-index: 1;
 }
 
-.landing-hero {
+.land-hero {
   text-align: center;
   margin-bottom: 2.5rem;
-  padding-top: 1rem;
+  padding-top: 0.5rem;
 }
 
-.landing-hero h1 {
+.land-title {
   font-family: var(--font-display);
-  font-size: 2.2rem;
-  margin-bottom: 0.5rem;
-  background: linear-gradient(135deg, var(--accent), #fbbf24);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-size: clamp(3rem, 12vw, 5.5rem);
+  letter-spacing: 0.06em;
+  line-height: 0.9;
+  color: var(--lime);
+  margin-bottom: 0.4rem;
+  text-shadow: 0 0 60px rgba(200,255,0,0.15);
 }
 
-.landing-hero p {
-  color: var(--text-secondary);
-  font-size: 1rem;
-  max-width: 550px;
+.land-sub {
+  font-size: 0.95rem;
+  color: var(--text-mid);
+  font-weight: 400;
+  max-width: 400px;
   margin: 0 auto;
 }
 
-/* Preset grid — dominant */
-.section-label {
-  font-family: var(--font-display);
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--accent);
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+.land-sub strong { color: var(--text); font-weight: 600; }
+
+/* Section labels */
+.sec-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.14em;
+  color: var(--lime);
+  margin-bottom: 0.75rem;
+  display: flex; align-items: center; gap: 0.6rem;
 }
 
-.section-label::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--border);
+.sec-label::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, var(--border), transparent);
 }
 
-.preset-grid {
+/* Preset cards */
+.preset-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 0.75rem;
-  margin-bottom: 2.5rem;
+  grid-template-columns: 1fr;
+  gap: 0.6rem;
+  margin-bottom: 2rem;
 }
 
-.preset-card {
+@media (min-width: 520px) {
+  .preset-list { grid-template-columns: repeat(2, 1fr); }
+}
+
+.preset {
   background: var(--bg-card);
-  border: 2px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1.25rem;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.preset-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--accent), #fbbf24);
-  opacity: 0;
-  transition: opacity 0.25s;
-}
-
-.preset-card:hover {
-  border-color: var(--accent);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 32px rgba(245, 158, 11, 0.12);
-}
-
-.preset-card:hover::before { opacity: 1; }
-
-.preset-card-icon {
-  font-size: 2rem;
-  margin-bottom: 0.6rem;
-}
-
-.preset-card-title {
-  font-family: var(--font-display);
-  font-size: 1rem;
-  margin-bottom: 0.3rem;
-  line-height: 1.3;
-}
-
-.preset-card-meta {
-  font-size: 0.75rem;
-  color: var(--text-secondary);
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-}
-
-.preset-card-meta span {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.preset-badge {
-  position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  font-size: 0.6rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  padding: 0.15rem 0.5rem;
-  border-radius: 4px;
-  background: var(--success-dim);
-  color: var(--success);
-}
-
-/* Upload section — compact, secondary */
-.upload-section {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1rem 1.25rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.upload-section-icon {
-  font-size: 1.5rem;
-  flex-shrink: 0;
-}
-
-.upload-section-text {
-  flex: 1;
-  min-width: 180px;
-}
-
-.upload-section-text strong {
-  font-size: 0.85rem;
-  display: block;
-  margin-bottom: 0.1rem;
-}
-
-.upload-section-text span {
-  font-size: 0.75rem;
-  color: var(--text-secondary);
-}
-
-.upload-btns {
-  display: flex;
-  gap: 0.5rem;
-  flex-shrink: 0;
-}
-
-.file-drop-mini {
-  border: 2px dashed var(--border);
-  border-radius: var(--radius-sm);
-  padding: 0.5rem 1rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 1rem 1rem 0.85rem;
   cursor: pointer;
   transition: all 0.2s ease;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-family: var(--font-body);
-  background: transparent;
-}
-.file-drop-mini:hover, .file-drop-mini.dragover {
-  border-color: var(--accent);
-  color: var(--accent);
-  background: var(--accent-dim);
+  position: relative;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* ===== LEVEL SELECTOR ===== */
-.level-bar {
-  background: var(--bg-card);
-  border: 2px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1.25rem;
-  margin-bottom: 1.5rem;
+.preset::after {
+  content: ''; position: absolute;
+  inset: 0; border-radius: var(--r-lg);
+  background: linear-gradient(135deg, rgba(200,255,0,0.04) 0%, transparent 50%);
+  opacity: 0; transition: opacity 0.2s;
+  pointer-events: none;
 }
 
-.level-bar-title {
-  font-weight: 700; font-size: 0.8rem;
-  text-transform: uppercase; letter-spacing: 0.08em;
-  color: var(--text-secondary); margin-bottom: 0.75rem;
-}
+.preset:hover { border-color: var(--lime); transform: translateY(-2px); }
+.preset:hover::after { opacity: 1; }
+.preset:active { transform: translateY(0) scale(0.99); }
 
-.level-options { display: flex; gap: 0.5rem; }
-
-.level-option {
-  flex: 1;
-  background: var(--bg-input); border: 2px solid var(--border);
-  border-radius: var(--radius-sm); padding: 0.75rem 0.5rem;
-  cursor: pointer; text-align: center; transition: all 0.2s;
-  font-family: var(--font-body); color: var(--text-primary);
-}
-.level-option:hover { border-color: var(--text-secondary); }
-.level-option.active { border-color: var(--accent); background: var(--accent-dim); }
-
-.level-option .level-num {
-  font-family: var(--font-display); font-size: 1.4rem;
-  display: block; margin-bottom: 0.25rem;
-}
-
-.level-option .level-label {
-  font-size: 0.7rem; font-weight: 600;
-  color: var(--text-secondary); text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.level-desc {
-  margin-top: 0.75rem; padding: 0.75rem;
-  background: var(--bg-input); border-radius: var(--radius-sm);
-  font-size: 0.85rem; color: var(--text-secondary);
-  border-left: 3px solid var(--accent);
-}
-
-/* ===== MAIN LAYOUT ===== */
-.main-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1.5rem 1rem 5rem;
-}
-
-.system-header { margin-bottom: 2rem; }
-
-.system-title {
-  font-family: var(--font-display);
+.preset-icon {
   font-size: 1.6rem;
+  margin-bottom: 0.4rem;
+  display: block;
+}
+
+.preset-name {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  letter-spacing: 0.04em;
+  line-height: 1.15;
+  margin-bottom: 0.25rem;
+}
+
+.preset-desc {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
   margin-bottom: 0.5rem;
 }
 
-.system-desc {
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-  max-width: 700px;
+.preset-chips {
+  display: flex; gap: 0.4rem; flex-wrap: wrap;
 }
 
-.progress-strip {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-top: 1rem;
-  padding: 0.75rem 1rem;
-  background: var(--bg-card);
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-}
-
-.progress-bar-track {
-  flex: 1; height: 8px;
-  background: var(--bg-input); border-radius: 4px; overflow: hidden;
-}
-
-.progress-bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--accent), #fbbf24);
-  border-radius: 4px; transition: width 0.4s ease;
-}
-
-.progress-text {
+.chip {
   font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: var(--accent);
+  font-size: 0.58rem; font-weight: 600;
+  padding: 0.18rem 0.45rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.chip-lime { background: var(--lime-soft); color: var(--lime); }
+.chip-cyan { background: var(--cyan-soft); color: var(--cyan); }
+
+.preset.coming {
+  opacity: 0.35; pointer-events: none;
+  filter: grayscale(0.5);
+}
+
+/* Upload bar */
+.upload-bar {
+  background: var(--bg-raise);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 0.75rem 1rem;
+  display: flex; align-items: center; gap: 0.75rem;
+}
+
+.upload-bar-text {
+  flex: 1; min-width: 0;
+}
+
+.upload-bar-text strong {
+  font-size: 0.8rem; display: block;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+.upload-bar-text span {
+  font-size: 0.68rem; color: var(--text-dim);
+}
+
+.upload-btn {
+  flex-shrink: 0;
+  background: var(--bg-card); border: 1.5px dashed var(--border);
+  border-radius: var(--r); padding: 0.4rem 0.9rem;
+  cursor: pointer; transition: all 0.15s;
+  font-family: var(--font-body); font-size: 0.75rem;
+  font-weight: 600; color: var(--text-mid);
+  -webkit-tap-highlight-color: transparent;
+}
+.upload-btn:hover { border-color: var(--lime); color: var(--lime); }
+
+/* ============================
+   MAIN APP
+   ============================ */
+.app { max-width: 960px; margin: 0 auto; padding: 1rem 0.75rem 6rem; position: relative; z-index: 1; }
+
+@media (min-width: 520px) { .app { padding: 1.25rem 1rem 6rem; } }
+
+/* System header */
+.sys-head { margin-bottom: 1.25rem; }
+
+.sys-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 5vw, 2.2rem);
+  letter-spacing: 0.04em;
+  line-height: 1;
+  margin-bottom: 0.3rem;
+}
+
+.sys-desc {
+  font-size: 0.82rem;
+  color: var(--text-mid);
+  line-height: 1.5;
+  max-width: 600px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* XP Bar */
+.xp-bar {
+  display: flex; align-items: center; gap: 0.6rem;
+  padding: 0.6rem 0.75rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  margin-bottom: 1rem;
+}
+
+.xp-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem; font-weight: 700;
+  color: var(--lime);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
   white-space: nowrap;
 }
 
-/* ===== COMPONENT CARDS ===== */
-.components-grid {
+.xp-track {
+  flex: 1; height: 6px;
+  background: var(--bg-input);
+  border-radius: 3px; overflow: hidden;
+}
+
+.xp-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--lime), #e0ff66);
+  border-radius: 3px;
+  transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 0 8px rgba(200,255,0,0.3);
+}
+
+.xp-pct {
+  font-family: var(--font-mono);
+  font-size: 0.7rem; font-weight: 700;
+  color: var(--lime);
+  white-space: nowrap;
+  min-width: 32px; text-align: right;
+}
+
+/* Level strip */
+.lvl-strip {
+  display: flex; gap: 0.4rem;
+  margin-bottom: 1.25rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+.lvl-strip::-webkit-scrollbar { display: none; }
+
+.lvl-pill {
+  flex-shrink: 0;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  border: 1.5px solid var(--border);
+  background: var(--bg-card);
+  cursor: pointer; transition: all 0.15s;
+  font-family: var(--font-body);
+  font-size: 0.75rem; font-weight: 600;
+  color: var(--text-mid);
+  display: flex; align-items: center; gap: 0.4rem;
+  -webkit-tap-highlight-color: transparent;
+}
+.lvl-pill:hover { border-color: var(--text-mid); }
+.lvl-pill.active {
+  background: var(--lime);
+  border-color: var(--lime);
+  color: #0b0b0f;
+  font-weight: 700;
+}
+
+.lvl-num {
+  font-family: var(--font-display);
+  font-size: 1rem; line-height: 1;
+}
+
+.lvl-info {
+  padding: 0.6rem 0.75rem;
+  background: var(--lime-soft);
+  border-radius: var(--r);
+  border-left: 3px solid var(--lime);
+  font-size: 0.78rem;
+  color: var(--lime);
+  margin-bottom: 1.25rem;
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+
+/* ============================
+   COMPONENT CARDS
+   ============================ */
+.cards {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.5rem;
+  gap: 0.75rem;
 }
 
-@media (min-width: 768px) {
-  .components-grid { grid-template-columns: repeat(2, 1fr); }
+@media (min-width: 640px) {
+  .cards { grid-template-columns: repeat(2, 1fr); }
 }
 
-.component-card {
+.card {
   background: var(--bg-card);
-  border: 2px solid var(--border);
-  border-radius: var(--radius);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-lg);
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: border-color 0.2s;
 }
-.component-card:hover { border-color: rgba(245, 158, 11, 0.3); }
-.component-card.completed { border-color: var(--success); }
+.card:hover { border-color: var(--border-lit); }
+.card.done { border-color: var(--green); }
 
-.card-header {
+.card-top {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0.75rem 1rem;
-  background: var(--bg-card-alt);
+  padding: 0.55rem 0.75rem;
+  background: var(--bg-raise);
   border-bottom: 1px solid var(--border);
 }
 
-.card-number {
-  font-family: var(--font-mono); font-size: 0.75rem;
-  color: var(--accent); font-weight: 600;
+.card-num {
+  font-family: var(--font-mono);
+  font-size: 0.65rem; font-weight: 700;
+  color: var(--lime);
 }
 
-.card-status {
-  font-size: 0.7rem; font-weight: 600;
-  text-transform: uppercase; letter-spacing: 0.05em;
-  padding: 0.2rem 0.5rem; border-radius: 4px;
+.card-badge {
+  font-family: var(--font-mono);
+  font-size: 0.55rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
 }
-.card-status.pending { color: var(--text-muted); background: rgba(90,106,133,0.15); }
-.card-status.partial { color: var(--accent); background: var(--accent-dim); }
-.card-status.complete { color: var(--success); background: var(--success-dim); }
+.badge-todo { color: var(--text-dim); background: rgba(92,92,110,0.15); }
+.badge-wip { color: var(--orange); background: var(--orange-soft); }
+.badge-done { color: var(--green); background: var(--green-soft); }
 
-.card-body { padding: 1rem; }
+.card-body {
+  padding: 0.75rem;
+}
 
 /* Image area */
-.image-area {
-  margin-bottom: 1rem; border-radius: var(--radius-sm);
-  overflow: hidden; border: 2px dashed var(--border);
-  position: relative; min-height: 140px;
+.img-zone {
+  margin-bottom: 0.75rem;
+  border-radius: var(--r);
+  overflow: hidden;
+  border: 1.5px dashed var(--border);
+  position: relative;
+  min-height: 120px;
   display: flex; align-items: center; justify-content: center;
-  background: var(--bg-input); cursor: pointer; transition: all 0.2s;
+  background: var(--bg-input);
+  cursor: pointer; transition: all 0.15s;
+  -webkit-tap-highlight-color: transparent;
 }
-.image-area:hover { border-color: var(--accent); }
-.image-area.has-image { border-style: solid; border-color: var(--border); min-height: auto; }
+.img-zone:hover { border-color: var(--lime); }
+.img-zone.has-img { border-style: solid; border-color: var(--border); min-height: auto; }
 
-.image-area img {
+.img-zone img {
   width: 100%; height: auto; display: block;
-  max-height: 280px; object-fit: cover;
+  max-height: 220px; object-fit: cover;
 }
 
-.image-placeholder {
-  text-align: center; padding: 1.5rem; color: var(--text-muted);
+.img-empty {
+  text-align: center; padding: 1.2rem 0.5rem;
+  color: var(--text-dim);
 }
-.image-placeholder-icon { font-size: 2rem; margin-bottom: 0.5rem; }
-.image-placeholder-text { font-size: 0.8rem; font-weight: 500; }
+.img-empty-ico { font-size: 1.5rem; margin-bottom: 0.3rem; }
+.img-empty-txt { font-size: 0.72rem; font-weight: 500; }
 
-.image-provided-label {
-  position: absolute; top: 0.5rem; right: 0.5rem;
-  background: var(--info); color: #fff;
+.img-tag {
+  position: absolute; top: 0.4rem; right: 0.4rem;
+  background: var(--cyan); color: #0b0b0f;
+  font-size: 0.55rem; font-weight: 800;
+  padding: 0.12rem 0.4rem; border-radius: 4px;
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+
+.img-rm {
+  position: absolute; bottom: 0.4rem; right: 0.4rem;
+  background: rgba(11,11,15,0.85); border: 1px solid var(--border);
+  color: var(--text-mid); border-radius: var(--r);
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 0.8rem;
+  -webkit-tap-highlight-color: transparent;
+}
+.img-rm:hover { color: var(--red); border-color: var(--red); }
+
+/* Fields */
+.fld { margin-bottom: 0.65rem; }
+.fld:last-child { margin-bottom: 0; }
+
+.fld-label {
+  display: flex; align-items: center; gap: 0.35rem;
   font-size: 0.65rem; font-weight: 700;
-  padding: 0.2rem 0.5rem; border-radius: 4px;
-  text-transform: uppercase; letter-spacing: 0.03em;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--text-dim);
+  margin-bottom: 0.3rem;
 }
 
-.image-controls {
-  position: absolute; bottom: 0.5rem; right: 0.5rem;
-  display: flex; gap: 0.3rem;
+.fld-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--red); flex-shrink: 0;
 }
 
-/* Field groups */
-.field-group { margin-bottom: 1rem; }
-.field-group:last-child { margin-bottom: 0; }
-
-.field-label {
-  display: flex; align-items: center; gap: 0.4rem;
-  font-size: 0.75rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.06em;
-  color: var(--text-secondary); margin-bottom: 0.4rem;
+.fld-badge {
+  font-size: 0.5rem; font-weight: 800;
+  padding: 0.08rem 0.35rem; border-radius: 3px;
+  background: var(--cyan-soft); color: var(--cyan);
+  text-transform: uppercase; letter-spacing: 0.04em;
 }
 
-.field-label .required-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--warning); display: inline-block;
+.fld-input {
+  width: 100%;
+  background: var(--bg-input);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  padding: 0.55rem 0.65rem;
+  transition: all 0.15s;
+  resize: vertical;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
-
-.field-label .provided-badge {
-  font-size: 0.6rem; background: var(--info-dim); color: var(--info);
-  padding: 0.1rem 0.4rem; border-radius: 3px;
-  text-transform: uppercase; font-weight: 700;
+.fld-input:focus {
+  outline: none;
+  border-color: var(--lime);
+  box-shadow: 0 0 0 3px var(--lime-soft);
 }
-
-.field-input {
-  width: 100%; background: var(--bg-input); border: 2px solid var(--border);
-  border-radius: var(--radius-sm); color: var(--text-primary);
-  font-family: var(--font-body); font-size: 0.85rem;
-  padding: 0.6rem 0.75rem; transition: all 0.2s; resize: vertical;
+.fld-input.prov {
+  background: var(--cyan-soft);
+  border-color: rgba(0,212,255,0.2);
+  color: var(--text);
+  font-size: 0.78rem;
+  line-height: 1.5;
 }
-.field-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
-.field-input.provided { background: var(--info-dim); border-color: rgba(59,130,246,0.3); color: var(--text-primary); }
-.field-input.correct { background: var(--success-dim); border-color: rgba(16,185,129,0.3); }
-textarea.field-input { min-height: 70px; }
+.fld-input::placeholder { color: var(--text-dim); }
+textarea.fld-input { min-height: 60px; }
 
-.hint-toggle {
-  font-size: 0.75rem; color: var(--accent); background: none;
-  border: none; cursor: pointer; font-family: var(--font-body);
-  font-weight: 600; margin-top: 0.3rem; padding: 0;
-  display: inline-flex; align-items: center; gap: 0.3rem;
+.hint-btn {
+  font-size: 0.7rem; font-weight: 600;
+  color: var(--lime); background: none; border: none;
+  cursor: pointer; font-family: var(--font-body);
+  margin-top: 0.25rem; padding: 0;
+  display: inline-flex; align-items: center; gap: 0.25rem;
+  -webkit-tap-highlight-color: transparent;
 }
-.hint-toggle:hover { text-decoration: underline; }
+.hint-btn:hover { text-decoration: underline; }
 
-.hint-text {
-  margin-top: 0.3rem; padding: 0.5rem 0.75rem;
-  background: var(--accent-dim); border-radius: var(--radius-sm);
-  font-size: 0.8rem; color: var(--accent);
-  border-left: 3px solid var(--accent); display: none;
+.hint-box {
+  margin-top: 0.25rem; padding: 0.4rem 0.6rem;
+  background: var(--lime-soft); border-radius: var(--r);
+  border-left: 2px solid var(--lime);
+  font-size: 0.75rem; color: var(--lime);
+  line-height: 1.45;
+  display: none;
+  word-wrap: break-word;
 }
-.hint-text.visible { display: block; }
+.hint-box.on { display: block; }
 
-/* ===== BOTTOM BAR ===== */
-.bottom-bar {
+/* ============================
+   BOTTOM ACTION BAR
+   ============================ */
+.bar {
   position: fixed; bottom: 0; left: 0; right: 0;
-  background: var(--bg-card); border-top: 2px solid var(--border);
-  padding: 0.75rem 1rem; z-index: 100; display: none;
+  background: rgba(11,11,15,0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid var(--border);
+  padding: 0.6rem 0.75rem calc(0.6rem + var(--safe-bottom));
+  z-index: 100;
+  display: none;
 }
-.bottom-bar.visible { display: block; }
+.bar.on { display: block; }
 
-.bottom-inner {
-  max-width: 1200px; margin: 0 auto;
+.bar-inner {
+  max-width: 960px; margin: 0 auto;
   display: flex; align-items: center;
-  justify-content: space-between; gap: 0.75rem;
+  justify-content: space-between; gap: 0.5rem;
 }
 
-/* ===== PRINT ===== */
-.print-only { display: none; }
+.bar-stat {
+  font-family: var(--font-mono);
+  font-size: 0.68rem; font-weight: 600;
+  color: var(--text-dim);
+}
+.bar-stat b { color: var(--lime); }
 
-@media print {
-  * { color: #000 !important; background: #fff !important; border-color: #ccc !important; box-shadow: none !important; }
-  .app-header, .bottom-bar, .btn, .hint-toggle, .image-controls, .no-print { display: none !important; }
-  .print-only { display: block !important; }
-  .main-content { padding: 0 !important; }
-  .components-grid { grid-template-columns: 1fr !important; gap: 0.5rem !important; }
-  .component-card { break-inside: avoid; page-break-inside: avoid; border: 2px solid #000 !important; }
-  .field-input { border: 1px solid #999 !important; min-height: 50px !important; background: #f9f9f9 !important; }
-  .field-input.provided { background: #e8f4ff !important; }
-  textarea.field-input { min-height: 80px !important; }
-  .image-area { min-height: 120px !important; border: 2px solid #999 !important; }
-  .print-header { text-align: center; margin-bottom: 1rem; border-bottom: 3px solid #000; padding-bottom: 0.5rem; }
-  .print-header h1 { font-size: 1.5rem; }
-  .print-meta { display: flex; justify-content: space-between; font-size: 0.85rem; margin-top: 0.5rem; }
-  body { font-size: 11pt; }
+.bar-btns { display: flex; gap: 0.35rem; }
+
+/* ============================
+   REVIEW PANEL
+   ============================ */
+.review {
+  background: var(--bg-card);
+  border: 1.5px solid var(--green);
+  border-radius: var(--r-lg);
+  padding: 1.25rem;
+  margin-top: 1.5rem;
+  display: none;
+}
+.review.on { display: block; }
+
+.review-hd {
+  font-family: var(--font-display);
+  font-size: 1.4rem; letter-spacing: 0.04em;
+  color: var(--green); margin-bottom: 0.75rem;
 }
 
-/* ===== TOAST ===== */
+.review-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.review-stat {
+  background: var(--bg-input);
+  border-radius: var(--r);
+  padding: 0.6rem 0.5rem;
+  text-align: center;
+}
+
+.review-val {
+  font-family: var(--font-display);
+  font-size: 1.6rem; line-height: 1;
+  color: var(--lime);
+}
+
+.review-lbl {
+  font-size: 0.6rem; font-weight: 600;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 0.2rem;
+}
+
+/* ============================
+   TOAST
+   ============================ */
 .toast {
   position: fixed; bottom: 5rem; left: 50%;
-  transform: translateX(-50%) translateY(100px);
-  background: var(--bg-card); border: 2px solid var(--success);
-  color: var(--success); padding: 0.75rem 1.25rem;
-  border-radius: var(--radius); font-weight: 600;
-  font-size: 0.85rem; z-index: 200;
-  transition: transform 0.3s ease; pointer-events: none;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--bg-card); border: 1.5px solid var(--lime);
+  color: var(--lime); padding: 0.55rem 1rem;
+  border-radius: 50px; font-weight: 600; font-size: 0.78rem;
+  z-index: 200; transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none; white-space: nowrap;
+  box-shadow: 0 4px 24px rgba(200,255,0,0.12);
 }
-.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.on { transform: translateX(-50%) translateY(0); }
 
-/* ===== MODAL ===== */
-.modal-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.7);
-  z-index: 300; display: flex; align-items: center; justify-content: center;
-  padding: 1rem; opacity: 0; pointer-events: none; transition: opacity 0.2s;
+/* ============================
+   MODAL
+   ============================ */
+.modal-bg {
+  position: fixed; inset: 0;
+  background: rgba(11,11,15,0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 300;
+  display: flex; align-items: flex-end; justify-content: center;
+  padding: 0;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.2s;
 }
-.modal-overlay.active { opacity: 1; pointer-events: all; }
+.modal-bg.on { opacity: 1; pointer-events: all; }
 
-.modal {
-  background: var(--bg-card); border: 2px solid var(--border);
-  border-radius: var(--radius); max-width: 500px; width: 100%;
-  max-height: 90vh; overflow-y: auto; padding: 1.5rem;
-}
-
-.modal h3 {
-  font-family: var(--font-display); font-size: 1.1rem; margin-bottom: 1rem;
-}
-
-/* ===== REVIEW PANEL ===== */
-.review-panel {
-  background: var(--bg-card); border: 2px solid var(--success);
-  border-radius: var(--radius); padding: 1.5rem;
-  margin-top: 2rem; display: none;
-}
-.review-panel.visible { display: block; }
-
-.review-title {
-  font-family: var(--font-display); font-size: 1.2rem;
-  color: var(--success); margin-bottom: 1rem;
-  display: flex; align-items: center; gap: 0.5rem;
+@media (min-width: 520px) {
+  .modal-bg { align-items: center; padding: 1rem; }
 }
 
-.score-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 0.75rem; margin-bottom: 1rem;
+.modal-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+  width: 100%;
+  max-height: 85dvh; overflow-y: auto;
+  padding: 1.25rem;
+  transform: translateY(20px);
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.modal-bg.on .modal-box { transform: translateY(0); }
+
+@media (min-width: 520px) {
+  .modal-box {
+    max-width: 440px;
+    border-radius: var(--r-lg);
+  }
 }
 
-.score-item {
-  background: var(--bg-input); border-radius: var(--radius-sm);
-  padding: 0.75rem; text-align: center;
+.modal-box h3 {
+  font-family: var(--font-display);
+  font-size: 1.3rem; letter-spacing: 0.04em;
+  margin-bottom: 0.75rem;
 }
 
-.score-value {
-  font-family: var(--font-display); font-size: 1.5rem; color: var(--accent);
+/* ============================
+   PRINT
+   ============================ */
+.print-only { display: none; }
+.no-print {}
+
+@media print {
+  * { color: #000 !important; background: #fff !important; border-color: #bbb !important; box-shadow: none !important; }
+  body::before { display: none; }
+  .hdr, .bar, .hint-btn, .img-rm, .no-print { display: none !important; }
+  .print-only { display: block !important; }
+  .app { padding: 0 !important; max-width: none; }
+  .cards { grid-template-columns: 1fr !important; gap: 0.5rem !important; }
+  .card { break-inside: avoid; page-break-inside: avoid; border: 1.5pt solid #000 !important; }
+  .fld-input { border: 1px solid #999 !important; min-height: 40px !important; background: #f8f8f8 !important; }
+  .fld-input.prov { background: #e6f3ff !important; }
+  textarea.fld-input { min-height: 65px !important; }
+  .img-zone { min-height: 100px !important; border: 1.5pt solid #999 !important; }
+  .print-hd { text-align: center; border-bottom: 2pt solid #000; padding-bottom: 0.5rem; margin-bottom: 0.75rem; }
+  .print-hd h1 { font-size: 1.4rem; }
+  .print-meta { display: flex; justify-content: space-between; font-size: 0.85rem; margin-top: 0.5rem; }
+  body { font-size: 10pt; }
 }
 
-.score-label {
-  font-size: 0.75rem; color: var(--text-secondary);
-  text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.25rem;
-}
-
-/* ===== RESPONSIVE ===== */
-@media (max-width: 600px) {
-  .app-title { font-size: 0.95rem; }
-  .header-controls { width: 100%; justify-content: flex-end; }
-  .landing-hero h1 { font-size: 1.5rem; }
-  .system-title { font-size: 1.3rem; }
-  .level-options { flex-direction: column; }
-  .upload-section { flex-direction: column; text-align: center; }
-  .preset-grid { grid-template-columns: 1fr; }
-}
-
-/* ===== ANIMATIONS ===== */
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
+/* ============================
+   ANIMATIONS
+   ============================ */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: translateY(0); }
 }
+.anim { animation: slideUp 0.35s ease forwards; opacity: 0; }
+.card:nth-child(1) { animation-delay: 0.03s; }
+.card:nth-child(2) { animation-delay: 0.06s; }
+.card:nth-child(3) { animation-delay: 0.09s; }
+.card:nth-child(4) { animation-delay: 0.12s; }
+.card:nth-child(5) { animation-delay: 0.15s; }
+.card:nth-child(6) { animation-delay: 0.18s; }
+.card:nth-child(7) { animation-delay: 0.21s; }
+.card:nth-child(8) { animation-delay: 0.24s; }
+.card:nth-child(n+9) { animation-delay: 0.27s; }
 
-.animate-in { animation: fadeInUp 0.4s ease forwards; opacity: 0; }
-.component-card:nth-child(1) { animation-delay: 0.05s; }
-.component-card:nth-child(2) { animation-delay: 0.1s; }
-.component-card:nth-child(3) { animation-delay: 0.15s; }
-.component-card:nth-child(4) { animation-delay: 0.2s; }
-.component-card:nth-child(5) { animation-delay: 0.25s; }
-.component-card:nth-child(6) { animation-delay: 0.3s; }
-.component-card:nth-child(7) { animation-delay: 0.35s; }
-.component-card:nth-child(8) { animation-delay: 0.4s; }
-.component-card:nth-child(n+9) { animation-delay: 0.45s; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
 </style>
 </head>
 <body>
 
-<!-- ===== HEADER ===== -->
-<header class="app-header" id="appHeader">
-  <div class="header-inner">
-    <div class="app-logo">
-      <div class="logo-icon">🔧</div>
-      <div>
-        <div class="app-title">MV Component Explorer</div>
-        <div class="app-subtitle">Motor Vehicle · Level 1</div>
-      </div>
+<!-- HEADER -->
+<header class="hdr">
+  <div class="hdr-inner">
+    <div class="hdr-brand" onclick="backToMenu()">
+      <span class="hdr-logo">DECODE</span>
+      <span class="hdr-tag">CRACK THE SYSTEM</span>
     </div>
-    <div class="header-controls" id="headerControls" style="display:none;">
-      <button class="btn btn-outline btn-sm" onclick="showLevelSelector()">⚙ Level <span id="currentLevelBadge">1</span></button>
-      <button class="btn btn-outline btn-sm" onclick="handlePrint()">🖨 Print</button>
-      <button class="btn btn-outline btn-sm" onclick="saveProgress()">💾 Save</button>
-      <button class="btn btn-ghost btn-sm" onclick="backToMenu()">← Systems</button>
+    <div class="hdr-actions" id="hdrActions" style="display:none;">
+      <button class="btn-icon" onclick="showLevelModal()" title="Change level">⚙</button>
+      <button class="btn-icon" onclick="window.print()" title="Print worksheet">🖨</button>
+      <button class="btn-icon" onclick="saveProgress()" title="Save progress">💾</button>
     </div>
   </div>
 </header>
 
-<!-- ===== LANDING SCREEN ===== -->
-<div id="landingScreen" class="landing-screen">
-  <div class="landing-hero">
-    <h1>MV Component Explorer</h1>
-    <p>Identify, photograph, and describe vehicle system components. Select a system below to begin learning.</p>
+<!-- LANDING -->
+<div id="landing" class="land">
+  <div class="land-hero">
+    <div class="land-title">DECODE</div>
+    <p class="land-sub"><strong>Crack the system.</strong> Identify components, snap photos, describe how things work.</p>
   </div>
 
-  <!-- ===== PRESET SYSTEMS — DOMINANT ===== -->
-  <div class="section-label">Choose a Vehicle System</div>
+  <div class="sec-label">Select a system</div>
+  <div class="preset-list" id="presetList"></div>
 
-  <div class="preset-grid" id="presetGrid">
-    <!-- Populated by JS from PRESETS config -->
-  </div>
-
-  <!-- ===== UPLOAD — COMPACT SECONDARY ===== -->
-  <div class="upload-section" id="uploadSection">
-    <div class="upload-section-icon">📁</div>
-    <div class="upload-section-text">
+  <div class="upload-bar" id="uploadBar">
+    <span style="font-size:1.2rem;">📁</span>
+    <div class="upload-bar-text">
       <strong>Load a custom system</strong>
-      <span>Upload your own JSON file or drag and drop</span>
+      <span>Drop or browse a JSON file</span>
     </div>
-    <div class="upload-btns">
-      <button class="file-drop-mini" id="fileDrop" onclick="document.getElementById('fileInput').click()">
-        📄 Browse JSON
-      </button>
-    </div>
-    <input type="file" id="fileInput" accept=".json" style="display:none" onchange="loadFileFromInput(event)">
+    <button class="upload-btn" onclick="document.getElementById('fileIn').click()">Browse</button>
+    <input type="file" id="fileIn" accept=".json" style="display:none" onchange="loadFile(event)">
   </div>
 </div>
 
-<!-- ===== MAIN APP ===== -->
+<!-- MAIN APP -->
 <div id="mainApp" style="display:none;">
-  <div class="main-content">
+  <div class="app">
     <!-- Print header -->
-    <div class="print-only print-header">
+    <div class="print-only print-hd">
       <h1 id="printTitle">Component Worksheet</h1>
       <div class="print-meta">
-        <span>Name: ________________________________</span>
-        <span>Date: ________________</span>
-        <span>Level: <span id="printLevel">1</span></span>
+        <span>Name: ___________________________</span>
+        <span>Date: ______________</span>
+        <span>Level: <span id="printLvl">1</span></span>
       </div>
     </div>
 
-    <div class="system-header" id="systemHeader"></div>
-    <div class="level-bar no-print" id="levelBar"></div>
-    <div class="components-grid" id="componentsGrid"></div>
-
-    <div class="review-panel" id="reviewPanel">
-      <div class="review-title">✅ Review Summary</div>
-      <div class="score-grid" id="scoreGrid"></div>
-      <button class="btn btn-primary" onclick="exportResults()">📋 Export Results</button>
+    <div class="sys-head" id="sysHead"></div>
+    <div class="xp-bar no-print" id="xpBar"></div>
+    <div class="lvl-strip no-print" id="lvlStrip"></div>
+    <div class="lvl-info no-print" id="lvlInfo" style="display:none;"></div>
+    <div class="cards" id="cards"></div>
+    <div class="review" id="review">
+      <div class="review-hd">✓ RESULTS</div>
+      <div class="review-grid" id="reviewGrid"></div>
+      <button class="btn btn-lime btn-sm" onclick="exportResults()">📋 Export</button>
     </div>
   </div>
 </div>
 
-<!-- ===== BOTTOM BAR ===== -->
-<div class="bottom-bar no-print" id="bottomBar">
-  <div class="bottom-inner">
-    <div class="progress-text" id="bottomProgress">0 / 0 fields</div>
-    <div style="display:flex;gap:0.5rem;">
-      <button class="btn btn-outline btn-sm" onclick="resetAnswers()">↩ Clear</button>
-      <button class="btn btn-primary btn-sm" onclick="checkAnswers()">✓ Check Answers</button>
+<!-- BOTTOM BAR -->
+<div class="bar" id="bar">
+  <div class="bar-inner">
+    <div class="bar-stat" id="barStat"><b>0</b> / 0</div>
+    <div class="bar-btns">
+      <button class="btn btn-ghost btn-sm" onclick="resetAnswers()">Clear</button>
+      <button class="btn btn-lime btn-sm" onclick="checkAnswers()">✓ Check</button>
     </div>
   </div>
 </div>
 
-<!-- ===== TOAST ===== -->
+<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<!-- ===== LEVEL MODAL ===== -->
-<div class="modal-overlay" id="levelModal">
-  <div class="modal">
-    <h3>Select Difficulty Level</h3>
-    <div id="levelModalContent"></div>
-    <div style="margin-top:1rem;text-align:right;">
-      <button class="btn btn-outline btn-sm" onclick="closeLevelModal()">Cancel</button>
-    </div>
-  </div>
+<!-- LEVEL MODAL -->
+<div class="modal-bg" id="lvlModal">
+  <div class="modal-box" id="lvlModalBox"></div>
 </div>
 
 <script>
-// =============================================
-// PRESET CONFIGURATION
-// To add a new system, just add an entry here
-// and place the JSON file in /systems/
-// =============================================
+/* ============================================
+   PRESET CONFIG — ADD NEW SYSTEMS HERE
+   ============================================ */
 const PRESETS = [
   {
-    file: 'systems/transmission-system.json',
+    file: 'transmission-system.json',
     icon: '⚙',
     title: 'Transmission System',
     desc: 'Clutch, gearbox, propshaft, differential, driveshafts, CV joints and more',
-    components: 18,
-    badge: null
+    count: 18
   }
-  // ---- ADD MORE SYSTEMS HERE ----
   // {
-  //   file: 'systems/braking-system.json',
+  //   file: 'braking-system.json',
   //   icon: '🛑',
   //   title: 'Braking System',
   //   desc: 'Disc brakes, drum brakes, master cylinder, ABS and hydraulic circuits',
-  //   components: 14,
-  //   badge: null
+  //   count: 14
   // },
   // {
-  //   file: 'systems/engine-systems.json',
+  //   file: 'engine-systems.json',
   //   icon: '🏎',
   //   title: 'Engine Systems',
   //   desc: 'Cylinder block, pistons, crankshaft, camshaft, valvetrain and lubrication',
-  //   components: 16,
-  //   badge: null
-  // },
-  // {
-  //   file: 'systems/electrical-system.json',
-  //   icon: '⚡',
-  //   title: 'Electrical System',
-  //   desc: 'Battery, alternator, starter motor, lighting and charging circuits',
-  //   components: 12,
-  //   badge: null
-  // },
-  // {
-  //   file: 'systems/steering-suspension.json',
-  //   icon: '🔩',
-  //   title: 'Steering & Suspension',
-  //   desc: 'Rack and pinion, MacPherson struts, wishbones, anti-roll bars and dampers',
-  //   components: 15,
-  //   badge: null
-  // },
-  // {
-  //   file: 'systems/cooling-system.json',
-  //   icon: '🌡',
-  //   title: 'Cooling System',
-  //   desc: 'Radiator, thermostat, water pump, hoses and coolant expansion tank',
-  //   components: 10,
-  //   badge: null
+  //   count: 16
   // },
 ];
 
-// ===== APP STATE =====
-let appState = {
-  systemData: null,
-  currentLevel: 1,
-  userInputs: {},
-  loaded: false
-};
+const PLACEHOLDERS = [
+  { icon: '🛑', title: 'Braking System' },
+  { icon: '🏎', title: 'Engine Systems' },
+  { icon: '⚡', title: 'Electrical System' },
+];
 
-// ===== RENDER PRESETS =====
+/* ============================================
+   STATE
+   ============================================ */
+const S = { data: null, level: 1, inputs: {} };
+
+/* ============================================
+   RENDER PRESETS
+   ============================================ */
 function renderPresets() {
-  const grid = document.getElementById('presetGrid');
-  grid.innerHTML = PRESETS.map(p => `
-    <div class="preset-card" onclick="loadPreset('${p.file}')">
-      ${p.badge ? `<span class="preset-badge">${p.badge}</span>` : ''}
-      <div class="preset-card-icon">${p.icon}</div>
-      <div class="preset-card-title">${p.title}</div>
-      <div class="preset-card-meta">
-        <span>📦 ${p.components} components</span>
-        <span>📊 3 levels</span>
-      </div>
-      <div style="margin-top:0.4rem;font-size:0.78rem;color:var(--text-secondary);line-height:1.4;">
-        ${p.desc}
+  const el = document.getElementById('presetList');
+  let h = PRESETS.map(p => `
+    <div class="preset" onclick="loadPreset('${p.file}')">
+      <span class="preset-icon">${p.icon}</span>
+      <div class="preset-name">${p.title}</div>
+      <div class="preset-desc">${p.desc}</div>
+      <div class="preset-chips">
+        <span class="chip chip-lime">${p.count} parts</span>
+        <span class="chip chip-cyan">3 levels</span>
       </div>
     </div>
   `).join('');
 
-  // Add a "coming soon" placeholder if only 1 system
-  if (PRESETS.length < 3) {
-    const placeholders = [
-      { icon: '🛑', title: 'Braking System', note: 'Coming soon' },
-      { icon: '🏎', title: 'Engine Systems', note: 'Coming soon' },
-      { icon: '⚡', title: 'Electrical System', note: 'Coming soon' },
-      { icon: '🔩', title: 'Steering & Suspension', note: 'Coming soon' },
-    ];
-    const toShow = placeholders.slice(0, Math.max(1, 3 - PRESETS.length));
-    grid.innerHTML += toShow.map(p => `
-      <div class="preset-card" style="opacity:0.4;cursor:default;pointer-events:none;">
-        <span class="preset-badge" style="background:rgba(90,106,133,0.2);color:var(--text-muted);">Coming Soon</span>
-        <div class="preset-card-icon">${p.icon}</div>
-        <div class="preset-card-title">${p.title}</div>
-        <div style="margin-top:0.3rem;font-size:0.78rem;color:var(--text-muted);">
-          Add your own JSON to enable this system
-        </div>
-      </div>
-    `).join('');
-  }
-}
+  const need = Math.max(0, 3 - PRESETS.length);
+  h += PLACEHOLDERS.slice(0, need).map(p => `
+    <div class="preset coming">
+      <span class="preset-icon">${p.icon}</span>
+      <div class="preset-name">${p.title}</div>
+      <div class="preset-desc">Coming soon — add your own JSON</div>
+      <div class="preset-chips"><span class="chip chip-lime">soon</span></div>
+    </div>
+  `).join('');
 
+  el.innerHTML = h;
+}
 renderPresets();
 
-// ===== FILE DROP =====
-const fileDrop = document.getElementById('fileDrop');
-const uploadSection = document.getElementById('uploadSection');
-
-uploadSection.addEventListener('dragover', (e) => {
-  e.preventDefault();
-  fileDrop.classList.add('dragover');
-});
-uploadSection.addEventListener('dragleave', () => {
-  fileDrop.classList.remove('dragover');
-});
-uploadSection.addEventListener('drop', (e) => {
-  e.preventDefault();
-  fileDrop.classList.remove('dragover');
-  const file = e.dataTransfer.files[0];
-  if (file && file.name.endsWith('.json')) loadJSONFile(file);
+/* ============================================
+   FILE LOADING
+   ============================================ */
+const uploadBar = document.getElementById('uploadBar');
+uploadBar.addEventListener('dragover', e => { e.preventDefault(); uploadBar.style.borderColor = 'var(--lime)'; });
+uploadBar.addEventListener('dragleave', () => { uploadBar.style.borderColor = ''; });
+uploadBar.addEventListener('drop', e => {
+  e.preventDefault(); uploadBar.style.borderColor = '';
+  const f = e.dataTransfer.files[0];
+  if (f?.name.endsWith('.json')) loadJSONFile(f);
 });
 
-function loadFileFromInput(event) {
-  const file = event.target.files[0];
-  if (file) loadJSONFile(file);
-}
+function loadFile(e) { const f = e.target.files[0]; if (f) loadJSONFile(f); }
 
 function loadJSONFile(file) {
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    try {
-      const data = JSON.parse(e.target.result);
-      initSystem(data);
-    } catch (err) {
-      showToast('Error: Invalid JSON file');
-      console.error(err);
-    }
+  const r = new FileReader();
+  r.onload = e => {
+    try { init(JSON.parse(e.target.result)); }
+    catch { toast('Invalid JSON file'); }
   };
-  reader.readAsText(file);
+  r.readAsText(file);
 }
 
 async function loadPreset(path) {
   try {
-    const resp = await fetch(path);
-    if (!resp.ok) throw new Error('File not found');
-    const data = await resp.json();
-    initSystem(data);
-  } catch (err) {
-    showToast('Error loading system file');
-    console.error(err);
-  }
+    const r = await fetch(path);
+    if (!r.ok) throw 0;
+    init(await r.json());
+  } catch { toast('Could not load system'); }
 }
 
-// ===== INIT SYSTEM =====
-function initSystem(data) {
-  appState.systemData = data.system || data;
-  appState.loaded = true;
+/* ============================================
+   INIT SYSTEM
+   ============================================ */
+function init(raw) {
+  S.data = raw.system || raw;
+  S.inputs = {};
+  S.level = 1;
 
-  // Restore saved progress
-  const saved = localStorage.getItem('mv-explorer-' + appState.systemData.title);
-  if (saved) {
-    try {
-      const parsed = JSON.parse(saved);
-      appState.userInputs = parsed.userInputs || {};
-      appState.currentLevel = parsed.currentLevel || 1;
-    } catch(e) {}
-  }
+  try {
+    const sv = localStorage.getItem('decode-' + S.data.title);
+    if (sv) { const p = JSON.parse(sv); S.inputs = p.inputs || {}; S.level = p.level || 1; }
+  } catch {}
 
-  document.getElementById('landingScreen').style.display = 'none';
+  document.getElementById('landing').style.display = 'none';
   document.getElementById('mainApp').style.display = 'block';
-  document.getElementById('headerControls').style.display = 'flex';
-  document.getElementById('bottomBar').classList.add('visible');
+  document.getElementById('hdrActions').style.display = 'flex';
+  document.getElementById('bar').classList.add('on');
 
-  renderSystemHeader();
-  renderLevelBar();
-  renderComponents();
-  updateProgress();
+  renderHead();
+  renderXP();
+  renderLevels();
+  renderCards();
 }
 
 function backToMenu() {
+  if (!S.data) return;
   saveProgress();
-  document.getElementById('landingScreen').style.display = 'block';
+  document.getElementById('landing').style.display = 'block';
   document.getElementById('mainApp').style.display = 'none';
-  document.getElementById('headerControls').style.display = 'none';
-  document.getElementById('bottomBar').classList.remove('visible');
-  document.getElementById('reviewPanel').classList.remove('visible');
+  document.getElementById('hdrActions').style.display = 'none';
+  document.getElementById('bar').classList.remove('on');
+  document.getElementById('review').classList.remove('on');
   window.scrollTo(0, 0);
 }
 
-// ===== RENDER SYSTEM HEADER =====
-function renderSystemHeader() {
-  const sys = appState.systemData;
-  const count = (sys.components || []).length;
-  document.getElementById('systemHeader').innerHTML = `
-    <h1 class="system-title">${sys.title}</h1>
-    <p class="system-desc">${sys.description || ''}</p>
-    <div class="progress-strip">
-      <span style="font-size:0.8rem;color:var(--text-secondary);white-space:nowrap;">${count} components</span>
-      <div class="progress-bar-track">
-        <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
-      </div>
-      <div class="progress-text" id="progressText">0%</div>
-    </div>
-  `;
-  document.getElementById('printTitle').textContent = sys.title + ' — Component Worksheet';
+/* ============================================
+   RENDERERS
+   ============================================ */
+function renderHead() {
+  const d = S.data;
+  document.getElementById('sysHead').innerHTML =
+    `<h1 class="sys-title">${d.title}</h1>` +
+    (d.description ? `<p class="sys-desc">${d.description}</p>` : '');
+  document.getElementById('printTitle').textContent = d.title + ' — Worksheet';
 }
 
-// ===== RENDER LEVEL BAR =====
-function renderLevelBar() {
-  const sys = appState.systemData;
-  const descs = sys.level_descriptions || {};
-  const levels = Object.keys(descs).length > 0 ? Object.keys(descs) : ['1','2','3'];
+function renderXP() {
+  const { filled, total } = countProgress();
+  const pct = total > 0 ? Math.round(filled / total * 100) : 100;
+  document.getElementById('xpBar').innerHTML = `
+    <span class="xp-label">XP</span>
+    <div class="xp-track"><div class="xp-fill" style="width:${pct}%"></div></div>
+    <span class="xp-pct">${pct}%</span>
+  `;
+  document.getElementById('barStat').innerHTML = `<b>${filled}</b> / ${total}`;
+}
+
+function renderLevels() {
+  const descs = S.data.level_descriptions || {};
+  const keys = Object.keys(descs).length ? Object.keys(descs) : ['1','2','3'];
   const labels = ['Guided', 'Developing', 'Independent'];
 
-  let html = `<div class="level-bar-title">Difficulty Level</div><div class="level-options">`;
-  levels.forEach((lvl, i) => {
-    const active = parseInt(lvl) === appState.currentLevel ? 'active' : '';
-    html += `<div class="level-option ${active}" onclick="setLevel(${lvl})">
-      <span class="level-num">${lvl}</span>
-      <span class="level-label">${labels[i] || 'Level ' + lvl}</span>
-    </div>`;
-  });
-  html += `</div>`;
+  document.getElementById('lvlStrip').innerHTML = keys.map((k, i) =>
+    `<div class="lvl-pill ${parseInt(k)===S.level?'active':''}" onclick="setLevel(${k})">
+      <span class="lvl-num">${k}</span> ${labels[i] || 'Level ' + k}
+    </div>`
+  ).join('');
 
-  const desc = descs[String(appState.currentLevel)];
-  if (desc) html += `<div class="level-desc">${desc}</div>`;
+  const info = document.getElementById('lvlInfo');
+  const desc = descs[String(S.level)];
+  if (desc) { info.textContent = desc; info.style.display = 'block'; }
+  else { info.style.display = 'none'; }
 
-  document.getElementById('levelBar').innerHTML = html;
-  document.getElementById('currentLevelBadge').textContent = appState.currentLevel;
-  document.getElementById('printLevel').textContent = appState.currentLevel;
+  document.getElementById('printLvl').textContent = S.level;
 }
 
-function setLevel(lvl) {
-  appState.currentLevel = lvl;
-  renderLevelBar();
-  renderComponents();
-  updateProgress();
-  showToast('Level ' + lvl + ' selected');
+function setLevel(n) {
+  S.level = n;
+  renderLevels(); renderCards(); renderXP();
+  toast('Level ' + n);
 }
 
-// ===== RENDER COMPONENTS =====
-function renderComponents() {
-  const comps = appState.systemData.components || [];
-  const level = String(appState.currentLevel);
-  const grid = document.getElementById('componentsGrid');
+function renderCards() {
+  const comps = S.data.components || [];
+  const lv = String(S.level);
+  document.getElementById('cards').innerHTML = comps.map((c, i) => {
+    const vis = c.level_visibility?.[lv] || {};
+    const inp = S.inputs[c.id] || {};
+    const num = String(i + 1).padStart(2, '0');
 
-  let html = '';
-  comps.forEach((comp, idx) => {
-    const vis = (comp.level_visibility && comp.level_visibility[level]) || {};
-    const inputs = appState.userInputs[comp.id] || {};
-    const num = String(idx + 1).padStart(2, '0');
+    const np = vis.name !== false && c.name;
+    const fp = vis.function !== false && c.function;
+    const op = vis.operation !== false && c.operation;
+    const ip = vis.image !== false && c.image;
 
-    const nameProvided = vis.name !== false && comp.name;
-    const funcProvided = vis.function !== false && comp.function;
-    const opProvided = vis.operation !== false && comp.operation;
-    const imageProvided = vis.image !== false && comp.image;
+    let filled = 0, total = 0;
+    if (!np) { total++; if (inp.name) filled++; }
+    if (!fp) { total++; if (inp.function) filled++; }
+    if (!op) { total++; if (inp.operation) filled++; }
+    if (!ip) { total++; if (inp.image) filled++; }
 
-    let filledCount = 0, totalCount = 0;
-    if (!nameProvided) { totalCount++; if (inputs.name) filledCount++; }
-    if (!funcProvided) { totalCount++; if (inputs.function) filledCount++; }
-    if (!opProvided) { totalCount++; if (inputs.operation) filledCount++; }
-    if (!imageProvided) { totalCount++; if (inputs.image) filledCount++; }
+    let bc = 'badge-todo', bt = 'TO DO';
+    if (total === 0) { bc = 'badge-done'; bt = 'PROVIDED'; }
+    else if (filled >= total) { bc = 'badge-done'; bt = 'DONE'; }
+    else if (filled > 0) { bc = 'badge-wip'; bt = 'WIP'; }
 
-    let statusClass = 'pending', statusText = 'To Do';
-    if (filledCount > 0 && filledCount < totalCount) { statusClass = 'partial'; statusText = 'In Progress'; }
-    if (totalCount > 0 && filledCount >= totalCount) { statusClass = 'complete'; statusText = 'Complete'; }
-    if (totalCount === 0) { statusClass = 'complete'; statusText = 'Provided'; }
+    const done = bc === 'badge-done' ? ' done' : '';
+    const hasImg = inp.image || ip;
 
-    html += `<div class="component-card animate-in ${statusClass === 'complete' ? 'completed' : ''}" id="card-${comp.id}">
-      <div class="card-header">
-        <span class="card-number">#${num}</span>
-        <span class="card-status ${statusClass}">${statusText}</span>
+    return `<div class="card anim${done}" id="c-${c.id}">
+      <div class="card-top">
+        <span class="card-num">#${num}</span>
+        <span class="card-badge ${bc}">${bt}</span>
       </div>
-      <div class="card-body">`;
+      <div class="card-body">
+        <div class="img-zone ${hasImg ? 'has-img' : ''}" onclick="capture('${c.id}')">
+          ${inp.image
+            ? `<img src="${inp.image}" alt="Photo"><div class="img-rm" onclick="event.stopPropagation();rmImg('${c.id}')">✕</div>`
+            : ip
+              ? `<img src="${c.image}" alt="${c.name||''}"><span class="img-tag">Given</span>`
+              : `<div class="img-empty"><div class="img-empty-ico">📷</div><div class="img-empty-txt">Tap to snap a photo</div></div>`
+          }
+        </div>
+        ${field(c, 'name', 'Name', np, inp.name)}
+        ${field(c, 'function', 'Function', fp, inp.function, true)}
+        ${field(c, 'operation', 'Operation', op, inp.operation, true)}
+      </div>
+    </div>`;
+  }).join('');
+}
 
-    // IMAGE
-    const hasUserImage = inputs.image;
-    const showImage = hasUserImage || imageProvided;
-    html += `<div class="image-area ${showImage ? 'has-image' : ''}" onclick="captureImage('${comp.id}')">`;
-    if (hasUserImage) {
-      html += `<img src="${inputs.image}" alt="Component photo">
-        <div class="image-controls">
-          <button class="btn btn-sm btn-outline" onclick="event.stopPropagation();removeImage('${comp.id}')" style="background:rgba(0,0,0,0.7)">✕</button>
-        </div>`;
-    } else if (imageProvided) {
-      html += `<img src="${comp.image}" alt="${comp.name || 'Component'}">
-        <span class="image-provided-label">Provided</span>`;
-    } else {
-      html += `<div class="image-placeholder">
-        <div class="image-placeholder-icon">📷</div>
-        <div class="image-placeholder-text">Tap to take a photo or upload an image</div>
-      </div>`;
+function field(c, key, label, provided, userVal, isTA) {
+  let h = `<div class="fld"><div class="fld-label">`;
+  h += provided
+    ? `<span class="fld-badge">Given</span>`
+    : `<span class="fld-dot"></span>`;
+  h += ` ${label}</div>`;
+
+  if (provided) {
+    h += isTA
+      ? `<textarea class="fld-input prov" readonly>${c[key]||''}</textarea>`
+      : `<input class="fld-input prov" readonly value="${esc(c[key]||'')}">`;
+  } else {
+    const v = userVal || '';
+    const ph = `Describe the ${label.toLowerCase()}…`;
+    h += isTA
+      ? `<textarea class="fld-input" placeholder="${ph}" onchange="inp('${c.id}','${key}',this.value)" oninput="inp('${c.id}','${key}',this.value)">${v}</textarea>`
+      : `<input class="fld-input" placeholder="${ph}" value="${esc(v)}" onchange="inp('${c.id}','${key}',this.value)" oninput="inp('${c.id}','${key}',this.value)">`;
+
+    if (c.hints?.[key]) {
+      const hid = `h-${c.id}-${key}`;
+      h += `<button class="hint-btn" onclick="toggleHint('${hid}')">💡 Hint</button>`;
+      h += `<div class="hint-box" id="${hid}">${c.hints[key]}</div>`;
     }
-    html += `</div>`;
+  }
+  h += '</div>';
+  return h;
+}
 
-    // FIELDS
-    html += renderField(comp, 'name', 'Component Name', nameProvided, inputs.name, comp.hints);
-    html += renderField(comp, 'function', 'Function', funcProvided, inputs.function, comp.hints, true);
-    html += renderField(comp, 'operation', 'Operation', opProvided, inputs.operation, comp.hints, true);
+/* ============================================
+   INPUT & STATUS
+   ============================================ */
+function inp(id, key, val) {
+  if (!S.inputs[id]) S.inputs[id] = {};
+  S.inputs[id][key] = val;
+  renderXP();
+  updateBadge(id);
+}
 
-    html += `</div></div>`;
+function updateBadge(id) {
+  const c = S.data.components.find(x => x.id === id);
+  if (!c) return;
+  const vis = c.level_visibility?.[String(S.level)] || {};
+  const i = S.inputs[id] || {};
+  let f = 0, t = 0;
+  ['name','function','operation','image'].forEach(k => {
+    if (!(vis[k] !== false && c[k])) { t++; if (i[k]) f++; }
   });
-
-  grid.innerHTML = html;
+  const el = document.getElementById('c-' + id);
+  if (!el) return;
+  const b = el.querySelector('.card-badge');
+  if (t === 0) { b.className = 'card-badge badge-done'; b.textContent = 'PROVIDED'; el.classList.add('done'); }
+  else if (f >= t) { b.className = 'card-badge badge-done'; b.textContent = 'DONE'; el.classList.add('done'); }
+  else if (f > 0) { b.className = 'card-badge badge-wip'; b.textContent = 'WIP'; el.classList.remove('done'); }
+  else { b.className = 'card-badge badge-todo'; b.textContent = 'TO DO'; el.classList.remove('done'); }
 }
 
-function renderField(comp, fieldKey, label, isProvided, userValue, hints, isTextarea) {
-  let html = `<div class="field-group"><label class="field-label">`;
-  if (!isProvided) {
-    html += `<span class="required-dot"></span>`;
-  } else {
-    html += `<span class="provided-badge">Provided</span>`;
-  }
-  html += `${label}</label>`;
-
-  if (isProvided) {
-    const val = comp[fieldKey] || '';
-    html += isTextarea
-      ? `<textarea class="field-input provided" readonly>${val}</textarea>`
-      : `<input type="text" class="field-input provided" readonly value="${esc(val)}">`;
-  } else {
-    const val = userValue || '';
-    const ph = `Enter the ${label.toLowerCase()} of this component...`;
-    html += isTextarea
-      ? `<textarea class="field-input" placeholder="${ph}" onchange="updateInput('${comp.id}','${fieldKey}',this.value)" oninput="updateInput('${comp.id}','${fieldKey}',this.value)">${val}</textarea>`
-      : `<input type="text" class="field-input" placeholder="${ph}" value="${esc(val)}" onchange="updateInput('${comp.id}','${fieldKey}',this.value)" oninput="updateInput('${comp.id}','${fieldKey}',this.value)">`;
-
-    if (hints && hints[fieldKey]) {
-      const hid = `hint-${comp.id}-${fieldKey}`;
-      html += `<button class="hint-toggle" onclick="toggleHint('${hid}')">💡 Show Hint</button>`;
-      html += `<div class="hint-text" id="${hid}">${hints[fieldKey]}</div>`;
-    }
-  }
-  html += `</div>`;
-  return html;
-}
-
-// ===== INPUT HANDLING =====
-function updateInput(compId, field, value) {
-  if (!appState.userInputs[compId]) appState.userInputs[compId] = {};
-  appState.userInputs[compId][field] = value;
-  updateProgress();
-  updateCardStatus(compId);
-}
-
-function updateCardStatus(compId) {
-  const comp = appState.systemData.components.find(c => c.id === compId);
-  if (!comp) return;
-  const level = String(appState.currentLevel);
-  const vis = (comp.level_visibility && comp.level_visibility[level]) || {};
-  const inputs = appState.userInputs[compId] || {};
-
+function countProgress() {
+  const comps = S.data?.components || [];
+  const lv = String(S.level);
   let filled = 0, total = 0;
-  ['name','function','operation','image'].forEach(f => {
-    const provided = vis[f] !== false && comp[f];
-    if (!provided) { total++; if (inputs[f]) filled++; }
+  comps.forEach(c => {
+    const vis = c.level_visibility?.[lv] || {};
+    const i = S.inputs[c.id] || {};
+    ['name','function','operation','image'].forEach(k => {
+      if (!(vis[k] !== false && c[k])) { total++; if (i[k]) filled++; }
+    });
   });
-
-  const card = document.getElementById('card-' + compId);
-  if (!card) return;
-  const status = card.querySelector('.card-status');
-
-  if (total === 0) { status.className = 'card-status complete'; status.textContent = 'Provided'; card.classList.add('completed'); }
-  else if (filled >= total) { status.className = 'card-status complete'; status.textContent = 'Complete'; card.classList.add('completed'); }
-  else if (filled > 0) { status.className = 'card-status partial'; status.textContent = 'In Progress'; card.classList.remove('completed'); }
-  else { status.className = 'card-status pending'; status.textContent = 'To Do'; card.classList.remove('completed'); }
+  return { filled, total };
 }
 
-// ===== IMAGE CAPTURE =====
-function captureImage(compId) {
-  const comp = appState.systemData.components.find(c => c.id === compId);
-  const level = String(appState.currentLevel);
-  const vis = (comp.level_visibility && comp.level_visibility[level]) || {};
-  if (vis.image !== false && comp.image) return;
+/* ============================================
+   IMAGE CAPTURE
+   ============================================ */
+function capture(id) {
+  const c = S.data.components.find(x => x.id === id);
+  const vis = c?.level_visibility?.[String(S.level)] || {};
+  if (vis.image !== false && c?.image) return;
 
   const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = 'image/*';
-  input.capture = 'environment';
-
-  input.onchange = (e) => {
+  input.type = 'file'; input.accept = 'image/*'; input.capture = 'environment';
+  input.onchange = e => {
     const file = e.target.files[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = (ev) => {
+    reader.onload = ev => {
       const img = new Image();
       img.onload = () => {
-        const canvas = document.createElement('canvas');
-        const maxDim = 800;
+        const cv = document.createElement('canvas');
+        const mx = 800;
         let w = img.width, h = img.height;
-        if (w > maxDim || h > maxDim) {
-          if (w > h) { h = (h / w) * maxDim; w = maxDim; }
-          else { w = (w / h) * maxDim; h = maxDim; }
+        if (w > mx || h > mx) {
+          if (w > h) { h = h/w*mx; w = mx; } else { w = w/h*mx; h = mx; }
         }
-        canvas.width = w; canvas.height = h;
-        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-        updateInput(compId, 'image', canvas.toDataURL('image/jpeg', 0.7));
-        renderComponents();
+        cv.width = w; cv.height = h;
+        cv.getContext('2d').drawImage(img, 0, 0, w, h);
+        inp(id, 'image', cv.toDataURL('image/jpeg', 0.7));
+        renderCards();
       };
       img.src = ev.target.result;
     };
@@ -1174,180 +1200,124 @@ function captureImage(compId) {
   input.click();
 }
 
-function removeImage(compId) {
-  if (appState.userInputs[compId]) delete appState.userInputs[compId].image;
-  renderComponents();
-  updateProgress();
+function rmImg(id) {
+  if (S.inputs[id]) delete S.inputs[id].image;
+  renderCards(); renderXP();
 }
 
-// ===== PROGRESS =====
-function updateProgress() {
-  const comps = appState.systemData.components || [];
-  const level = String(appState.currentLevel);
-  let totalFields = 0, filledFields = 0;
-
-  comps.forEach(comp => {
-    const vis = (comp.level_visibility && comp.level_visibility[level]) || {};
-    const inputs = appState.userInputs[comp.id] || {};
-    ['name','function','operation','image'].forEach(f => {
-      if (!(vis[f] !== false && comp[f])) {
-        totalFields++;
-        if (inputs[f]) filledFields++;
-      }
-    });
-  });
-
-  const pct = totalFields > 0 ? Math.round((filledFields / totalFields) * 100) : 100;
-  const fill = document.getElementById('progressFill');
-  const text = document.getElementById('progressText');
-  const bottom = document.getElementById('bottomProgress');
-
-  if (fill) fill.style.width = pct + '%';
-  if (text) text.textContent = pct + '%';
-  if (bottom) bottom.textContent = filledFields + ' / ' + totalFields + ' fields';
-}
-
-// ===== HINTS =====
+/* ============================================
+   HINTS
+   ============================================ */
 function toggleHint(id) {
   const el = document.getElementById(id);
-  if (el) el.classList.toggle('visible');
+  if (el) el.classList.toggle('on');
 }
 
-// ===== CHECK ANSWERS =====
+/* ============================================
+   CHECK / REVIEW
+   ============================================ */
 function checkAnswers() {
-  const comps = appState.systemData.components || [];
-  const level = String(appState.currentLevel);
-  let correct = 0, total = 0;
+  const { filled, total } = countProgress();
+  const pct = total > 0 ? Math.round(filled / total * 100) : 100;
 
-  comps.forEach(comp => {
-    const vis = (comp.level_visibility && comp.level_visibility[level]) || {};
-    const inputs = appState.userInputs[comp.id] || {};
-
-    ['name','function','operation'].forEach(f => {
-      const provided = vis[f] !== false && comp[f];
-      if (!provided && comp[f]) {
-        total++;
-        const uv = (inputs[f] || '').toLowerCase().trim();
-        const cv = comp[f].toLowerCase().trim();
-        const kws = cv.split(/\s+/).filter(w => w.length > 4);
-        const mc = kws.filter(kw => uv.includes(kw)).length;
-        if ((kws.length > 0 && mc / kws.length > 0.3) || uv.length > 10) correct++;
-      }
-    });
-  });
-
-  const panel = document.getElementById('reviewPanel');
-  document.getElementById('scoreGrid').innerHTML = `
-    <div class="score-item">
-      <div class="score-value">${correct}/${total}</div>
-      <div class="score-label">Fields Completed</div>
-    </div>
-    <div class="score-item">
-      <div class="score-value">${total > 0 ? Math.round((correct/total)*100) : 100}%</div>
-      <div class="score-label">Completion Rate</div>
-    </div>
-    <div class="score-item">
-      <div class="score-value">Level ${appState.currentLevel}</div>
-      <div class="score-label">Difficulty</div>
-    </div>
+  document.getElementById('reviewGrid').innerHTML = `
+    <div class="review-stat"><div class="review-val">${filled}/${total}</div><div class="review-lbl">Completed</div></div>
+    <div class="review-stat"><div class="review-val">${pct}%</div><div class="review-lbl">Progress</div></div>
+    <div class="review-stat"><div class="review-val">Lv${S.level}</div><div class="review-lbl">Difficulty</div></div>
   `;
-  panel.classList.add('visible');
-  panel.scrollIntoView({ behavior: 'smooth' });
-  showToast('Answers checked — see summary below');
+  const rv = document.getElementById('review');
+  rv.classList.add('on');
+  rv.scrollIntoView({ behavior: 'smooth' });
+  toast('Results ready');
 }
 
-// ===== SAVE / LOAD / RESET =====
+/* ============================================
+   SAVE / RESET / EXPORT
+   ============================================ */
 function saveProgress() {
-  if (!appState.systemData) return;
+  if (!S.data) return;
   try {
-    localStorage.setItem('mv-explorer-' + appState.systemData.title, JSON.stringify({
-      userInputs: appState.userInputs,
-      currentLevel: appState.currentLevel,
-      timestamp: new Date().toISOString()
+    localStorage.setItem('decode-' + S.data.title, JSON.stringify({
+      inputs: S.inputs, level: S.level, ts: Date.now()
     }));
-    showToast('Progress saved ✓');
-  } catch(e) { showToast('Could not save — storage may be full'); }
+    toast('Saved ✓');
+  } catch { toast('Storage full'); }
 }
 
 function resetAnswers() {
-  if (!confirm('Clear all your answers for this system? This cannot be undone.')) return;
-  appState.userInputs = {};
-  if (appState.systemData) localStorage.removeItem('mv-explorer-' + appState.systemData.title);
-  renderComponents();
-  updateProgress();
-  document.getElementById('reviewPanel').classList.remove('visible');
-  showToast('All answers cleared');
+  if (!confirm('Clear all your work on this system?')) return;
+  S.inputs = {};
+  if (S.data) localStorage.removeItem('decode-' + S.data.title);
+  renderCards(); renderXP();
+  document.getElementById('review').classList.remove('on');
+  toast('Cleared');
 }
 
-// ===== EXPORT =====
 function exportResults() {
-  const comps = appState.systemData.components || [];
-  const level = String(appState.currentLevel);
-  let text = `${appState.systemData.title} — Learner Responses\n`;
-  text += `Level: ${appState.currentLevel}\nDate: ${new Date().toLocaleDateString('en-GB')}\n${'='.repeat(50)}\n\n`;
+  const comps = S.data.components || [];
+  const lv = String(S.level);
+  let t = `${S.data.title} — Learner Responses\nLevel: ${S.level}\nDate: ${new Date().toLocaleDateString('en-GB')}\n${'═'.repeat(50)}\n\n`;
 
-  comps.forEach((comp, i) => {
-    const vis = (comp.level_visibility && comp.level_visibility[level]) || {};
-    const inputs = appState.userInputs[comp.id] || {};
-    text += `${i+1}. ${comp.name || inputs.name || '[Unnamed]'}\n${'-'.repeat(40)}\n`;
-    ['name','function','operation'].forEach(f => {
-      const label = f.charAt(0).toUpperCase() + f.slice(1);
-      if (vis[f] !== false && comp[f]) text += `${label} (provided): ${comp[f]}\n`;
-      else text += `${label} (learner): ${inputs[f] || '[Not completed]'}\n`;
+  comps.forEach((c, i) => {
+    const vis = c.level_visibility?.[lv] || {};
+    const inp = S.inputs[c.id] || {};
+    t += `${i+1}. ${c.name || inp.name || '[Unnamed]'}\n${'─'.repeat(40)}\n`;
+    ['name','function','operation'].forEach(k => {
+      const lbl = k.charAt(0).toUpperCase() + k.slice(1);
+      t += (vis[k] !== false && c[k])
+        ? `${lbl} (given): ${c[k]}\n`
+        : `${lbl} (learner): ${inp[k] || '[Not completed]'}\n`;
     });
-    text += `Photo: ${inputs.image ? 'Yes' : 'No'}\n\n`;
+    t += `Photo: ${inp.image ? 'Yes' : 'No'}\n\n`;
   });
 
-  const blob = new Blob([text], { type: 'text/plain' });
   const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `${appState.systemData.title.replace(/\s+/g, '-').toLowerCase()}-responses.txt`;
+  a.href = URL.createObjectURL(new Blob([t], { type: 'text/plain' }));
+  a.download = S.data.title.replace(/\s+/g, '-').toLowerCase() + '-responses.txt';
   a.click();
-  showToast('Results exported ✓');
+  toast('Exported ✓');
 }
 
-// ===== PRINT =====
-function handlePrint() { window.print(); }
-
-// ===== LEVEL MODAL =====
-function showLevelSelector() {
-  const modal = document.getElementById('levelModal');
-  const content = document.getElementById('levelModalContent');
-  const descs = appState.systemData.level_descriptions || {};
+/* ============================================
+   LEVEL MODAL
+   ============================================ */
+function showLevelModal() {
+  const descs = S.data.level_descriptions || {};
   const labels = ['Guided', 'Developing', 'Independent'];
-
-  let html = '<div class="level-options" style="margin-bottom:1rem;">';
-  [1,2,3].forEach((lvl, i) => {
-    html += `<div class="level-option ${lvl === appState.currentLevel ? 'active' : ''}" onclick="setLevel(${lvl});closeLevelModal();">
-      <span class="level-num">${lvl}</span><span class="level-label">${labels[i]}</span>
+  let h = '<h3>DIFFICULTY</h3><div style="display:flex;gap:0.4rem;margin-bottom:1rem;">';
+  [1,2,3].forEach((n, i) => {
+    h += `<div class="lvl-pill ${n===S.level?'active':''}" style="flex:1;justify-content:center;" onclick="setLevel(${n});closeLvlModal();">
+      <span class="lvl-num">${n}</span> ${labels[i]}
     </div>`;
   });
-  html += '</div>';
-  Object.entries(descs).forEach(([lvl, desc]) => {
-    html += `<p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:0.5rem;"><strong>Level ${lvl}:</strong> ${desc}</p>`;
+  h += '</div>';
+  Object.entries(descs).forEach(([k, v]) => {
+    h += `<p style="font-size:0.8rem;color:var(--text-mid);margin-bottom:0.5rem;line-height:1.5;"><strong style="color:var(--lime);">Level ${k}</strong> — ${v}</p>`;
   });
-  content.innerHTML = html;
-  modal.classList.add('active');
+  h += '<div style="margin-top:1rem;text-align:right;"><button class="btn btn-ghost btn-sm" onclick="closeLvlModal()">Close</button></div>';
+  document.getElementById('lvlModalBox').innerHTML = h;
+  document.getElementById('lvlModal').classList.add('on');
 }
 
-function closeLevelModal() { document.getElementById('levelModal').classList.remove('active'); }
+function closeLvlModal() { document.getElementById('lvlModal').classList.remove('on'); }
 
-// ===== UTILS =====
-function showToast(msg) {
+/* ============================================
+   UTILS
+   ============================================ */
+function toast(msg) {
   const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
+  t.textContent = msg; t.classList.add('on');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('on'), 2200);
 }
 
-function esc(str) {
-  return (str || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-}
+function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-document.getElementById('levelModal').addEventListener('click', function(e) { if (e.target === this) closeLevelModal(); });
+document.getElementById('lvlModal').addEventListener('click', function(e) { if (e.target === this) closeLvlModal(); });
 
-// Auto-load from URL
+// URL auto-load
 (function() {
-  const p = new URLSearchParams(window.location.search).get('system');
+  const p = new URLSearchParams(location.search).get('system');
   if (p) loadPreset(p);
 })();
 </script>
