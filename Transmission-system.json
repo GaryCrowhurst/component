@@ -1,0 +1,319 @@
+{
+  "system": {
+    "title": "Transmission System",
+    "description": "The transmission system transfers power from the engine to the driving wheels, allowing the driver to select different gear ratios to match driving conditions. It includes all components from the flywheel through to the driven road wheels.",
+    "level_descriptions": {
+      "1": "Guided Learning — Most information is provided. Fill in the gaps to complete your knowledge.",
+      "2": "Developing Skills — Some information is provided. Use your knowledge to complete the missing details.",
+      "3": "Independent Learning — Minimal information given. Demonstrate your understanding by completing all fields."
+    },
+    "components": [
+      {
+        "id": "flywheel",
+        "name": "Flywheel",
+        "image": "",
+        "function": "Stores rotational energy to smooth out the power pulses from the engine's individual combustion strokes. Provides a flat friction surface for the clutch assembly and carries the starter ring gear.",
+        "operation": "The flywheel is bolted to the rear end of the crankshaft and rotates with it at engine speed. Its heavy mass creates a momentum store (inertia) that maintains smooth, continuous rotation between the engine's power strokes. The machined flat face provides the surface against which the clutch friction plate is clamped by spring pressure.",
+        "hints": {
+          "name": "This heavy disc is bolted directly to the crankshaft",
+          "function": "Think about smoothing engine pulses and what the clutch presses against",
+          "operation": "Consider how mass and momentum help maintain smooth rotation"
+        },
+        "level_visibility": {
+          "1": { "name": true, "image": true, "function": true, "operation": false },
+          "2": { "name": true, "image": false, "function": false, "operation": false },
+          "3": { "name": false, "image": false, "function": false, "operation": false }
+        }
+      },
+      {
+        "id": "clutch-cover-assembly",
+        "name": "Clutch Cover Assembly (Pressure Plate)",
+        "image": "",
+        "function": "Clamps the clutch friction plate firmly against the flywheel using spring pressure, creating a friction connection that transmits engine torque to the gearbox input shaft.",
+        "operation": "The clutch cover is bolted to the flywheel and rotates with it. A diaphragm spring inside the cover pushes the pressure plate against the friction plate, clamping it to the flywheel. When the release bearing is pushed inward by the clutch fork, it deflects the centre of the diaphragm spring, which releases the clamping force on the pressure plate, freeing the friction plate.",
+        "hints": {
+          "name": "This component is bolted to the flywheel and contains the spring mechanism",
+          "function": "Think about what creates the clamping force on the friction plate",
+          "operation": "Consider how the diaphragm spring works when pressed by the release bearing"
+        },
+        "level_visibility": {
+          "1": { "name": true, "image": true, "function": true, "operation": false },
+          "2": { "name": true, "image": true, "function": false, "operation": false },
+          "3": { "name": false, "image": false, "function": false, "operation": false }
+        }
+      },
+      {
+        "id": "clutch-friction-plate",
+        "name": "Clutch Friction Plate (Driven Plate)",
+        "image": "",
+        "function": "Provides the friction connection between the flywheel and the gearbox input shaft. The friction linings grip the flywheel when clamped, transmitting engine torque. Torsion springs in the hub absorb shock loads during engagement.",
+        "operation": "The friction plate sits between the flywheel and pressure plate. Its splined centre hub slides onto the gearbox input shaft. When the clutch is engaged, the pressure plate clamps the friction plate against the flywheel, and the friction linings on both faces grip, transferring drive through the splines to the input shaft. Torsion damper springs in the hub cushion the take-up of drive.",
+        "hints": {
+          "name": "This disc has friction material on both sides and sits between the flywheel and pressure plate",
+          "function": "Think about what actually connects the flywheel to the gearbox input shaft via friction",
+          "operation": "Consider the splined hub, friction linings and torsion damper springs"
+        },
+        "level_visibility": {
+          "1": { "name": true, "image": true, "function": false, "operation": false },
+          "2": { "name": true, "image": false, "function": false, "operation": false },
+          "3": { "name": false, "image": false, "function": false, "operation": false }
+        }
+      },
+      {
+        "id": "clutch-release-bearing",
+        "name": "Clutch Release Bearing (Thrust Bearing)",
+        "image": "",
+        "function": "Transfers the mechanical force from the clutch fork to the rotating diaphragm spring of the clutch cover, allowing the driver to disengage the clutch smoothly without friction or wear on the operating mechanism.",
+        "operation": "When the clutch pedal is pressed, the clutch cable or hydraulic slave cylinder moves the clutch fork, which pushes the release bearing forward along the gearbox input shaft sleeve. The bearing's rotating face contacts the fingers of the spinning diaphragm spring and pushes them inward, releasing the clamping pressure on the friction plate.",
+        "hints": {
+          "name": "This bearing slides on the gearbox input shaft sleeve and contacts the diaphragm spring",
+          "function": "Think about how a non-rotating fork can push against a spinning spring without wearing out",
+          "operation": "Consider the path of force from pedal to fork to bearing to diaphragm spring"
+        },
+        "level_visibility": {
+          "1": { "name": true, "image": true, "function": true, "operation": false },
+          "2": { "name": false, "image": true, "function": false, "operation": false },
+          "3": { "name": false, "image": false, "function": false, "operation": false }
+        }
+      },
+      {
+        "id": "clutch-operating-mechanism",
+        "name": "Clutch Operating Mechanism",
+        "image": "",
+        "function": "Transfers the driver's pedal input to the clutch release bearing, converting the pedal movement into a mechanical force that disengages the clutch. This may be cable-operated or hydraulically operated.",
+        "operation": "In a cable system, the clutch pedal pulls a steel cable connected to the clutch fork on the gearbox bell housing. In a hydraulic system, pressing the pedal moves a master cylinder piston which sends pressurised fluid through a pipe to a slave cylinder mounted on the bell housing. The slave cylinder pushes the clutch fork, which in turn moves the release bearing.",
+        "hints": {
+          "name": "This is the linkage system between the pedal and the release bearing",
+          "function": "Think about how your foot movement reaches the clutch mechanism on the gearbox",
+          "operation": "Consider both cable and hydraulic methods of transferring pedal force"
+        },
+        "level_visibility": {
+          "1": { "name": true, "image": true, "function": true, "operation": false },
+          "2": { "name": true, "image": false, "function": false, "operation": false },
+          "3": { "name": false, "image": false, "function": false, "operation": false }
+        }
+      },
+      {
+        "id": "manual-gearbox",
+        "name": "Manual Gearbox (Transmission)",
+        "image": "",
+        "function": "Provides a range of gear ratios to multiply engine torque at low speeds and allow higher road speeds at reduced engine speed. Includes a neutral position (no drive) and a reverse gear for backwards movement.",
+        "operation": "The driver selects a gear using the gear lever, which moves selector rods and forks inside the gearbox. These forks slide synchromesh hubs along the output (mainshaft). The synchromesh unit first matches the speeds of the gears using friction cones (synchronisers), then locks the selected gear pair to the mainshaft via dog teeth. Different sized gear pairs on the input (layshaft) and mainshaft provide different ratios. A detent mechanism holds the selected gear in place.",
+        "hints": {
+          "name": "This is the main housing bolted to the bell housing containing all the gear sets",
+          "function": "Think about why you need different gears at different speeds and the need for reverse",
+          "operation": "Consider the gear lever, selector forks, synchromesh, layshaft and mainshaft"
+        },
+        "level_visibility": {
+          "1": { "name": true, "image": true, "function": true, "operation": false },
+          "2": { "name": true, "image": false, "function": false, "operation": false },
+          "3": { "name": false, "image": false, "function": false, "operation": false }
+        }
+      },
+      {
+        "id": "synchromesh-unit",
+        "name": "Synchromesh Unit",
+        "image": "",
+        "function": "Ensures smooth, quiet gear engagement by matching the rotational speeds of the gear and the mainshaft before they are locked together, preventing grinding or crunching during gear changes.",
+        "operation": "When the selector fork pushes the synchromesh hub towards a gear, the baulk ring (friction cone) contacts the gear first. Friction between the cone surfaces synchronises the speeds of the hub and gear. Once speeds are matched, the baulk ring aligns and allows the dog teeth on the hub to slide into engagement with the dog teeth on the gear, locking it to the mainshaft.",
+        "hints": {
+          "name": "This mechanism sits between gear pairs on the mainshaft and uses friction cones",
+          "function": "Think about what would happen if gears spinning at different speeds were suddenly locked together",
+          "operation": "Consider the baulk ring, friction cones and dog teeth — what happens in sequence"
+        },
+        "level_visibility": {
+          "1": { "name": true, "image": true, "function": true, "operation": false },
+          "2": { "name": true, "image": true, "function": false, "operation": false },
+          "3": { "name": false, "image": false, "function": false, "operation": false }
+        }
+      },
+      {
+        "id": "gear-lever-linkage",
+        "name": "Gear Lever and Linkage",
+        "image": "",
+        "function": "Provides the driver's interface for selecting gears. Transfers the driver's hand movements on the gear lever to the selector mechanism inside the gearbox, allowing gear selection in the correct H-pattern or sequential gate.",
+        "operation": "The gear lever pivots in a ball-and-socket joint or fulcrum. Push-pull and side-to-side movements are transferred to the gearbox selector shaft through either direct rods (on rear-mounted gearboxes), cables (common on transverse front-wheel drive), or remote linkage rods. Inside the gearbox, the selector shaft has detent grooves and an interlock mechanism that prevents two gears being selected simultaneously and holds the selected gear in position.",
+        "hints": {
+          "name": "This is the stick the driver moves and the connecting rods or cables to the gearbox",
+          "function": "Think about how your hand movements at the gear lever reach the gearbox internals",
+          "operation": "Consider direct rods vs cables, the pivot point, and the detent/interlock safety features"
+        },
+        "level_visibility": {
+          "1": { "name": true, "image": true, "function": true, "operation": false },
+          "2": { "name": true, "image": true, "function": false, "operation": false },
+          "3": { "name": false, "image": false, "function": false, "operation": false }
+        }
+      },
+      {
+        "id": "propeller-shaft",
+        "name": "Propeller Shaft (Propshaft)",
+        "image": "",
+        "function": "Transmits rotational drive from the gearbox output to the final drive unit (rear axle), spanning the distance between them whilst accommodating changes in angle and length as the rear suspension moves over bumps.",
+        "operation": "The propshaft is a hollow steel tube that rotates at gearbox output speed. Universal joints (UJs) at each end allow angular movement as the rear axle moves up and down with suspension travel. A sliding spline joint (slip joint) at one end telescopes in and out to accommodate changes in the effective distance between gearbox and axle as the suspension compresses and extends.",
+        "hints": {
+          "name": "This long rotating shaft runs underneath the vehicle on rear-wheel drive layouts",
+          "function": "Think about how drive gets from the gearbox at the front to the rear axle",
+          "operation": "Consider why the shaft needs flexible joints and a sliding section"
+        },
+        "level_visibility": {
+          "1": { "name": true, "image": true, "function": true, "operation": false },
+          "2": { "name": true, "image": true, "function": false, "operation": false },
+          "3": { "name": false, "image": false, "function": false, "operation": false }
+        }
+      },
+      {
+        "id": "universal-joints",
+        "name": "Universal Joints (UJs / Hooke's Joints)",
+        "image": "",
+        "function": "Allow the propeller shaft to transmit rotational drive at varying angles, accommodating the constant changes in alignment between the gearbox and rear axle as the suspension deflects during driving.",
+        "operation": "A universal joint consists of two yokes (forks) connected by a cross-shaped spider (cruciform). Each arm of the spider sits in needle roller bearings housed in the yoke bores. As one yoke rotates, the spider transfers the motion to the other yoke, even when they are at an angle. A single UJ causes speed fluctuation, so two are used (one at each end of the propshaft) to cancel this out, provided the shaft angles are equal.",
+        "hints": {
+          "name": "These flexible cross-shaped joints are found at each end of the propshaft",
+          "function": "Think about how to transmit rotation when two shafts aren't in a straight line",
+          "operation": "Consider the cross-shaped spider, the yokes, and why two joints are needed"
+        },
+        "level_visibility": {
+          "1": { "name": true, "image": true, "function": false, "operation": false },
+          "2": { "name": false, "image": true, "function": false, "operation": false },
+          "3": { "name": false, "image": false, "function": false, "operation": false }
+        }
+      },
+      {
+        "id": "differential",
+        "name": "Differential",
+        "image": "",
+        "function": "Allows the driven wheels to rotate at different speeds when cornering, which is essential because the outer wheel must travel further than the inner wheel. Also provides the final gear reduction and changes the drive angle by 90 degrees from the propshaft to the half shafts.",
+        "operation": "The propshaft drives the pinion gear, which meshes with the larger crown wheel, changing the drive angle by 90 degrees and providing final gear reduction. The differential cage is bolted to the crown wheel and carries the planet gears (cross pin gears) on a shaft. When driving straight, the planet gears do not rotate on their own axes — both sun gears (side gears) and half shafts turn at the same speed. When cornering, the planet gears rotate on the cross pin, allowing the outer sun gear and half shaft to speed up whilst the inner one slows down by an equal amount.",
+        "hints": {
+          "name": "This assembly sits in the centre of the rear axle housing",
+          "function": "Think about what happens to the wheel speeds when turning a corner",
+          "operation": "Consider the crown wheel, pinion, planet gears and sun gears — what happens straight vs cornering"
+        },
+        "level_visibility": {
+          "1": { "name": true, "image": true, "function": true, "operation": false },
+          "2": { "name": true, "image": false, "function": false, "operation": false },
+          "3": { "name": false, "image": false, "function": false, "operation": false }
+        }
+      },
+      {
+        "id": "crown-wheel-and-pinion",
+        "name": "Crown Wheel and Pinion",
+        "image": "",
+        "function": "Changes the direction of drive by 90 degrees from the propshaft line to the half shaft line and provides the final gear reduction (typically around 3:1 to 4:1), multiplying torque for the last time before it reaches the road wheels.",
+        "operation": "The smaller pinion gear is driven by the propshaft and meshes with the larger crown wheel at a 90-degree angle. Because the crown wheel has significantly more teeth than the pinion, each rotation of the pinion only partially rotates the crown wheel, creating a speed reduction and corresponding torque multiplication. The crown wheel is bolted to the differential cage, so it drives the entire differential assembly.",
+        "hints": {
+          "name": "These two meshing gears sit inside the differential housing — one small, one large",
+          "function": "Think about changing the drive direction and the final speed/torque change",
+          "operation": "Consider the gear ratio between the small pinion and large crown wheel"
+        },
+        "level_visibility": {
+          "1": { "name": true, "image": true, "function": true, "operation": false },
+          "2": { "name": true, "image": true, "function": false, "operation": false },
+          "3": { "name": false, "image": false, "function": false, "operation": false }
+        }
+      },
+      {
+        "id": "half-shafts",
+        "name": "Half Shafts (Rear Wheel Drive)",
+        "image": "",
+        "function": "Transmit the final drive torque from the differential sun gears to the rear road wheels. On a live rear axle, the half shafts are contained within the axle casing.",
+        "operation": "Each half shaft is splined into a differential sun gear at the inner end. As the sun gear is driven by the differential, the half shaft rotates and transfers torque to the road wheel, which is bolted to a flange or hub at the outer end. The half shaft is supported by bearings in the axle casing. In a semi-floating design, the shaft carries both the driving torque and the vehicle weight; in a fully-floating design, the shaft only transmits drive torque.",
+        "hints": {
+          "name": "These shafts sit inside the rear axle tube, connecting the differential to each wheel",
+          "function": "Think about the final connection between the differential and the rear wheels",
+          "operation": "Consider how the shaft connects to the sun gear and the wheel hub"
+        },
+        "level_visibility": {
+          "1": { "name": true, "image": true, "function": true, "operation": false },
+          "2": { "name": true, "image": false, "function": false, "operation": false },
+          "3": { "name": false, "image": false, "function": false, "operation": false }
+        }
+      },
+      {
+        "id": "driveshafts-fwd",
+        "name": "Driveshafts (Front Wheel Drive)",
+        "image": "",
+        "function": "Transmit drive from the transaxle differential to the front road wheels, accommodating both suspension movement and steering angle changes simultaneously. Each driveshaft uses constant velocity joints at both ends.",
+        "operation": "The inner end of each driveshaft is splined into the differential side gear within the transaxle. The outer end connects to the wheel hub. The inner CV joint (typically a tripod/plunge joint) accommodates suspension travel by allowing the shaft to slide in and out whilst transmitting drive. The outer CV joint (typically a Rzeppa joint) accommodates the large steering angles at the front wheels whilst maintaining constant velocity drive transmission.",
+        "hints": {
+          "name": "These shafts connect the transaxle to each front wheel and have rubber boots at each end",
+          "function": "Think about the final link in a front-wheel drive system — both steering and suspension move",
+          "operation": "Consider the two different types of CV joint and what each one allows"
+        },
+        "level_visibility": {
+          "1": { "name": true, "image": true, "function": true, "operation": false },
+          "2": { "name": true, "image": true, "function": false, "operation": false },
+          "3": { "name": false, "image": false, "function": false, "operation": false }
+        }
+      },
+      {
+        "id": "cv-joints",
+        "name": "Constant Velocity (CV) Joints",
+        "image": "",
+        "function": "Transmit rotational drive at a constant speed regardless of the operating angle between the driveshaft and the connected component. Essential for front-wheel drive vehicles where the driven wheels must also steer.",
+        "operation": "The most common type is the Rzeppa joint, used at the outer (wheel) end. Six steel balls sit in curved grooves machined into the inner and outer races. A cage holds the balls in position. As the joint articulates during steering, the balls always position themselves on the bisecting plane (the angle halfway between the two shafts), which geometrically ensures constant velocity transmission. The inner joint is often a tripod type, using three rollers on a spider that can slide in a tulip housing, allowing both angular and plunge movement.",
+        "hints": {
+          "name": "These joints are covered by rubber boots and are found near the front wheels",
+          "function": "Think about maintaining smooth, constant-speed drive when the front wheels are turned for steering",
+          "operation": "Consider how the steel balls in the Rzeppa joint always find the midpoint angle"
+        },
+        "level_visibility": {
+          "1": { "name": true, "image": true, "function": true, "operation": true },
+          "2": { "name": true, "image": true, "function": true, "operation": false },
+          "3": { "name": true, "image": false, "function": false, "operation": false }
+        }
+      },
+      {
+        "id": "cv-boot",
+        "name": "CV Boot (Gaiter)",
+        "image": "",
+        "function": "Seals the CV joint to retain lubricating grease inside and prevent dirt, water and grit from entering the joint. A split or perished boot is a common MOT failure as it leads to rapid joint wear and eventual failure.",
+        "operation": "The CV boot is a flexible rubber or thermoplastic bellows that fits tightly around the CV joint housing and driveshaft. It is secured at each end by metal or plastic clamps (jubilee clips or crimp bands). The concertina shape allows the boot to flex as the joint articulates during steering and suspension movement without splitting or losing its seal.",
+        "hints": {
+          "name": "This rubber bellows covers and protects each CV joint",
+          "function": "Think about keeping grease in and contaminants out of a moving joint",
+          "operation": "Consider the flexible bellows shape, the clamps, and why the MOT checks these"
+        },
+        "level_visibility": {
+          "1": { "name": true, "image": true, "function": true, "operation": true },
+          "2": { "name": true, "image": true, "function": false, "operation": false },
+          "3": { "name": true, "image": false, "function": false, "operation": false }
+        }
+      },
+      {
+        "id": "transaxle",
+        "name": "Transaxle (Combined Gearbox and Final Drive)",
+        "image": "",
+        "function": "Combines the gearbox, final drive gears and differential into a single compact unit, used in front-wheel drive vehicles. Eliminates the need for a propeller shaft by placing all transmission components at the driven axle.",
+        "operation": "The transaxle houses the input shaft, layshaft and gear sets just like a conventional gearbox, but also includes the final drive gear pair and differential within the same casing. The gear lever operates through a linkage or cables to the selector mechanism inside. Output from the differential sun gears goes directly to the driveshafts via the side openings, making the whole drivetrain very compact and suitable for transverse engine layouts.",
+        "hints": {
+          "name": "This single unit contains gearbox, final drive and differential together",
+          "function": "Think about how a front-wheel drive car packages everything at the front — no propshaft needed",
+          "operation": "Consider how this combines conventional gearbox internals with the final drive and differential"
+        },
+        "level_visibility": {
+          "1": { "name": true, "image": true, "function": true, "operation": false },
+          "2": { "name": true, "image": false, "function": false, "operation": false },
+          "3": { "name": false, "image": false, "function": false, "operation": false }
+        }
+      },
+      {
+        "id": "gearbox-oil",
+        "name": "Gearbox Oil (Transmission Fluid)",
+        "image": "",
+        "function": "Lubricates all the moving components inside the gearbox — gears, bearings, synchromesh units and selector mechanisms — reducing friction, preventing wear, dissipating heat and protecting against corrosion.",
+        "operation": "The gearbox is filled to a set level with the manufacturer's specified oil grade (typically EP80W-90 for manual gearboxes). As the gears rotate, they dip into the oil sump and splash lubricant onto all internal components. The oil also helps cool the gearbox by absorbing heat generated by gear meshing and bearing friction. The oil level is checked via a filler/level plug on the side of the gearbox casing.",
+        "hints": {
+          "name": "This is the fluid inside the gearbox casing — checked via a side plug",
+          "function": "Think about what would happen to metal gears and bearings without lubrication",
+          "operation": "Consider how the oil gets distributed inside — splash lubrication from the rotating gears"
+        },
+        "level_visibility": {
+          "1": { "name": true, "image": true, "function": true, "operation": true },
+          "2": { "name": true, "image": true, "function": true, "operation": false },
+          "3": { "name": true, "image": false, "function": false, "operation": false }
+        }
+      }
+    ]
+  }
+}
