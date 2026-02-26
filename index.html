@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>MV Component Explorer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-primary: #0a0f1a;
+  --bg-card: #111827;
+  --bg-card-alt: #1a2235;
+  --bg-input: #0d1424;
+  --border: #1e2d4a;
+  --border-focus: #f59e0b;
+  --text-primary: #e8ecf4;
+  --text-secondary: #8896b0;
+  --text-muted: #5a6a85;
+  --accent: #f59e0b;
+  --accent-hover: #fbbf24;
+  --accent-dim: rgba(245, 158, 11, 0.15);
+  --success: #10b981;
+  --success-dim: rgba(16, 185, 129, 0.15);
+  --info: #3b82f6;
+  --info-dim: rgba(59, 130, 246, 0.15);
+  --warning: #ef4444;
+  --warning-dim: rgba(239, 68, 68, 0.15);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.3);
+  --font-display: 'Archivo Black', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== HEADER ===== */
+.app-header {
+  background: linear-gradient(135deg, #111827 0%, #1a2235 100%);
+  border-bottom: 2px solid var(--border);
+  padding: 1.25rem 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.app-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logo-icon {
+  width: 42px; height: 42px;
+  background: var(--accent);
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; flex-shrink: 0;
+}
+
+.app-title {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+
+.app-subtitle {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* ===== BUTTONS ===== */
+.btn {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.8rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.btn-primary { background: var(--accent); color: #000; border-color: var(--accent); }
+.btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); transform: translateY(-1px); }
+.btn-outline { background: transparent; color: var(--text-primary); border-color: var(--border); }
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+.btn-ghost { background: transparent; color: var(--text-secondary); border: none; padding: 0.4rem 0.6rem; }
+.btn-ghost:hover { color: var(--accent); }
+.btn-success { background: var(--success); color: #fff; border-color: var(--success); }
+.btn-sm { font-size: 0.75rem; padding: 0.35rem 0.75rem; }
+
+/* ===== LANDING ===== */
+.landing-screen {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.landing-hero {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  padding-top: 1rem;
+}
+
+.landing-hero h1 {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, var(--accent), #fbbf24);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.landing-hero p {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  max-width: 550px;
+  margin: 0 auto;
+}
+
+/* Preset grid — dominant */
+.section-label {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.preset-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 2.5rem;
+}
+
+.preset-card {
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.preset-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), #fbbf24);
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+.preset-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 32px rgba(245, 158, 11, 0.12);
+}
+
+.preset-card:hover::before { opacity: 1; }
+
+.preset-card-icon {
+  font-size: 2rem;
+  margin-bottom: 0.6rem;
+}
+
+.preset-card-title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+  line-height: 1.3;
+}
+
+.preset-card-meta {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.preset-card-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.preset-badge {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  background: var(--success-dim);
+  color: var(--success);
+}
+
+/* Upload section — compact, secondary */
+.upload-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.upload-section-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.upload-section-text {
+  flex: 1;
+  min-width: 180px;
+}
+
+.upload-section-text strong {
+  font-size: 0.85rem;
+  display: block;
+  margin-bottom: 0.1rem;
+}
+
+.upload-section-text span {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.upload-btns {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.file-drop-mini {
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-body);
+  background: transparent;
+}
+.file-drop-mini:hover, .file-drop-mini.dragover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+
+/* ===== LEVEL SELECTOR ===== */
+.level-bar {
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.level-bar-title {
+  font-weight: 700; font-size: 0.8rem;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--text-secondary); margin-bottom: 0.75rem;
+}
+
+.level-options { display: flex; gap: 0.5rem; }
+
+.level-option {
+  flex: 1;
+  background: var(--bg-input); border: 2px solid var(--border);
+  border-radius: var(--radius-sm); padding: 0.75rem 0.5rem;
+  cursor: pointer; text-align: center; transition: all 0.2s;
+  font-family: var(--font-body); color: var(--text-primary);
+}
+.level-option:hover { border-color: var(--text-secondary); }
+.level-option.active { border-color: var(--accent); background: var(--accent-dim); }
+
+.level-option .level-num {
+  font-family: var(--font-display); font-size: 1.4rem;
+  display: block; margin-bottom: 0.25rem;
+}
+
+.level-option .level-label {
+  font-size: 0.7rem; font-weight: 600;
+  color: var(--text-secondary); text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.level-desc {
+  margin-top: 0.75rem; padding: 0.75rem;
+  background: var(--bg-input); border-radius: var(--radius-sm);
+  font-size: 0.85rem; color: var(--text-secondary);
+  border-left: 3px solid var(--accent);
+}
+
+/* ===== MAIN LAYOUT ===== */
+.main-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 5rem;
+}
+
+.system-header { margin-bottom: 2rem; }
+
+.system-title {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.system-desc {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  max-width: 700px;
+}
+
+.progress-strip {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+.progress-bar-track {
+  flex: 1; height: 8px;
+  background: var(--bg-input); border-radius: 4px; overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), #fbbf24);
+  border-radius: 4px; transition: width 0.4s ease;
+}
+
+.progress-text {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+/* ===== COMPONENT CARDS ===== */
+.components-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .components-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.component-card {
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+.component-card:hover { border-color: rgba(245, 158, 11, 0.3); }
+.component-card.completed { border-color: var(--success); }
+
+.card-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: var(--bg-card-alt);
+  border-bottom: 1px solid var(--border);
+}
+
+.card-number {
+  font-family: var(--font-mono); font-size: 0.75rem;
+  color: var(--accent); font-weight: 600;
+}
+
+.card-status {
+  font-size: 0.7rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.05em;
+  padding: 0.2rem 0.5rem; border-radius: 4px;
+}
+.card-status.pending { color: var(--text-muted); background: rgba(90,106,133,0.15); }
+.card-status.partial { color: var(--accent); background: var(--accent-dim); }
+.card-status.complete { color: var(--success); background: var(--success-dim); }
+
+.card-body { padding: 1rem; }
+
+/* Image area */
+.image-area {
+  margin-bottom: 1rem; border-radius: var(--radius-sm);
+  overflow: hidden; border: 2px dashed var(--border);
+  position: relative; min-height: 140px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg-input); cursor: pointer; transition: all 0.2s;
+}
+.image-area:hover { border-color: var(--accent); }
+.image-area.has-image { border-style: solid; border-color: var(--border); min-height: auto; }
+
+.image-area img {
+  width: 100%; height: auto; display: block;
+  max-height: 280px; object-fit: cover;
+}
+
+.image-placeholder {
+  text-align: center; padding: 1.5rem; color: var(--text-muted);
+}
+.image-placeholder-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+.image-placeholder-text { font-size: 0.8rem; font-weight: 500; }
+
+.image-provided-label {
+  position: absolute; top: 0.5rem; right: 0.5rem;
+  background: var(--info); color: #fff;
+  font-size: 0.65rem; font-weight: 700;
+  padding: 0.2rem 0.5rem; border-radius: 4px;
+  text-transform: uppercase; letter-spacing: 0.03em;
+}
+
+.image-controls {
+  position: absolute; bottom: 0.5rem; right: 0.5rem;
+  display: flex; gap: 0.3rem;
+}
+
+/* Field groups */
+.field-group { margin-bottom: 1rem; }
+.field-group:last-child { margin-bottom: 0; }
+
+.field-label {
+  display: flex; align-items: center; gap: 0.4rem;
+  font-size: 0.75rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--text-secondary); margin-bottom: 0.4rem;
+}
+
+.field-label .required-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--warning); display: inline-block;
+}
+
+.field-label .provided-badge {
+  font-size: 0.6rem; background: var(--info-dim); color: var(--info);
+  padding: 0.1rem 0.4rem; border-radius: 3px;
+  text-transform: uppercase; font-weight: 700;
+}
+
+.field-input {
+  width: 100%; background: var(--bg-input); border: 2px solid var(--border);
+  border-radius: var(--radius-sm); color: var(--text-primary);
+  font-family: var(--font-body); font-size: 0.85rem;
+  padding: 0.6rem 0.75rem; transition: all 0.2s; resize: vertical;
+}
+.field-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
+.field-input.provided { background: var(--info-dim); border-color: rgba(59,130,246,0.3); color: var(--text-primary); }
+.field-input.correct { background: var(--success-dim); border-color: rgba(16,185,129,0.3); }
+textarea.field-input { min-height: 70px; }
+
+.hint-toggle {
+  font-size: 0.75rem; color: var(--accent); background: none;
+  border: none; cursor: pointer; font-family: var(--font-body);
+  font-weight: 600; margin-top: 0.3rem; padding: 0;
+  display: inline-flex; align-items: center; gap: 0.3rem;
+}
+.hint-toggle:hover { text-decoration: underline; }
+
+.hint-text {
+  margin-top: 0.3rem; padding: 0.5rem 0.75rem;
+  background: var(--accent-dim); border-radius: var(--radius-sm);
+  font-size: 0.8rem; color: var(--accent);
+  border-left: 3px solid var(--accent); display: none;
+}
+.hint-text.visible { display: block; }
+
+/* ===== BOTTOM BAR ===== */
+.bottom-bar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--bg-card); border-top: 2px solid var(--border);
+  padding: 0.75rem 1rem; z-index: 100; display: none;
+}
+.bottom-bar.visible { display: block; }
+
+.bottom-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center;
+  justify-content: space-between; gap: 0.75rem;
+}
+
+/* ===== PRINT ===== */
+.print-only { display: none; }
+
+@media print {
+  * { color: #000 !important; background: #fff !important; border-color: #ccc !important; box-shadow: none !important; }
+  .app-header, .bottom-bar, .btn, .hint-toggle, .image-controls, .no-print { display: none !important; }
+  .print-only { display: block !important; }
+  .main-content { padding: 0 !important; }
+  .components-grid { grid-template-columns: 1fr !important; gap: 0.5rem !important; }
+  .component-card { break-inside: avoid; page-break-inside: avoid; border: 2px solid #000 !important; }
+  .field-input { border: 1px solid #999 !important; min-height: 50px !important; background: #f9f9f9 !important; }
+  .field-input.provided { background: #e8f4ff !important; }
+  textarea.field-input { min-height: 80px !important; }
+  .image-area { min-height: 120px !important; border: 2px solid #999 !important; }
+  .print-header { text-align: center; margin-bottom: 1rem; border-bottom: 3px solid #000; padding-bottom: 0.5rem; }
+  .print-header h1 { font-size: 1.5rem; }
+  .print-meta { display: flex; justify-content: space-between; font-size: 0.85rem; margin-top: 0.5rem; }
+  body { font-size: 11pt; }
+}
+
+/* ===== TOAST ===== */
+.toast {
+  position: fixed; bottom: 5rem; left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--bg-card); border: 2px solid var(--success);
+  color: var(--success); padding: 0.75rem 1.25rem;
+  border-radius: var(--radius); font-weight: 600;
+  font-size: 0.85rem; z-index: 200;
+  transition: transform 0.3s ease; pointer-events: none;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ===== MODAL ===== */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+  z-index: 300; display: flex; align-items: center; justify-content: center;
+  padding: 1rem; opacity: 0; pointer-events: none; transition: opacity 0.2s;
+}
+.modal-overlay.active { opacity: 1; pointer-events: all; }
+
+.modal {
+  background: var(--bg-card); border: 2px solid var(--border);
+  border-radius: var(--radius); max-width: 500px; width: 100%;
+  max-height: 90vh; overflow-y: auto; padding: 1.5rem;
+}
+
+.modal h3 {
+  font-family: var(--font-display); font-size: 1.1rem; margin-bottom: 1rem;
+}
+
+/* ===== REVIEW PANEL ===== */
+.review-panel {
+  background: var(--bg-card); border: 2px solid var(--success);
+  border-radius: var(--radius); padding: 1.5rem;
+  margin-top: 2rem; display: none;
+}
+.review-panel.visible { display: block; }
+
+.review-title {
+  font-family: var(--font-display); font-size: 1.2rem;
+  color: var(--success); margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+
+.score-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem; margin-bottom: 1rem;
+}
+
+.score-item {
+  background: var(--bg-input); border-radius: var(--radius-sm);
+  padding: 0.75rem; text-align: center;
+}
+
+.score-value {
+  font-family: var(--font-display); font-size: 1.5rem; color: var(--accent);
+}
+
+.score-label {
+  font-size: 0.75rem; color: var(--text-secondary);
+  text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.25rem;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+  .app-title { font-size: 0.95rem; }
+  .header-controls { width: 100%; justify-content: flex-end; }
+  .landing-hero h1 { font-size: 1.5rem; }
+  .system-title { font-size: 1.3rem; }
+  .level-options { flex-direction: column; }
+  .upload-section { flex-direction: column; text-align: center; }
+  .preset-grid { grid-template-columns: 1fr; }
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-in { animation: fadeInUp 0.4s ease forwards; opacity: 0; }
+.component-card:nth-child(1) { animation-delay: 0.05s; }
+.component-card:nth-child(2) { animation-delay: 0.1s; }
+.component-card:nth-child(3) { animation-delay: 0.15s; }
+.component-card:nth-child(4) { animation-delay: 0.2s; }
+.component-card:nth-child(5) { animation-delay: 0.25s; }
+.component-card:nth-child(6) { animation-delay: 0.3s; }
+.component-card:nth-child(7) { animation-delay: 0.35s; }
+.component-card:nth-child(8) { animation-delay: 0.4s; }
+.component-card:nth-child(n+9) { animation-delay: 0.45s; }
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="app-header" id="appHeader">
+  <div class="header-inner">
+    <div class="app-logo">
+      <div class="logo-icon">🔧</div>
+      <div>
+        <div class="app-title">MV Component Explorer</div>
+        <div class="app-subtitle">Motor Vehicle · Level 1</div>
+      </div>
+    </div>
+    <div class="header-controls" id="headerControls" style="display:none;">
+      <button class="btn btn-outline btn-sm" onclick="showLevelSelector()">⚙ Level <span id="currentLevelBadge">1</span></button>
+      <button class="btn btn-outline btn-sm" onclick="handlePrint()">🖨 Print</button>
+      <button class="btn btn-outline btn-sm" onclick="saveProgress()">💾 Save</button>
+      <button class="btn btn-ghost btn-sm" onclick="backToMenu()">← Systems</button>
+    </div>
+  </div>
+</header>
+
+<!-- ===== LANDING SCREEN ===== -->
+<div id="landingScreen" class="landing-screen">
+  <div class="landing-hero">
+    <h1>MV Component Explorer</h1>
+    <p>Identify, photograph, and describe vehicle system components. Select a system below to begin learning.</p>
+  </div>
+
+  <!-- ===== PRESET SYSTEMS — DOMINANT ===== -->
+  <div class="section-label">Choose a Vehicle System</div>
+
+  <div class="preset-grid" id="presetGrid">
+    <!-- Populated by JS from PRESETS config -->
+  </div>
+
+  <!-- ===== UPLOAD — COMPACT SECONDARY ===== -->
+  <div class="upload-section" id="uploadSection">
+    <div class="upload-section-icon">📁</div>
+    <div class="upload-section-text">
+      <strong>Load a custom system</strong>
+      <span>Upload your own JSON file or drag and drop</span>
+    </div>
+    <div class="upload-btns">
+      <button class="file-drop-mini" id="fileDrop" onclick="document.getElementById('fileInput').click()">
+        📄 Browse JSON
+      </button>
+    </div>
+    <input type="file" id="fileInput" accept=".json" style="display:none" onchange="loadFileFromInput(event)">
+  </div>
+</div>
+
+<!-- ===== MAIN APP ===== -->
+<div id="mainApp" style="display:none;">
+  <div class="main-content">
+    <!-- Print header -->
+    <div class="print-only print-header">
+      <h1 id="printTitle">Component Worksheet</h1>
+      <div class="print-meta">
+        <span>Name: ________________________________</span>
+        <span>Date: ________________</span>
+        <span>Level: <span id="printLevel">1</span></span>
+      </div>
+    </div>
+
+    <div class="system-header" id="systemHeader"></div>
+    <div class="level-bar no-print" id="levelBar"></div>
+    <div class="components-grid" id="componentsGrid"></div>
+
+    <div class="review-panel" id="reviewPanel">
+      <div class="review-title">✅ Review Summary</div>
+      <div class="score-grid" id="scoreGrid"></div>
+      <button class="btn btn-primary" onclick="exportResults()">📋 Export Results</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== BOTTOM BAR ===== -->
+<div class="bottom-bar no-print" id="bottomBar">
+  <div class="bottom-inner">
+    <div class="progress-text" id="bottomProgress">0 / 0 fields</div>
+    <div style="display:flex;gap:0.5rem;">
+      <button class="btn btn-outline btn-sm" onclick="resetAnswers()">↩ Clear</button>
+      <button class="btn btn-primary btn-sm" onclick="checkAnswers()">✓ Check Answers</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TOAST ===== -->
+<div class="toast" id="toast"></div>
+
+<!-- ===== LEVEL MODAL ===== -->
+<div class="modal-overlay" id="levelModal">
+  <div class="modal">
+    <h3>Select Difficulty Level</h3>
+    <div id="levelModalContent"></div>
+    <div style="margin-top:1rem;text-align:right;">
+      <button class="btn btn-outline btn-sm" onclick="closeLevelModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// =============================================
+// PRESET CONFIGURATION
+// To add a new system, just add an entry here
+// and place the JSON file in /systems/
+// =============================================
+const PRESETS = [
+  {
+    file: 'systems/transmission-system.json',
+    icon: '⚙',
+    title: 'Transmission System',
+    desc: 'Clutch, gearbox, propshaft, differential, driveshafts, CV joints and more',
+    components: 18,
+    badge: null
+  }
+  // ---- ADD MORE SYSTEMS HERE ----
+  // {
+  //   file: 'systems/braking-system.json',
+  //   icon: '🛑',
+  //   title: 'Braking System',
+  //   desc: 'Disc brakes, drum brakes, master cylinder, ABS and hydraulic circuits',
+  //   components: 14,
+  //   badge: null
+  // },
+  // {
+  //   file: 'systems/engine-systems.json',
+  //   icon: '🏎',
+  //   title: 'Engine Systems',
+  //   desc: 'Cylinder block, pistons, crankshaft, camshaft, valvetrain and lubrication',
+  //   components: 16,
+  //   badge: null
+  // },
+  // {
+  //   file: 'systems/electrical-system.json',
+  //   icon: '⚡',
+  //   title: 'Electrical System',
+  //   desc: 'Battery, alternator, starter motor, lighting and charging circuits',
+  //   components: 12,
+  //   badge: null
+  // },
+  // {
+  //   file: 'systems/steering-suspension.json',
+  //   icon: '🔩',
+  //   title: 'Steering & Suspension',
+  //   desc: 'Rack and pinion, MacPherson struts, wishbones, anti-roll bars and dampers',
+  //   components: 15,
+  //   badge: null
+  // },
+  // {
+  //   file: 'systems/cooling-system.json',
+  //   icon: '🌡',
+  //   title: 'Cooling System',
+  //   desc: 'Radiator, thermostat, water pump, hoses and coolant expansion tank',
+  //   components: 10,
+  //   badge: null
+  // },
+];
+
+// ===== APP STATE =====
+let appState = {
+  systemData: null,
+  currentLevel: 1,
+  userInputs: {},
+  loaded: false
+};
+
+// ===== RENDER PRESETS =====
+function renderPresets() {
+  const grid = document.getElementById('presetGrid');
+  grid.innerHTML = PRESETS.map(p => `
+    <div class="preset-card" onclick="loadPreset('${p.file}')">
+      ${p.badge ? `<span class="preset-badge">${p.badge}</span>` : ''}
+      <div class="preset-card-icon">${p.icon}</div>
+      <div class="preset-card-title">${p.title}</div>
+      <div class="preset-card-meta">
+        <span>📦 ${p.components} components</span>
+        <span>📊 3 levels</span>
+      </div>
+      <div style="margin-top:0.4rem;font-size:0.78rem;color:var(--text-secondary);line-height:1.4;">
+        ${p.desc}
+      </div>
+    </div>
+  `).join('');
+
+  // Add a "coming soon" placeholder if only 1 system
+  if (PRESETS.length < 3) {
+    const placeholders = [
+      { icon: '🛑', title: 'Braking System', note: 'Coming soon' },
+      { icon: '🏎', title: 'Engine Systems', note: 'Coming soon' },
+      { icon: '⚡', title: 'Electrical System', note: 'Coming soon' },
+      { icon: '🔩', title: 'Steering & Suspension', note: 'Coming soon' },
+    ];
+    const toShow = placeholders.slice(0, Math.max(1, 3 - PRESETS.length));
+    grid.innerHTML += toShow.map(p => `
+      <div class="preset-card" style="opacity:0.4;cursor:default;pointer-events:none;">
+        <span class="preset-badge" style="background:rgba(90,106,133,0.2);color:var(--text-muted);">Coming Soon</span>
+        <div class="preset-card-icon">${p.icon}</div>
+        <div class="preset-card-title">${p.title}</div>
+        <div style="margin-top:0.3rem;font-size:0.78rem;color:var(--text-muted);">
+          Add your own JSON to enable this system
+        </div>
+      </div>
+    `).join('');
+  }
+}
+
+renderPresets();
+
+// ===== FILE DROP =====
+const fileDrop = document.getElementById('fileDrop');
+const uploadSection = document.getElementById('uploadSection');
+
+uploadSection.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  fileDrop.classList.add('dragover');
+});
+uploadSection.addEventListener('dragleave', () => {
+  fileDrop.classList.remove('dragover');
+});
+uploadSection.addEventListener('drop', (e) => {
+  e.preventDefault();
+  fileDrop.classList.remove('dragover');
+  const file = e.dataTransfer.files[0];
+  if (file && file.name.endsWith('.json')) loadJSONFile(file);
+});
+
+function loadFileFromInput(event) {
+  const file = event.target.files[0];
+  if (file) loadJSONFile(file);
+}
+
+function loadJSONFile(file) {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const data = JSON.parse(e.target.result);
+      initSystem(data);
+    } catch (err) {
+      showToast('Error: Invalid JSON file');
+      console.error(err);
+    }
+  };
+  reader.readAsText(file);
+}
+
+async function loadPreset(path) {
+  try {
+    const resp = await fetch(path);
+    if (!resp.ok) throw new Error('File not found');
+    const data = await resp.json();
+    initSystem(data);
+  } catch (err) {
+    showToast('Error loading system file');
+    console.error(err);
+  }
+}
+
+// ===== INIT SYSTEM =====
+function initSystem(data) {
+  appState.systemData = data.system || data;
+  appState.loaded = true;
+
+  // Restore saved progress
+  const saved = localStorage.getItem('mv-explorer-' + appState.systemData.title);
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      appState.userInputs = parsed.userInputs || {};
+      appState.currentLevel = parsed.currentLevel || 1;
+    } catch(e) {}
+  }
+
+  document.getElementById('landingScreen').style.display = 'none';
+  document.getElementById('mainApp').style.display = 'block';
+  document.getElementById('headerControls').style.display = 'flex';
+  document.getElementById('bottomBar').classList.add('visible');
+
+  renderSystemHeader();
+  renderLevelBar();
+  renderComponents();
+  updateProgress();
+}
+
+function backToMenu() {
+  saveProgress();
+  document.getElementById('landingScreen').style.display = 'block';
+  document.getElementById('mainApp').style.display = 'none';
+  document.getElementById('headerControls').style.display = 'none';
+  document.getElementById('bottomBar').classList.remove('visible');
+  document.getElementById('reviewPanel').classList.remove('visible');
+  window.scrollTo(0, 0);
+}
+
+// ===== RENDER SYSTEM HEADER =====
+function renderSystemHeader() {
+  const sys = appState.systemData;
+  const count = (sys.components || []).length;
+  document.getElementById('systemHeader').innerHTML = `
+    <h1 class="system-title">${sys.title}</h1>
+    <p class="system-desc">${sys.description || ''}</p>
+    <div class="progress-strip">
+      <span style="font-size:0.8rem;color:var(--text-secondary);white-space:nowrap;">${count} components</span>
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
+      </div>
+      <div class="progress-text" id="progressText">0%</div>
+    </div>
+  `;
+  document.getElementById('printTitle').textContent = sys.title + ' — Component Worksheet';
+}
+
+// ===== RENDER LEVEL BAR =====
+function renderLevelBar() {
+  const sys = appState.systemData;
+  const descs = sys.level_descriptions || {};
+  const levels = Object.keys(descs).length > 0 ? Object.keys(descs) : ['1','2','3'];
+  const labels = ['Guided', 'Developing', 'Independent'];
+
+  let html = `<div class="level-bar-title">Difficulty Level</div><div class="level-options">`;
+  levels.forEach((lvl, i) => {
+    const active = parseInt(lvl) === appState.currentLevel ? 'active' : '';
+    html += `<div class="level-option ${active}" onclick="setLevel(${lvl})">
+      <span class="level-num">${lvl}</span>
+      <span class="level-label">${labels[i] || 'Level ' + lvl}</span>
+    </div>`;
+  });
+  html += `</div>`;
+
+  const desc = descs[String(appState.currentLevel)];
+  if (desc) html += `<div class="level-desc">${desc}</div>`;
+
+  document.getElementById('levelBar').innerHTML = html;
+  document.getElementById('currentLevelBadge').textContent = appState.currentLevel;
+  document.getElementById('printLevel').textContent = appState.currentLevel;
+}
+
+function setLevel(lvl) {
+  appState.currentLevel = lvl;
+  renderLevelBar();
+  renderComponents();
+  updateProgress();
+  showToast('Level ' + lvl + ' selected');
+}
+
+// ===== RENDER COMPONENTS =====
+function renderComponents() {
+  const comps = appState.systemData.components || [];
+  const level = String(appState.currentLevel);
+  const grid = document.getElementById('componentsGrid');
+
+  let html = '';
+  comps.forEach((comp, idx) => {
+    const vis = (comp.level_visibility && comp.level_visibility[level]) || {};
+    const inputs = appState.userInputs[comp.id] || {};
+    const num = String(idx + 1).padStart(2, '0');
+
+    const nameProvided = vis.name !== false && comp.name;
+    const funcProvided = vis.function !== false && comp.function;
+    const opProvided = vis.operation !== false && comp.operation;
+    const imageProvided = vis.image !== false && comp.image;
+
+    let filledCount = 0, totalCount = 0;
+    if (!nameProvided) { totalCount++; if (inputs.name) filledCount++; }
+    if (!funcProvided) { totalCount++; if (inputs.function) filledCount++; }
+    if (!opProvided) { totalCount++; if (inputs.operation) filledCount++; }
+    if (!imageProvided) { totalCount++; if (inputs.image) filledCount++; }
+
+    let statusClass = 'pending', statusText = 'To Do';
+    if (filledCount > 0 && filledCount < totalCount) { statusClass = 'partial'; statusText = 'In Progress'; }
+    if (totalCount > 0 && filledCount >= totalCount) { statusClass = 'complete'; statusText = 'Complete'; }
+    if (totalCount === 0) { statusClass = 'complete'; statusText = 'Provided'; }
+
+    html += `<div class="component-card animate-in ${statusClass === 'complete' ? 'completed' : ''}" id="card-${comp.id}">
+      <div class="card-header">
+        <span class="card-number">#${num}</span>
+        <span class="card-status ${statusClass}">${statusText}</span>
+      </div>
+      <div class="card-body">`;
+
+    // IMAGE
+    const hasUserImage = inputs.image;
+    const showImage = hasUserImage || imageProvided;
+    html += `<div class="image-area ${showImage ? 'has-image' : ''}" onclick="captureImage('${comp.id}')">`;
+    if (hasUserImage) {
+      html += `<img src="${inputs.image}" alt="Component photo">
+        <div class="image-controls">
+          <button class="btn btn-sm btn-outline" onclick="event.stopPropagation();removeImage('${comp.id}')" style="background:rgba(0,0,0,0.7)">✕</button>
+        </div>`;
+    } else if (imageProvided) {
+      html += `<img src="${comp.image}" alt="${comp.name || 'Component'}">
+        <span class="image-provided-label">Provided</span>`;
+    } else {
+      html += `<div class="image-placeholder">
+        <div class="image-placeholder-icon">📷</div>
+        <div class="image-placeholder-text">Tap to take a photo or upload an image</div>
+      </div>`;
+    }
+    html += `</div>`;
+
+    // FIELDS
+    html += renderField(comp, 'name', 'Component Name', nameProvided, inputs.name, comp.hints);
+    html += renderField(comp, 'function', 'Function', funcProvided, inputs.function, comp.hints, true);
+    html += renderField(comp, 'operation', 'Operation', opProvided, inputs.operation, comp.hints, true);
+
+    html += `</div></div>`;
+  });
+
+  grid.innerHTML = html;
+}
+
+function renderField(comp, fieldKey, label, isProvided, userValue, hints, isTextarea) {
+  let html = `<div class="field-group"><label class="field-label">`;
+  if (!isProvided) {
+    html += `<span class="required-dot"></span>`;
+  } else {
+    html += `<span class="provided-badge">Provided</span>`;
+  }
+  html += `${label}</label>`;
+
+  if (isProvided) {
+    const val = comp[fieldKey] || '';
+    html += isTextarea
+      ? `<textarea class="field-input provided" readonly>${val}</textarea>`
+      : `<input type="text" class="field-input provided" readonly value="${esc(val)}">`;
+  } else {
+    const val = userValue || '';
+    const ph = `Enter the ${label.toLowerCase()} of this component...`;
+    html += isTextarea
+      ? `<textarea class="field-input" placeholder="${ph}" onchange="updateInput('${comp.id}','${fieldKey}',this.value)" oninput="updateInput('${comp.id}','${fieldKey}',this.value)">${val}</textarea>`
+      : `<input type="text" class="field-input" placeholder="${ph}" value="${esc(val)}" onchange="updateInput('${comp.id}','${fieldKey}',this.value)" oninput="updateInput('${comp.id}','${fieldKey}',this.value)">`;
+
+    if (hints && hints[fieldKey]) {
+      const hid = `hint-${comp.id}-${fieldKey}`;
+      html += `<button class="hint-toggle" onclick="toggleHint('${hid}')">💡 Show Hint</button>`;
+      html += `<div class="hint-text" id="${hid}">${hints[fieldKey]}</div>`;
+    }
+  }
+  html += `</div>`;
+  return html;
+}
+
+// ===== INPUT HANDLING =====
+function updateInput(compId, field, value) {
+  if (!appState.userInputs[compId]) appState.userInputs[compId] = {};
+  appState.userInputs[compId][field] = value;
+  updateProgress();
+  updateCardStatus(compId);
+}
+
+function updateCardStatus(compId) {
+  const comp = appState.systemData.components.find(c => c.id === compId);
+  if (!comp) return;
+  const level = String(appState.currentLevel);
+  const vis = (comp.level_visibility && comp.level_visibility[level]) || {};
+  const inputs = appState.userInputs[compId] || {};
+
+  let filled = 0, total = 0;
+  ['name','function','operation','image'].forEach(f => {
+    const provided = vis[f] !== false && comp[f];
+    if (!provided) { total++; if (inputs[f]) filled++; }
+  });
+
+  const card = document.getElementById('card-' + compId);
+  if (!card) return;
+  const status = card.querySelector('.card-status');
+
+  if (total === 0) { status.className = 'card-status complete'; status.textContent = 'Provided'; card.classList.add('completed'); }
+  else if (filled >= total) { status.className = 'card-status complete'; status.textContent = 'Complete'; card.classList.add('completed'); }
+  else if (filled > 0) { status.className = 'card-status partial'; status.textContent = 'In Progress'; card.classList.remove('completed'); }
+  else { status.className = 'card-status pending'; status.textContent = 'To Do'; card.classList.remove('completed'); }
+}
+
+// ===== IMAGE CAPTURE =====
+function captureImage(compId) {
+  const comp = appState.systemData.components.find(c => c.id === compId);
+  const level = String(appState.currentLevel);
+  const vis = (comp.level_visibility && comp.level_visibility[level]) || {};
+  if (vis.image !== false && comp.image) return;
+
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*';
+  input.capture = 'environment';
+
+  input.onchange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const maxDim = 800;
+        let w = img.width, h = img.height;
+        if (w > maxDim || h > maxDim) {
+          if (w > h) { h = (h / w) * maxDim; w = maxDim; }
+          else { w = (w / h) * maxDim; h = maxDim; }
+        }
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        updateInput(compId, 'image', canvas.toDataURL('image/jpeg', 0.7));
+        renderComponents();
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  };
+  input.click();
+}
+
+function removeImage(compId) {
+  if (appState.userInputs[compId]) delete appState.userInputs[compId].image;
+  renderComponents();
+  updateProgress();
+}
+
+// ===== PROGRESS =====
+function updateProgress() {
+  const comps = appState.systemData.components || [];
+  const level = String(appState.currentLevel);
+  let totalFields = 0, filledFields = 0;
+
+  comps.forEach(comp => {
+    const vis = (comp.level_visibility && comp.level_visibility[level]) || {};
+    const inputs = appState.userInputs[comp.id] || {};
+    ['name','function','operation','image'].forEach(f => {
+      if (!(vis[f] !== false && comp[f])) {
+        totalFields++;
+        if (inputs[f]) filledFields++;
+      }
+    });
+  });
+
+  const pct = totalFields > 0 ? Math.round((filledFields / totalFields) * 100) : 100;
+  const fill = document.getElementById('progressFill');
+  const text = document.getElementById('progressText');
+  const bottom = document.getElementById('bottomProgress');
+
+  if (fill) fill.style.width = pct + '%';
+  if (text) text.textContent = pct + '%';
+  if (bottom) bottom.textContent = filledFields + ' / ' + totalFields + ' fields';
+}
+
+// ===== HINTS =====
+function toggleHint(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.toggle('visible');
+}
+
+// ===== CHECK ANSWERS =====
+function checkAnswers() {
+  const comps = appState.systemData.components || [];
+  const level = String(appState.currentLevel);
+  let correct = 0, total = 0;
+
+  comps.forEach(comp => {
+    const vis = (comp.level_visibility && comp.level_visibility[level]) || {};
+    const inputs = appState.userInputs[comp.id] || {};
+
+    ['name','function','operation'].forEach(f => {
+      const provided = vis[f] !== false && comp[f];
+      if (!provided && comp[f]) {
+        total++;
+        const uv = (inputs[f] || '').toLowerCase().trim();
+        const cv = comp[f].toLowerCase().trim();
+        const kws = cv.split(/\s+/).filter(w => w.length > 4);
+        const mc = kws.filter(kw => uv.includes(kw)).length;
+        if ((kws.length > 0 && mc / kws.length > 0.3) || uv.length > 10) correct++;
+      }
+    });
+  });
+
+  const panel = document.getElementById('reviewPanel');
+  document.getElementById('scoreGrid').innerHTML = `
+    <div class="score-item">
+      <div class="score-value">${correct}/${total}</div>
+      <div class="score-label">Fields Completed</div>
+    </div>
+    <div class="score-item">
+      <div class="score-value">${total > 0 ? Math.round((correct/total)*100) : 100}%</div>
+      <div class="score-label">Completion Rate</div>
+    </div>
+    <div class="score-item">
+      <div class="score-value">Level ${appState.currentLevel}</div>
+      <div class="score-label">Difficulty</div>
+    </div>
+  `;
+  panel.classList.add('visible');
+  panel.scrollIntoView({ behavior: 'smooth' });
+  showToast('Answers checked — see summary below');
+}
+
+// ===== SAVE / LOAD / RESET =====
+function saveProgress() {
+  if (!appState.systemData) return;
+  try {
+    localStorage.setItem('mv-explorer-' + appState.systemData.title, JSON.stringify({
+      userInputs: appState.userInputs,
+      currentLevel: appState.currentLevel,
+      timestamp: new Date().toISOString()
+    }));
+    showToast('Progress saved ✓');
+  } catch(e) { showToast('Could not save — storage may be full'); }
+}
+
+function resetAnswers() {
+  if (!confirm('Clear all your answers for this system? This cannot be undone.')) return;
+  appState.userInputs = {};
+  if (appState.systemData) localStorage.removeItem('mv-explorer-' + appState.systemData.title);
+  renderComponents();
+  updateProgress();
+  document.getElementById('reviewPanel').classList.remove('visible');
+  showToast('All answers cleared');
+}
+
+// ===== EXPORT =====
+function exportResults() {
+  const comps = appState.systemData.components || [];
+  const level = String(appState.currentLevel);
+  let text = `${appState.systemData.title} — Learner Responses\n`;
+  text += `Level: ${appState.currentLevel}\nDate: ${new Date().toLocaleDateString('en-GB')}\n${'='.repeat(50)}\n\n`;
+
+  comps.forEach((comp, i) => {
+    const vis = (comp.level_visibility && comp.level_visibility[level]) || {};
+    const inputs = appState.userInputs[comp.id] || {};
+    text += `${i+1}. ${comp.name || inputs.name || '[Unnamed]'}\n${'-'.repeat(40)}\n`;
+    ['name','function','operation'].forEach(f => {
+      const label = f.charAt(0).toUpperCase() + f.slice(1);
+      if (vis[f] !== false && comp[f]) text += `${label} (provided): ${comp[f]}\n`;
+      else text += `${label} (learner): ${inputs[f] || '[Not completed]'}\n`;
+    });
+    text += `Photo: ${inputs.image ? 'Yes' : 'No'}\n\n`;
+  });
+
+  const blob = new Blob([text], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `${appState.systemData.title.replace(/\s+/g, '-').toLowerCase()}-responses.txt`;
+  a.click();
+  showToast('Results exported ✓');
+}
+
+// ===== PRINT =====
+function handlePrint() { window.print(); }
+
+// ===== LEVEL MODAL =====
+function showLevelSelector() {
+  const modal = document.getElementById('levelModal');
+  const content = document.getElementById('levelModalContent');
+  const descs = appState.systemData.level_descriptions || {};
+  const labels = ['Guided', 'Developing', 'Independent'];
+
+  let html = '<div class="level-options" style="margin-bottom:1rem;">';
+  [1,2,3].forEach((lvl, i) => {
+    html += `<div class="level-option ${lvl === appState.currentLevel ? 'active' : ''}" onclick="setLevel(${lvl});closeLevelModal();">
+      <span class="level-num">${lvl}</span><span class="level-label">${labels[i]}</span>
+    </div>`;
+  });
+  html += '</div>';
+  Object.entries(descs).forEach(([lvl, desc]) => {
+    html += `<p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:0.5rem;"><strong>Level ${lvl}:</strong> ${desc}</p>`;
+  });
+  content.innerHTML = html;
+  modal.classList.add('active');
+}
+
+function closeLevelModal() { document.getElementById('levelModal').classList.remove('active'); }
+
+// ===== UTILS =====
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function esc(str) {
+  return (str || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+document.getElementById('levelModal').addEventListener('click', function(e) { if (e.target === this) closeLevelModal(); });
+
+// Auto-load from URL
+(function() {
+  const p = new URLSearchParams(window.location.search).get('system');
+  if (p) loadPreset(p);
+})();
+</script>
+</body>
+</html>
