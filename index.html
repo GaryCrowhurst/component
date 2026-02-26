@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#0b0b0f">
-<title>DECODE — Crack the System</title>
+<title>V0.1 DECODE — Crack the System</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
@@ -1017,7 +1017,23 @@ function renderCards() {
     else if (filled > 0) { bc = 'badge-wip'; bt = 'WIP'; }
 
     const done = bc === 'badge-done' ? ' done' : '';
-    const hasImg = inp.image || ip;
+
+    // Build image HTML. If stored in IndexedDB we mark with data-db and populate later.
+    let imgHtml = '';
+    if (inp.image) {
+      if (typeof inp.image === 'string' && inp.image.startsWith('db:')) {
+        const key = inp.image.slice(3);
+        imgHtml = `<img id="img-${c.id}" data-db="${esc(key)}" alt="Photo"><div class="img-rm" onclick="event.stopPropagation();rmImg('${c.id}')">✕</div>`;
+      } else {
+        imgHtml = `<img src="${inp.image}" alt="Photo"><div class="img-rm" onclick="event.stopPropagation();rmImg('${c.id}')">✕</div>`;
+      }
+    } else if (ip) {
+      imgHtml = `<img src="${c.image}" alt="${esc(c.name||'')}"><span class="img-tag">Given</span>`;
+    } else {
+      imgHtml = `<div class="img-empty"><div class="img-empty-ico">📷</div><div class="img-empty-txt">Tap to snap a photo</div></div>`;
+    }
+
+    const hasImg = !!(inp.image || ip);
 
     return `<div class="card anim${done}" id="c-${c.id}">
       <div class="card-top">
@@ -1026,11 +1042,7 @@ function renderCards() {
       </div>
       <div class="card-body">
         <div class="img-zone ${hasImg ? 'has-img' : ''}" onclick="capture('${c.id}')">
-          ${inp.image
-            ? `<img src="${inp.image}" alt="Photo"><div class="img-rm" onclick="event.stopPropagation();rmImg('${c.id}')">✕</div>`
-            : ip
-              ? `<img src="${c.image}" alt="${c.name||''}"><span class="img-tag">Given</span>`
-              : `<div class="img-empty"><div class="img-empty-ico">📷</div><div class="img-empty-txt">Tap to snap a photo</div></div>`}
+          ${imgHtml}
         </div>
         ${field(c, 'name', 'Name', np, inp.name)}
         ${field(c, 'function', 'Function', fp, inp.function)}
@@ -1041,6 +1053,8 @@ function renderCards() {
 
   // Auto-size all textareas after render
   requestAnimationFrame(autoSizeAll);
+  // Populate images that are stored in IndexedDB (async)
+  requestAnimationFrame(populateImages);
 }
 
 function field(c, key, label, provided, userVal) {
@@ -1121,32 +1135,107 @@ function capture(id) {
 
   const input = document.createElement('input');
   input.type = 'file'; input.accept = 'image/*'; input.capture = 'environment';
-  input.onchange = e => {
+  input.onchange = async e => {
     const file = e.target.files[0]; if (!file) return;
-    const reader = new FileReader();
-    reader.onload = ev => {
-      const img = new Image();
-      img.onload = () => {
-        const cv = document.createElement('canvas');
-        const mx = 800;
-        let w = img.width, h = img.height;
-        if (w > mx || h > mx) { if (w > h) { h = h/w*mx; w = mx; } else { w = w/h*mx; h = mx; } }
-        cv.width = w; cv.height = h;
-        cv.getContext('2d').drawImage(img, 0, 0, w, h);
-        if (!S.inputs[id]) S.inputs[id] = {};
-        S.inputs[id].image = cv.toDataURL('image/jpeg', 0.7);
-        renderXP(); renderCards();
-      };
-      img.src = ev.target.result;
-    };
-    reader.readAsDataURL(file);
+    try {
+      const blob = await compressImage(file, 1200, 0.75);
+      if (!S.inputs[id]) S.inputs[id] = {};
+      // cleanup previous stored image if any
+      if (typeof S.inputs[id].image === 'string' && S.inputs[id].image.startsWith('db:')) {
+        const prev = S.inputs[id].image.slice(3);
+        deleteImageBlob(prev).catch(()=>{});
+      }
+      const keyBase = (S.data?.title||'system').replace(/\s+/g,'-').toLowerCase();
+      const key = `${keyBase}-${id}-${Date.now()}`;
+      await saveImageBlob(key, blob);
+      S.inputs[id].image = 'db:' + key;
+      renderXP(); renderCards();
+    } catch (err) { console.error(err); toast('Could not save image'); }
   };
   input.click();
 }
 
 function rmImg(id) {
+  const v = S.inputs[id]?.image;
+  if (typeof v === 'string' && v.startsWith('db:')) {
+    const key = v.slice(3);
+    deleteImageBlob(key).catch(()=>{});
+  }
   if (S.inputs[id]) delete S.inputs[id].image;
   renderCards(); renderXP();
+}
+
+/* IndexedDB helpers for storing image blobs */
+function openImageDB() {
+  return new Promise((res, rej) => {
+    const req = indexedDB.open('decode-images-v1', 1);
+    req.onupgradeneeded = e => {
+      const db = e.target.result; if (!db.objectStoreNames.contains('images')) db.createObjectStore('images', { keyPath: 'key' });
+    };
+    req.onsuccess = e => res(e.target.result);
+    req.onerror = e => rej(e.target.error);
+  });
+}
+
+function saveImageBlob(key, blob) {
+  return openImageDB().then(db => new Promise((res, rej) => {
+    const tx = db.transaction('images', 'readwrite');
+    tx.objectStore('images').put({ key, blob, ts: Date.now() });
+    tx.oncomplete = () => { db.close(); res(); };
+    tx.onerror = () => { db.close(); rej(tx.error); };
+  }));
+}
+
+function getImageBlob(key) {
+  return openImageDB().then(db => new Promise((res, rej) => {
+    const tx = db.transaction('images', 'readonly');
+    const r = tx.objectStore('images').get(key);
+    r.onsuccess = () => { db.close(); res(r.result ? r.result.blob : null); };
+    r.onerror = () => { db.close(); rej(r.error); };
+  }));
+}
+
+function deleteImageBlob(key) {
+  return openImageDB().then(db => new Promise((res, rej) => {
+    const tx = db.transaction('images', 'readwrite');
+    tx.objectStore('images').delete(key);
+    tx.oncomplete = () => { db.close(); res(); };
+    tx.onerror = () => { db.close(); rej(tx.error); };
+  }));
+}
+
+/* Compress an image file via canvas and return a JPEG blob */
+async function compressImage(file, maxDim = 1200, quality = 0.75) {
+  const bitmap = await createImageBitmap(file);
+  let w = bitmap.width, h = bitmap.height;
+  if (w > maxDim || h > maxDim) {
+    if (w > h) { h = Math.round(h / w * maxDim); w = maxDim; }
+    else { w = Math.round(w / h * maxDim); h = maxDim; }
+  }
+  const cv = (typeof OffscreenCanvas !== 'undefined') ? new OffscreenCanvas(w, h) : document.createElement('canvas');
+  cv.width = w; cv.height = h;
+  const ctx = cv.getContext('2d');
+  ctx.drawImage(bitmap, 0, 0, w, h);
+  if (cv.convertToBlob) return await cv.convertToBlob({ type: 'image/jpeg', quality });
+  return await new Promise(resolve => cv.toBlob(resolve, 'image/jpeg', quality));
+}
+
+/* Populate images that were saved in IndexedDB into <img data-db> elements */
+function populateImages() {
+  document.querySelectorAll('img[data-db]').forEach(el => {
+    const key = el.getAttribute('data-db');
+    if (!key) return;
+    getImageBlob(key).then(blob => {
+      if (!blob) return;
+      // create object URL and set src
+      try {
+        const url = URL.createObjectURL(blob);
+        el.src = url;
+        const zone = el.closest('.img-zone'); if (zone) zone.classList.add('has-img');
+        // revoke when element is removed later; keep for session
+      } catch (e) { console.error(e); }
+    }).catch(err => console.error(err));
+  });
 }
 
 /* ============================================
