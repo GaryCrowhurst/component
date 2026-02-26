@@ -1,0 +1,138 @@
+{
+  "system": {
+    "title": "Braking System",
+    "description": "Components used to slow and stop a vehicle: hydraulic circuits, friction surfaces, mechanical linkages and control electronics.",
+    "level_descriptions": {
+      "1": "Guided Learning — Most information is provided. Fill in the gaps to complete your knowledge.",
+      "2": "Developing Skills — Some information is provided. Use your knowledge to complete the missing details.",
+      "3": "Independent Learning — Minimal information given. Demonstrate your understanding by completing all fields."
+    },
+    "components": [
+      {
+        "id": "master-cylinder",
+        "name": "Master Cylinder",
+        "image": "",
+        "function": "Converts pedal force into hydraulic pressure and distributes it to the brake circuits.",
+        "operation": "When the brake pedal is depressed a piston in the master cylinder moves, pressurising brake fluid in the lines. This pressure travels through metal lines and hoses to the calipers or wheel cylinders, forcing pads or shoes onto rotors/drums to create friction and slow the wheel.",
+        "hints": {
+          "name": "Often mounted on the firewall connected to the brake pedal",
+          "function": "Think: force in (pedal) becomes fluid pressure",
+          "operation": "Consider how a simple syringe works — similar principle"
+        },
+        "level_visibility": { "1": { "name": true, "image": true, "function": true, "operation": false }, "2": { "name": true, "image": false, "function": false, "operation": false }, "3": { "name": false, "image": false, "function": false, "operation": false } }
+      },
+      {
+        "id": "brake-disc",
+        "name": "Brake Disc (Rotor)",
+        "image": "",
+        "function": "Provides a hard friction surface for the brake pads to clamp against and dissipates heat.",
+        "operation": "The wheel hub carries the disc; when the caliper squeezes the pads onto the rotating disc, kinetic energy is converted into heat by friction, slowing the wheel. Discs are often ventilated to improve cooling and resist fade under repeated use.",
+        "hints": {
+          "name": "Flat round metal plate bolted to the wheel hub",
+          "function": "Pads press against this to slow rotation",
+          "operation": "Look for fins or vents in the middle on many modern rotors"
+        },
+        "level_visibility": { "1": { "name": true, "image": true, "function": true, "operation": false }, "2": { "name": true, "image": false, "function": false, "operation": false }, "3": { "name": false, "image": false, "function": false, "operation": false } }
+      },
+      {
+        "id": "brake-pad",
+        "name": "Brake Pad",
+        "image": "",
+        "function": "Applies friction to the brake disc to slow wheel rotation.",
+        "operation": "Brake pads are mounted in the caliper; hydraulic pressure pushes pistons which press the inner pad onto the disc and the caliper pulls the outer pad in, clamping the rotor. Pads are consumables and must be replaced when worn.",
+        "hints": { "name": "Thin replaceable friction material that touches the disc", "function": "Friction element between caliper and rotor", "operation": "Check pad thickness to judge wear" },
+        "level_visibility": { "1": { "name": true, "image": true, "function": true, "operation": false }, "2": { "name": false, "image": true, "function": false, "operation": false }, "3": { "name": false, "image": false, "function": false, "operation": false } }
+      },
+      {
+        "id": "brake-caliper",
+        "name": "Brake Caliper",
+        "image": "",
+        "function": "Houses pistons and pads and applies hydraulic force to squeeze pads onto the disc.",
+        "operation": "When hydraulic pressure arrives, pistons inside the caliper extend and push the inner pad into the disc while the caliper body slides to pull the outer pad in, clamping the rotor between them. Floating calipers slide on pins; fixed calipers have pistons on both sides.",
+        "hints": { "name": "A clamp-like housing around the disc", "function": "Holds and moves the pads when hydraulics push", "operation": "Look for sliding pins and piston seals" },
+        "level_visibility": { "1": { "name": true, "image": true, "function": true, "operation": false }, "2": { "name": true, "image": false, "function": false, "operation": false }, "3": { "name": false, "image": false, "function": false, "operation": false } }
+      },
+      {
+        "id": "brake-hose",
+        "name": "Flexible Brake Hose",
+        "image": "",
+        "function": "Carries pressurised brake fluid from the metal lines to moving components like calipers or wheel cylinders.",
+        "operation": "Flexible hoses accommodate suspension and steering movement while maintaining a sealed path for hydraulic pressure. They are reinforced rubber or braided lines designed to resist expansion and wear.",
+        "hints": { "name": "Rubber hose near the wheel that moves with suspension", "function": "Flexible connector between rigid lines and moving caliper", "operation": "Inspect for cracks or bulging in aged hoses" },
+        "level_visibility": { "1": { "name": true, "image": true, "function": true, "operation": false }, "2": { "name": true, "image": false, "function": false, "operation": false }, "3": { "name": false, "image": false, "function": false, "operation": false } }
+      },
+      {
+        "id": "wheel-cylinder",
+        "name": "Wheel Cylinder (Drum Brake)",
+        "image": "",
+        "function": "Converts hydraulic pressure into linear motion to push the brake shoes against the drum.",
+        "operation": "In a drum brake, pressurised fluid enters the wheel cylinder and pushes pistons outward. The pistons force the brake shoes against the inner surface of the drum, creating friction to slow the wheel.",
+        "hints": { "name": "Small cylinder inside the brake drum assembly", "function": "Pushes the shoes outwards", "operation": "Look for piston seals and bleeder screws" },
+        "level_visibility": { "1": { "name": true, "image": true, "function": true, "operation": false }, "2": { "name": false, "image": true, "function": false, "operation": false }, "3": { "name": false, "image": false, "function": false, "operation": false } }
+      },
+      {
+        "id": "brake-drum",
+        "name": "Brake Drum",
+        "image": "",
+        "function": "Provides a friction surface for brake shoes in a drum brake assembly and helps dissipate heat.",
+        "operation": "The drum rotates with the wheel; when shoes are forced outward by the wheel cylinder they press on the inner drum surface, converting kinetic energy to heat. Drums may be used on rear axles or older designs.",
+        "hints": { "name": "Cylindrical metal component that the wheel bolts to or sits inside", "function": "Surface contacted by the brake shoes", "operation": "Listen for grinding or look for scored surfaces indicating wear" },
+        "level_visibility": { "1": { "name": true, "image": true, "function": true, "operation": false }, "2": { "name": true, "image": false, "function": false, "operation": false }, "3": { "name": false, "image": false, "function": false, "operation": false } }
+      },
+      {
+        "id": "brake-shoe",
+        "name": "Brake Shoe",
+        "image": "",
+        "function": "Curved friction element that presses against the inside of the drum to slow the wheel.",
+        "operation": "Brake shoes are mounted on a backplate and held with springs; when the wheel cylinder pushes them outward, the friction lining contacts the drum surface. Shoes have leading and trailing edges which affect self-energising behaviour.",
+        "hints": { "name": "Curved pads inside a drum", "function": "Friction surface for drum brakes", "operation": "Note the pivot points and return springs around the shoes" },
+        "level_visibility": { "1": { "name": true, "image": true, "function": true, "operation": false }, "2": { "name": false, "image": true, "function": false, "operation": false }, "3": { "name": false, "image": false, "function": false, "operation": false } }
+      },
+      {
+        "id": "handbrake-lever",
+        "name": "Handbrake / Parking Brake Lever",
+        "image": "",
+        "function": "Allows the driver to mechanically apply the rear brakes to secure the vehicle when parked.",
+        "operation": "The lever pulls a cable (or activates an electronic actuator) that tightens the parking brake mechanism at the rear wheels. In many cars it operates the rear shoes or a separate parking brake piston/cable within a caliper.",
+        "hints": { "name": "Located in the cabin between seats or as a pedal in some cars", "function": "Secures vehicle when stationary", "operation": "Follow the cable down to where it attaches at the rear brakes" },
+        "level_visibility": { "1": { "name": true, "image": true, "function": true, "operation": false }, "2": { "name": true, "image": false, "function": false, "operation": false }, "3": { "name": false, "image": false, "function": false, "operation": false } }
+      },
+      {
+        "id": "parking-brake-cable",
+        "name": "Parking Brake Cable",
+        "image": "",
+        "function": "Transfers mechanical force from the handbrake lever to the rear brake mechanisms.",
+        "operation": "Cable runs from the lever to a junction/ equaliser and then to the rear brakes; pulling the lever tensions the cable which actuates the brake shoes or a caliper parking mechanism. Cables have adjusters to take up slack.",
+        "hints": { "name": "Steel cable running under the car toward the rear", "function": "Mechanical link for parking brake", "operation": "Check for fraying or seized sections where it passes through brackets" },
+        "level_visibility": { "1": { "name": true, "image": true, "function": true, "operation": false }, "2": { "name": false, "image": true, "function": false, "operation": false }, "3": { "name": false, "image": false, "function": false, "operation": false } }
+      },
+      {
+        "id": "brake-servo",
+        "name": "Brake Servo (Vacuum Booster)",
+        "image": "",
+        "function": "Amplifies the driver's pedal force using vacuum (or other means) so less physical effort is required to generate braking pressure.",
+        "operation": "A vacuum chamber and diaphragm sit between the pedal linkage and master cylinder. When the pedal is pressed the valve admits atmospheric pressure to one side of the diaphragm while vacuum remains on the other, assisting the push on the master cylinder. Some modern systems use hydraulic or electric assistance instead of vacuum.",
+        "hints": { "name": "Large round unit between master cylinder and firewall", "function": "Makes the pedal feel lighter by boosting force", "operation": "Check the vacuum hose and listen for hissing indicating a leak" },
+        "level_visibility": { "1": { "name": true, "image": false, "function": true, "operation": false }, "2": { "name": false, "image": false, "function": false, "operation": false }, "3": { "name": false, "image": false, "function": false, "operation": false } }
+      },
+      {
+        "id": "brake-pedal",
+        "name": "Brake Pedal",
+        "image": "",
+        "function": "Interface for the driver to apply force which initiates braking.",
+        "operation": "When the driver presses the pedal, mechanical linkage (or an electronic sensor in brake-by-wire systems) moves the pushrod into the servo/master cylinder assembly, creating hydraulic pressure in the brake lines. The pedal ratio determines how much force is transmitted.",
+        "hints": { "name": "Located on the driver's footwell", "function": "Start of the braking input", "operation": "Feel for sponginess indicating air in the lines or a soft master cylinder" },
+        "level_visibility": { "1": { "name": true, "image": true, "function": true, "operation": false }, "2": { "name": true, "image": false, "function": false, "operation": false }, "3": { "name": false, "image": false, "function": false, "operation": false } }
+      },
+      {
+        "id": "proportioning-valve",
+        "name": "Proportioning / Pressure-Relief Valve",
+        "image": "",
+        "function": "Balances hydraulic pressure between front and rear circuits to prevent rear wheel lock-up and maintain stability.",
+        "operation": "The valve reduces rear circuit pressure under heavy braking (or adjusts relative pressures) so the vehicle remains stable. Some systems are mechanical; others are controlled electronically by the ABS module.",
+        "hints": { "name": "Small valve assembly in the hydraulic lines or integrated into the ABS unit", "function": "Stops rear wheels from locking under heavy load", "operation": "Consider how weight transfer affects needed pressure front vs rear" },
+        "level_visibility": { "1": { "name": true, "image": false, "function": true, "operation": false }, "2": { "name": false, "image": false, "function": false, "operation": false }, "3": { "name": false, "image": false, "function": false, "operation": false } }
+      }
+    ]
+  }
+}

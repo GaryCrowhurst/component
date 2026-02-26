@@ -712,6 +712,17 @@ textarea.fld-input {
 
   .sys-head { margin-bottom: 0.75rem !important; }
   .sys-desc { max-width: none !important; }
+
+  /* Worksheet-specific print mode (only names + drawing area) */
+  body.print-worksheet .card .card-body .fld { display: none !important; }
+  body.print-worksheet .print-only { display: block !important; }
+  body.print-worksheet .img-zone { background: #ffffff !important; border: 1.5pt dashed #000 !important; min-height: 140px !important; }
+  body.print-worksheet .img-zone img, body.print-worksheet .img-zone .img-tag, body.print-worksheet .img-empty { display: none !important; }
+  body.print-worksheet .print-card .print-comp-name { font-family: var(--font-display); font-size: 1rem; color: #000; margin-bottom: 0.4rem; }
+  body.print-worksheet .print-card .print-draw-area { border: 1px dashed #000; height: 120px; border-radius: 6px; }
+
+  /* Ensure print-responses hides the worksheet-only blocks */
+  body.print-responses .print-only { display: none !important; }
 }
 
 /* ============================
@@ -744,7 +755,7 @@ textarea.fld-input {
     </div>
     <div class="hdr-actions" id="hdrActions" style="display:none;">
       <button class="btn-icon" onclick="showLevelModal()" title="Change level">⚙</button>
-      <button class="btn-icon" onclick="window.print()" title="Print worksheet">🖨</button>
+      <button class="btn-icon" onclick="showPrintModal()" title="Print options">🖨</button>
       <button class="btn-icon" onclick="saveProgress()" title="Save progress">💾</button>
     </div>
   </div>
@@ -810,6 +821,11 @@ textarea.fld-input {
 <!-- LEVEL MODAL -->
 <div class="modal-bg" id="lvlModal">
   <div class="modal-box" id="lvlModalBox"></div>
+</div>
+
+<!-- PRINT MODAL -->
+<div class="modal-bg" id="printModal">
+  <div class="modal-box" id="printModalBox"></div>
 </div>
 
 <script>
@@ -1041,6 +1057,10 @@ function renderCards() {
         <span class="card-badge ${bc}">${bt}</span>
       </div>
       <div class="card-body">
+        <div class="print-only print-card">
+          <div class="print-comp-name">${esc(c.name||'')}</div>
+          <div class="print-draw-area"></div>
+        </div>
         <div class="img-zone ${hasImg ? 'has-img' : ''}" onclick="capture('${c.id}')">
           ${imgHtml}
         </div>
@@ -1222,20 +1242,19 @@ async function compressImage(file, maxDim = 1200, quality = 0.75) {
 
 /* Populate images that were saved in IndexedDB into <img data-db> elements */
 function populateImages() {
-  document.querySelectorAll('img[data-db]').forEach(el => {
+  const els = Array.from(document.querySelectorAll('img[data-db]'));
+  return Promise.all(els.map(el => {
     const key = el.getAttribute('data-db');
-    if (!key) return;
-    getImageBlob(key).then(blob => {
+    if (!key) return Promise.resolve();
+    return getImageBlob(key).then(blob => {
       if (!blob) return;
-      // create object URL and set src
       try {
         const url = URL.createObjectURL(blob);
         el.src = url;
         const zone = el.closest('.img-zone'); if (zone) zone.classList.add('has-img');
-        // revoke when element is removed later; keep for session
       } catch (e) { console.error(e); }
     }).catch(err => console.error(err));
-  });
+  }));
 }
 
 /* ============================================
@@ -1324,6 +1343,41 @@ function showLevelModal() {
 }
 
 function closeLvlModal() { document.getElementById('lvlModal').classList.remove('on'); }
+
+/* ============================================
+   PRINT OPTIONS
+   ============================================ */
+function showPrintModal() {
+  const h = `
+    <h3>Print Options</h3>
+    <div style="display:flex;gap:0.5rem;margin-bottom:1rem;">
+      <button class="btn btn-ghost" style="flex:1;" onclick="printWorksheet();closePrintModal();">Worksheet (blank)</button>
+      <button class="btn btn-lime" style="flex:1;" onclick="printResponses();closePrintModal();">Responses (with data)</button>
+    </div>
+    <p style="font-size:0.85rem;color:var(--text-mid);">Worksheet prints only component names and a drawing area for learners to sketch parts. Responses prints the entries and photos.</p>
+    <div style="margin-top:1rem;text-align:right;\"><button class="btn btn-ghost btn-sm" onclick="closePrintModal()">Close</button></div>
+  `;
+  document.getElementById('printModalBox').innerHTML = h;
+  document.getElementById('printModal').classList.add('on');
+}
+
+function closePrintModal() { document.getElementById('printModal').classList.remove('on'); }
+
+async function printWorksheet() {
+  try { document.body.classList.remove('print-responses'); document.body.classList.add('print-worksheet'); window.print(); }
+  finally { setTimeout(() => document.body.classList.remove('print-worksheet'), 800); }
+}
+
+async function printResponses() {
+  try {
+    document.body.classList.remove('print-worksheet'); document.body.classList.add('print-responses');
+    // ensure DB images are populated before printing
+    await populateImages();
+    window.print();
+  } finally {
+    setTimeout(() => document.body.classList.remove('print-responses'), 800);
+  }
+}
 
 /* ============================================
    UTILS
